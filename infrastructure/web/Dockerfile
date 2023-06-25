@@ -19,4 +19,9 @@ RUN apt-get update && \
   composer config -g process-timeout 3600 && \
   composer config -g repos.packagist composer https://packagist.org
 
+#npm
+# RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+# RUN apt-get install -y nodejs
+# RUN npm install npm@latest -g
+
 WORKDIR /var/www/html/backend

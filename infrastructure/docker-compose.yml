@@ -2,27 +2,44 @@ version: '3'
 
 services:
   web:
+    container_name: black-jack-web
+    image: web:latest
     build: ./web
-    platform: linux/x86_64
-    container_name: php-apache
     ports:
       - 8080:80
+    privileged: true
     volumes:
       - ../backend:/var/www/html/backend
-    privileged: true
-    environment:
-      TZ: 'Asia/Tokyo'
-    depends_on:
-      - db
-    
+    networks:
+      local_net:
+        ipv4_address: 172.10.0.2
 
   db:
-    build: ./db
+    image: mariadb:10.5
     container_name: db
-    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: just1nnext
+      MYSQL_DATABASE: jin
+      MYSQL_USER: jin
+      MYSQL_PASSWORD: just1nnext
       TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
+    networks:
+      local_net:
+        ipv4_address: 172.10.0.3
     restart: always
+
+networks:
+
+  local_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.0.0/24
