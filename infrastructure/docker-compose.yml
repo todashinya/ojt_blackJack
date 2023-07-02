@@ -4,7 +4,7 @@ services:
   web:
     container_name: black-jack-web
     image: web:latest
-    build: ./web
+    build: ./docker/web
     ports:
       - 8080:80
     privileged: true
@@ -36,7 +36,6 @@ services:
     restart: always
 
 networks:
-
   local_net:
     driver: bridge
     ipam:
