@@ -1,1 +1,5 @@
 ./data/*
+./data/aria_log_control
+./data/aria_log.00000001
+./data/ib_logfile0
+./data/ibdata1
