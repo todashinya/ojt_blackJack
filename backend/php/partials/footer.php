@@ -1,3 +1,4 @@
-<script src="<?php echo BASE_JS_PATH ?>sample.js"></script>
+<script src="<?php echo BASE_JS_PATH ?>common.js"></script>
 </body>
+
 </html>
