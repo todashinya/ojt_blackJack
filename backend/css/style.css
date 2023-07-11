@@ -1,4 +1,211 @@
 @import url("https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;700&display=swap");
+@media screen and (min-width: 769px) {
+  #home .bg {
+    position: relative;
+    background-image: url(../../img/img_top.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    width: 100%;
+  }
+  #home .unit {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 150px;
+    transform: translateY(-50%);
+  }
+  #home .unit h1 {
+    font-size: 120px;
+  }
+  #home .name {
+    margin: 60px auto;
+    max-width: 488px;
+    width: 100%;
+  }
+  #home input[type=text] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    padding: 20px;
+    font-size: 28px;
+    color: #D8D8D8;
+  }
+  #home input[type=text]:focus {
+    outline: 0;
+  }
+  #home .item {
+    display: inline-block;
+  }
+  #home .btn {
+    max-width: 320px;
+    margin: 40px auto 0;
+  }
+  #home .play {
+    background: linear-gradient(#fdf446 0%, #c88827 100%);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+  }
+  #home .play input[type=submit] {
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    padding: 29px 67px;
+    border-radius: 20px;
+  }
+  #home .play input[type=submit]:hover {
+    filter: brightness(110%);
+    transition: 0.4s;
+  }
+  .overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #D8D8D8;
+    display: none;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .overlay.open {
+    display: block;
+  }
+  .modal-window {
+    width: 65%;
+    height: 80%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    display: none;
+  }
+  .modal-window.open {
+    display: block;
+  }
+  .modal-window .button-close {
+    background: transparent;
+    border-color: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 30px;
+    display: block;
+    height: 30px;
+  }
+  .modal-window .button-close span {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background: #fff;
+    display: block;
+  }
+  .modal-window .button-close span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .modal-window .button-close span:nth-child(2) {
+    transform: rotate(-45deg);
+  }
+  .modal-window .content p {
+    margin-top: 100px;
+    font-size: 32px;
+    text-align: center;
+  }
+  .modal-window .content .coin {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .modal-window .content label img {
+    max-width: 210px;
+    width: 100%;
+  }
+  .modal-window .content label input {
+    display: none;
+  }
+  .modal-window .content .flex {
+    display: flex;
+    justify-content: space-between;
+    max-width: 753px;
+    width: 100%;
+    margin: 40px auto 0;
+  }
+  .modal-window .content .bet {
+    position: relative;
+    border: 1px solid #fff;
+    padding: 19px 88px;
+    color: #fff;
+    font-size: 36px;
+  }
+  .modal-window .content .bet span {
+    font-size: 36px;
+  }
+  .modal-window .content .bet::after {
+    content: "BET";
+    position: absolute;
+    color: #fff;
+    background-color: #000;
+    font-size: 32px;
+    top: -20px;
+    left: 20px;
+  }
+  .modal-window .content .credit {
+    position: relative;
+    border: 1px solid #fff;
+    padding: 19px 88px;
+    color: #fff;
+    font-size: 36px;
+  }
+  .modal-window .content .credit span {
+    font-size: 36px;
+  }
+  .modal-window .content .credit::after {
+    content: "CREDIT";
+    position: absolute;
+    color: #fff;
+    background-color: #000;
+    font-size: 32px;
+    top: -20px;
+    left: 20px;
+  }
+  .modal-window .btn {
+    max-width: 320px;
+    margin: 40px auto 0;
+    border: 1px solid #fff;
+  }
+  .modal-window .btn .start {
+    background: #000;
+    border: none;
+  }
+  .modal-window .btn .start input[type=submit] {
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    padding: 29px 67px;
+    border-radius: 20px;
+  }
+  .modal-window .btn .start input[type=submit]:hover {
+    filter: brightness(110%);
+    transition: 0.4s;
+  }
+}
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,

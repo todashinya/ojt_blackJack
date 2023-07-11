@@ -1,4 +1,78 @@
 @import url("https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;700&display=swap");
+@media screen and (min-width: 769px) {
+  #home .bg {
+    position: relative;
+    background-image: url(../../img/img_top.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    width: 100%;
+  }
+  #home .unit {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 150px;
+    transform: translateY(-50%);
+  }
+  #home .unit h1 {
+    font-size: 120px;
+  }
+  #home .name {
+    margin: 60px auto;
+    max-width: 488px;
+    width: 100%;
+  }
+  #home input[type=text] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    padding: 20px;
+    font-size: 28px;
+    color: #D8D8D8;
+  }
+  #home input[type=text]:focus {
+    outline: 0;
+  }
+  #home .btn {
+    max-width: 320px;
+    margin: 40px auto;
+  }
+  #home .item {
+    display: inline-block;
+  }
+  #home input[type=submit] {
+    background: linear-gradient(#fdf446 0%, #c88827 100%);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    padding: 29px 67px;
+    border-radius: 20px;
+  }
+  #home input[type=submit]:hover {
+    filter: brightness(110%);
+    transition: 0.4s;
+  }
+  #home .modal-window .content label img {
+    max-width: 210px;
+    width: 100%;
+  }
+  #home .modal-window .content .bet {
+    color: #000;
+  }
+}
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
