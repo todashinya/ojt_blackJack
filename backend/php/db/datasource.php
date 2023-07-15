@@ -25,6 +25,7 @@ class DataSource {
     /**
      * select文を実行する
      * $typeでクラスで返却するか連想配列で返却するか指定する
+     * $classでmodel内のclassを指定し、modelの形式で返却する
      * @param string $sql
      * @param array $params
      * @param string $type

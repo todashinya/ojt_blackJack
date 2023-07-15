@@ -22,5 +22,3 @@ if($requestPath === '/') {
 
 //フッタ情報(js読み込みなど)
 require_once SOURCE_PATH . 'partials/footer.php';
-
-?>
