@@ -20,7 +20,7 @@ use model\PlayerModel;
         <div class="main__inner">
             <h1>BLACKJACK</h1>
             <form action="" method="POST">
-                <input type="text" name="data['name']" value="" placeholder="プレイヤー名を入力してください">
+                <input type="text" name="name" value="" placeholder="プレイヤー名を入力してください">
                 <button type="submit" id="playBtn">PLAY</button>
             </form>
         </div>
@@ -34,9 +34,9 @@ use model\PlayerModel;
         <span class="modal__close">&times;</span>
         <h2>BETする金額を決めてください。</h2>
         <form action="" method="post">
-            <input type="text" name="data['bet']" value="">
-            <input type="text" name="data['credit']" value="">
-            <input type="hidden" name="data['name']" value="">
+            <input type="text" name="bet" value="">
+            <input type="text" name="credit" value="">
+            <input type="hidden" name="name" value="">
             <button type="submit" id="startBtn">START</button>
         </form>
     </div>
