@@ -29,7 +29,7 @@ openModal();
 
 
 function copyInputValue() {
-    const playerNameInput = document.getElementsByName("data['name']")[0].value;
-    const hiddenNameInput = document.getElementsByName("data['name']")[1];
+    const playerNameInput = document.getElementsByName("name")[0].value;
+    const hiddenNameInput = document.getElementsByName("name")[1];
     hiddenNameInput.value = playerNameInput;
 }
