@@ -38,13 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <div class="overlay js-overlay"></div>
 <!-- モーダルウィンドウ -->
 <section class="modal-window js-modal">
-    <!-- 閉じるボタン -->
-    <button class=" button-close js-close">
-        <span></span>
-        <span></span>
-    </button>
     <!-- 内容 -->
     <div class="content">
+        <!-- 閉じるボタン -->
+        <div class=" button-close js-close">
+            <span></span>
+        </div>
         <p>BETする金額を決めてください。</p>
         <div class="coin">
             <div class="item">
@@ -79,5 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="btn">
             <input type="submit" value="START" class="start">
         </div>
+        <!-- <div class="btn">
+            <input type="button" value="RESET" class="reset">
+        </div> -->
     </div>
 </section>

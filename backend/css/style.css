@@ -83,8 +83,7 @@
   }
   .modal-window {
     width: 65%;
-    height: 80%;
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -94,31 +93,41 @@
   .modal-window.open {
     display: block;
   }
-  .modal-window .button-close {
-    background: transparent;
-    border-color: transparent;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    width: 30px;
-    display: block;
-    height: 30px;
-  }
-  .modal-window .button-close span {
+  .modal-window .content {
     position: relative;
-    width: 100%;
-    height: 1px;
-    background: #fff;
-    display: block;
+    padding: 142px 0 90px;
   }
-  .modal-window .button-close span:nth-child(1) {
+  .modal-window .content .button-close {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+  }
+  .modal-window .content .button-close:hover {
+    cursor: pointer;
+  }
+  .modal-window .content .button-close span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+    line-height: 1;
+    width: 30px;
+    height: 3px;
+    background-color: #fff;
+    position: relative;
     transform: rotate(45deg);
   }
-  .modal-window .button-close span:nth-child(2) {
-    transform: rotate(-45deg);
+  .modal-window .content .button-close span::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: inherit;
+    transform: rotate(90deg);
   }
   .modal-window .content p {
-    margin-top: 100px;
     font-size: 32px;
     text-align: center;
   }
@@ -126,6 +135,9 @@
     display: flex;
     justify-content: center;
     margin-top: 40px;
+  }
+  .modal-window .content .item:nth-child(n+2) {
+    margin-left: 60px;
   }
   .modal-window .content label img {
     max-width: 210px;
@@ -166,6 +178,7 @@
     padding: 19px 88px;
     color: #fff;
     font-size: 36px;
+    margin-left: 30px;
   }
   .modal-window .content .credit span {
     font-size: 36px;
@@ -182,13 +195,12 @@
   .modal-window .btn {
     max-width: 320px;
     margin: 40px auto 0;
+    border-radius: 20px;
     border: 1px solid #fff;
   }
-  .modal-window .btn .start {
+  .modal-window .btn input[type=submit] {
     background: #000;
     border: none;
-  }
-  .modal-window .btn .start input[type=submit] {
     color: #fff;
     font-size: 32px;
     text-align: center;
@@ -201,7 +213,31 @@
     padding: 29px 67px;
     border-radius: 20px;
   }
-  .modal-window .btn .start input[type=submit]:hover {
+  .modal-window .btn input[type=submit]:hover {
+    background: #fff;
+    color: #000;
+    filter: brightness(110%);
+    transition: 0.4s;
+  }
+  .modal-window .btn input[type=button] {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+    background: #000;
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 29px 67px;
+    border-radius: 20px;
+  }
+  .modal-window .btn input[type=button]:hover {
+    background: #fff;
+    color: #000;
     filter: brightness(110%);
     transition: 0.4s;
   }
