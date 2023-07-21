@@ -84,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </section>
 
+<!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
         <div class="inner">

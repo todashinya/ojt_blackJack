@@ -1,5 +1,5 @@
 $(document).ready(function() {
-   // BET、クレジット表示
+// BET、クレジット表示
 var initialBet = parseInt($('.js-bet span').text()); // 初期ベット金額取得
 
 $('.coin-input').click(function () {
@@ -36,7 +36,7 @@ if ($(this).is(':checked')) {
     //                 .prop("checked", false)
     //         }
     // });
-    // モーダルウィンドウ
+// モーダルウィンドウ
     $('.js-open').on('click', function() {
         $('.js-modal').addClass('open');
         $('.js-overlay').addClass('open');
@@ -45,6 +45,28 @@ if ($(this).is(':checked')) {
     $('.js-close').on('click', function() {
         $('.js-modal').removeClass('open');
         $('.js-overlay').removeClass('open');
+    });
+
+//アクションボタン 
+    // ヒットボタンがクリックされたときの処理
+    $(".hit").on("click", function() {
+
+    });
+
+      // スタンドボタンがクリックされたときの処理
+    $(".stand").on("click", function() {
+
+    });
+
+      // サレンダーボタンがクリックされたときの処理
+    $(".surrender").on("click", function() {
+
+    });
+
+      // 退出するボタンがクリックされたときの処理
+    $(".leaving").on("click", function() {
+        // ゲーム画面を隠す処理を実装する
+        $("#game").hide();
     });
 });
 
