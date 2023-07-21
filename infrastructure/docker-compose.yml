@@ -4,7 +4,7 @@ services:
   web:
     container_name: black-jack-web
     image: web:latest
-    build: ./web
+    build: ./docker/web
     ports:
       - 8080:80
     privileged: true
@@ -25,9 +25,10 @@ services:
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./docker/mysql/data:/var/lib/mysql
+      #- ./docker/mysql/data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+      #- ./docker/mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     networks:
@@ -35,8 +36,10 @@ services:
         ipv4_address: 172.10.0.3
     restart: always
 
-networks:
+volumes:
+  mysql_data:
 
+networks:
   local_net:
     driver: bridge
     ipam:
