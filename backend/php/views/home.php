@@ -16,7 +16,7 @@ use model\PlayerModel;
 
 ?>
 
-<div class="container">
+<!-- <div class="container">
     <main class="main">
         <div class="main__inner">
             <h1>BLACKJACK</h1>
@@ -29,7 +29,7 @@ use model\PlayerModel;
 </div>
 
 
-<!-- モーダルのHTML -->
+モーダルのHTML
 <div id="modal" class="modal">
     <div class="modal__content">
         <span class="modal__close">&times;</span>
@@ -41,7 +41,7 @@ use model\PlayerModel;
             <button type="submit" id="startBtn">START</button>
         </form>
     </div>
-</div>
+</div> -->
 <?php
 $a = 10; // コイン10
 $b = 50; // コイン50
@@ -136,10 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="dealer"></div>
             <ul class="player">
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -154,10 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -172,10 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -190,10 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
