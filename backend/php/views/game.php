@@ -1,3 +1,4 @@
+<!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
         <div class="inner">
@@ -5,10 +6,7 @@
             <div class="dealer"></div>
             <ul class="player">
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -23,10 +21,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -41,10 +36,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -59,10 +51,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
+                    <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>

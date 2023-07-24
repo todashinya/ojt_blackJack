@@ -225,7 +225,9 @@
     cursor: pointer;
     outline: none;
     padding: 0;
-    appearance: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
     background: #000;
     color: #fff;
     font-size: 32px;
@@ -1180,4 +1182,4 @@ input, select {
     text-align: center;
     letter-spacing: 0.6px;
   }
-}/*# sourceMappingURL=style.css.map */
+}

@@ -1,4 +1,7 @@
 @media screen and (min-width: 769px) {
+  #game {
+    height: 100vh;
+  }
   #game .inner {
     width: 84%;
     margin: 0 auto;
@@ -8,8 +11,42 @@
     width: 100%;
     height: 1018px;
   }
+  #game .leaving {
+    display: block;
+    margin-left: auto;
+    background-color: transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-family: "Kaisei Tokumin", serif;
+    padding: 14px 50px 14px 21px;
+    position: relative;
+  }
+  #game .leaving::after {
+    position: absolute;
+    content: "";
+    background-image: url(../../img/img_icon-arrow.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: 50%;
+    right: 21px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 23px;
+  }
+  #game .leaving:hover {
+    background: linear-gradient(#fdf446 0%, #c88827 100%);
+    border: none;
+    filter: brightness(110%);
+    transition: 0.4s;
+  }
   #game .player {
-    padding-top: 501px;
+    padding-top: 609px;
     display: flex;
     align-items: center;
     justify-content: center;

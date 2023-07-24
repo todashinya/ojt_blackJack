@@ -109,24 +109,27 @@ if ($(this).is(':checked')) {
       // ジョーカー
       { suit : 'joker' , rank : 'joker'},
     ]
-    // スタートボタンがクリックされた時の処理
-    $(".start").on("click", function() {
+  // STARTボタンがクリックされたときの処理
+  $(".start").on("click", function() {
+    // プレイヤーのli要素に対して2枚のカードを追加する
+    $(".player li").each(function(index) {
       for (let i = 0; i < 2; i++) {
-        const selectedCard = cards[i];
+        const selectedCard = cards[index * 2 + i];
         const cardImage = `<img src="../../img/img_${selectedCard.rank}-${selectedCard.suit}.png" alt="card">`;
-      
-    // プレイヤーの手札にカードを追加して表示
-      const playerHand = $(".player li").eq(i).find(".img");
-      if (i > 0) {
-        const marginLeft = 10 * i; // ずらし量を計算
-        playerHand.css("margin-left", `${marginLeft}px`); // ずらし量を適用
+
+        const playerHand = $(this).find(".img");
+        if (i > 0) {
+          const marginRight = 10 * i; // ずらし量を計算
+          playerHand.css("margin-right", `${marginRight}px`); // ずらし量を適用
+        }
+        playerHand.append(cardImage);
       }
-      playerHand.append(cardImage);
-    }
-    // モーダルウィンドウを非表示にする
-      $(".js-modal").hide();
-      $(".js-overlay").hide();
     });
+
+    // モーダルウィンドウを非表示にする
+    $(".js-modal").hide();
+    $(".js-overlay").hide();
+  });
     
     let cardCount = 0 ;
     // ヒットボタンがクリックされたときの処理
@@ -153,7 +156,7 @@ if ($(this).is(':checked')) {
 
       // スタンドボタンがクリックされたときの処理
     $(".stand").on("click", function() {
-
+      
     });
 
       // サレンダーボタンがクリックされたときの処理
