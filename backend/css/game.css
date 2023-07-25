@@ -12,6 +12,9 @@
     height: 1018px;
   }
   #game .leaving {
+    padding-top: 20px;
+  }
+  #game .leaving .button {
     display: block;
     margin-left: auto;
     background-color: transparent;
@@ -19,7 +22,6 @@
     border-radius: 20px;
     cursor: pointer;
     outline: none;
-    padding: 0;
     appearance: none;
     color: #FFFFFF;
     font-size: 22px;
@@ -27,7 +29,7 @@
     padding: 14px 50px 14px 21px;
     position: relative;
   }
-  #game .leaving::after {
+  #game .leaving .button::after {
     position: absolute;
     content: "";
     background-image: url(../../img/img_icon-arrow.png);
@@ -39,14 +41,28 @@
     width: 24px;
     height: 23px;
   }
-  #game .leaving:hover {
+  #game .leaving .button:hover {
     background: linear-gradient(#fdf446 0%, #c88827 100%);
     border: none;
     filter: brightness(110%);
     transition: 0.4s;
   }
+  #game .dealer li {
+    list-style: none;
+  }
+  #game .dealer li .img {
+    display: flex;
+    max-width: 150px;
+    width: 100%;
+  }
+  #game .dealer .card-back {
+    background-image: url("../../img/img_ura.png");
+    background-size: contain;
+    width: 150px;
+    height: 212px;
+  }
   #game .player {
-    padding-top: 609px;
+    padding-top: 208px;
     display: flex;
     align-items: center;
     justify-content: center;

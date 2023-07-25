@@ -26,16 +26,6 @@ if ($(this).is(':checked')) {
 }
 });
 
-
-    // $(".reset").on("click", function () {
-    //     clearForm(this.form);
-    //         function clearForm (form) {
-    //             $(form)
-    //                 .find("input")
-    //                 .val("")
-    //                 .prop("checked", false)
-    //         }
-    // });
 // モーダルウィンドウ
     $('.js-open').on('click', function() {
         $('.js-modal').addClass('open');
@@ -46,6 +36,7 @@ if ($(this).is(':checked')) {
         $('.js-modal').removeClass('open');
         $('.js-overlay').removeClass('open');
     });
+
 
 //アクションボタン 
   //カードのデータを用意
@@ -111,6 +102,8 @@ if ($(this).is(':checked')) {
     ]
   // STARTボタンがクリックされたときの処理
   $(".start").on("click", function() {
+    $(".player li .img").empty();
+    $(".dealer li .img").empty().removeClass("card-back");
     // プレイヤーのli要素に対して2枚のカードを追加する
     $(".player li").each(function(index) {
       for (let i = 0; i < 2; i++) {
@@ -123,6 +116,20 @@ if ($(this).is(':checked')) {
           playerHand.css("margin-right", `${marginRight}px`); // ずらし量を適用
         }
         playerHand.append(cardImage);
+      }
+    });
+        // ディーラーのli要素に対して2枚のカードを追加する
+    $(".dealer li").each(function(index) {
+      for (let i = 0; i < 2; i++) {
+        const selectedCard = cards[index * 2 + i];
+        const cardImage = `<img src="../../img/img_${selectedCard.rank}-${selectedCard.suit}.png" alt="card">`;
+
+        const dealerHand = $(this).find(".img");
+        if (i > 0) {
+          const marginRight = 10 * i; // ずらし量を計算
+          dealerHand.css("margin-right", `${marginRight}px`); // ずらし量を適用
+        }
+        dealerHand.append(cardImage);
       }
     });
 
@@ -142,7 +149,7 @@ if ($(this).is(':checked')) {
         const cardImage = `<img src="../../img/img_${selectedCard.rank}-${selectedCard.suit}.png" alt="card">`;
   
         // プレイヤーの手札にカードを追加して表示
-        const playerHand = $(".player li:first-child .img");
+        const playerHand = $(".player li:last-child .img");
         if (cardCount > 0) {
           const marginRight = 10 * cardCount; // ずらし量を計算
           playerHand.css("margin-right", `${marginRight}px`); // ずらし量を適用

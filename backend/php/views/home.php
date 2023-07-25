@@ -67,9 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="bg">
         <div class="unit">
             <h1>BLACKJACK</h1>
-            <form action="" method="post">
+            <form action="game.php" method="post" id="home-form">
                 <div class="name">
-                    <input type="text" value="" name="name" class="textbox" placeholder="プレイヤー名を入力してください。">
+                    <input type="text" value="" name="name" class="textbox" placeholder="プレイヤー名を入力してください。" required>
                 </div>
                 <div class="btn js-open">
                     <input type="submit" value="PLAY" class="play">
@@ -78,52 +78,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </div>
 </section>
+
 <!-- オーバーレイ -->
 <div class="overlay js-overlay"></div>
 <!-- モーダルウィンドウ -->
 <section class="modal-window js-modal">
-    <!-- 内容 -->
-    <div class="content">
-        <!-- 閉じるボタン -->
-        <div class=" button-close js-close">
-            <span></span>
-        </div>
-        <p>BETする金額を決めてください。</p>
-        <div class="coin">
-            <div class="item">
-                <label for="input-a">
-                    <img src="../../img/img_coin-10.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $a; ?>" class="coin-input" id="input-a">
-                </label>
+    <form action="game.php" method="post" id="modal-form">
+        <!-- 内容 -->
+        <div class="content">
+            <!-- 閉じるボタン -->
+            <div class=" button-close js-close">
+                <span></span>
             </div>
-            <div class="item">
-                <label for="input-b">
-                    <img src="../../img/img_coin-50.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $b; ?>" class="coin-input" id="input-b">
-                </label>
+            <p>BETする金額を決めてください。</p>
+            <div class="coin">
+                <div class="item">
+                    <label for="input-a">
+                        <img src="../../img/img_coin-10.png" alt="">
+                        <input type="checkbox" name="coin" value="<?php echo $a; ?>" class="coin-input" id="input-a">
+                    </label>
+                </div>
+                <div class="item">
+                    <label for="input-b">
+                        <img src="../../img/img_coin-50.png" alt="">
+                        <input type="checkbox" name="coin" value="<?php echo $b; ?>" class="coin-input" id="input-b">
+                    </label>
+                </div>
+                <div class="item">
+                    <label for="input-c">
+                        <img src="../../img/img_coin-100.png" alt="">
+                        <input type="checkbox" name="coin" value="<?php echo $c; ?>" class="coin-input" id="input-c">
+                    </label>
+                </div>
+                <div class="item">
+                    <label for="input-d">
+                        <img src="../../img/img_coin-500.png" alt="">
+                        <input type="checkbox" name="coin" value="<?php echo $d; ?>" class="coin-input" id="input-d">
+                    </label>
+                </div>
             </div>
-            <div class="item">
-                <label for="input-c">
-                    <img src="../../img/img_coin-100.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $c; ?>" class="coin-input" id="input-c">
-                </label>
+            <div class="flex">
+                <div class="bet js-bet">＄<span><?php echo $bet; ?></span></div>
+                <input type="hidden" name="bet_value" value="<?php echo $bet; ?>">
+                <div class="credit js-credit">＄<span><?php echo $credit; ?></span></div>
+                <input type="hidden" name="credit_value" value="<?php echo $credit; ?>">
             </div>
-            <div class="item">
-                <label for="input-d">
-                    <img src="../../img/img_coin-500.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $d; ?>" class="coin-input" id="input-d">
-                </label>
+            <div class="btn">
+                <input type="submit" value="START" class="start">
             </div>
-        </div>
-        <div class="flex">
-            <div class="bet js-bet">＄<span><?php echo $bet; ?></span></div>
-            <div class="credit js-credit">＄<span><?php echo $credit; ?></span></div>
-        </div>
-        <div class="btn">
-            <input type="submit" value="START" class="start">
-        </div>
-        <!-- <div class="btn">
+            <!-- <div class="btn">
             <input type="button" value="RESET" class="reset">
         </div> -->
-    </div>
+        </div>
+    </form>
 </section>

@@ -1,9 +1,23 @@
+<?php
+// game.php
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // フォームからのデータを受け取る
+    $player_name = $_POST['name'];
+}
+?>
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
         <div class="inner">
-            <button class="leaving">退出する</button>
-            <div class="dealer"></div>
+            <div class="leaving">
+                <button class="button">退出する</button>
+            </div>
+            <ul class="dealer">
+                <li>
+                    <div class="img card-back"></div>
+                </li>
+            </ul>
             <ul class="player">
                 <li>
                     <div class="img"></div>
