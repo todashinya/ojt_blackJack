@@ -42,26 +42,28 @@ use model\PlayerModel;
         </form>
     </div>
 </div>
+
 <?php
-$a = 10; // コイン10
-$b = 50; // コイン50
-$c = 100; // コイン100
-$d = 500; // コイン500
+// $a = 10; // コイン10
+// $b = 50; // コイン50
+// $c = 100; // コイン100
+// $d = 500; // コイン500
 
-$bet = 0; // ベットの初期値
-$credit = 200; // クレジットの初期値
+// $bet = 0; // ベットの初期値
+// $credit = 200; // クレジットの初期値
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (isset($_POST['coin'])) {
-        $selectedCoins = $_POST['coin']; // 選択されたコインの配列
-        foreach ($selectedCoins as $coin) {
-            $coinValue = (int)$coin;
-            $bet += $coinValue; // ベットに選択されたコインの金額を加算
-            $credit -= $coinValue; // クレジットから選択されたコインの金額を減算
-        }
-    }
-}
+// if ($_SERVER["REQUEST_METHOD"] === "POST") {
+//     if (isset($_POST['coin'])) {
+//         $selectedCoins = $_POST['coin']; // 選択されたコインの配列
+//         foreach ($selectedCoins as $coin) {
+//             $coinValue = (int)$coin;
+//             $bet += $coinValue; // ベットに選択されたコインの金額を加算
+//             $credit -= $coinValue; // クレジットから選択されたコインの金額を減算
+//         }
+//     }
+// }
 ?>
+
 
 <section id="home">
     <div class="bg">
@@ -92,32 +94,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="coin">
             <div class="item">
                 <label for="input-a">
-                    <img src="../../img/img_coin-10.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $a; ?>" class="coin-input" id="input-a">
+                    <img src="../../img/img_coin-10.png" alt="" data-value="10" class="coin-value">
+                    <input type="hidden" name="coin" value="">
                 </label>
             </div>
             <div class="item">
                 <label for="input-b">
-                    <img src="../../img/img_coin-50.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $b; ?>" class="coin-input" id="input-b">
+                    <img src="../../img/img_coin-50.png" alt="" data-value="50" class="coin-value">
+                    <input type="hidden" name="coin" value="">
                 </label>
             </div>
             <div class="item">
                 <label for="input-c">
-                    <img src="../../img/img_coin-100.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $c; ?>" class="coin-input" id="input-c">
+                    <img src="../../img/img_coin-100.png" alt="" data-value="100" class="coin-value">
+                    <input type="hidden" name="coin" value="">
                 </label>
             </div>
             <div class="item">
                 <label for="input-d">
-                    <img src="../../img/img_coin-500.png" alt="">
-                    <input type="checkbox" name="coin" value="<?php echo $d; ?>" class="coin-input" id="input-d">
+                    <img src="../../img/img_coin-500.png" alt="" data-value="500" class="coin-value">
+                    <input type="hidden" name="coin" value="">
                 </label>
             </div>
         </div>
         <div class="flex">
-            <div class="bet js-bet">＄<span><?php echo $bet; ?></span></div>
-            <div class="credit js-credit">＄<span><?php echo $credit; ?></span></div>
+            <div class="bet js-bet">＄<span>0</span></div>
+            <div class="credit js-credit">＄<span>500</span></div>
         </div>
         <div class="btn">
             <input type="submit" value="START" class="start">
@@ -126,103 +128,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="button" value="RESET" class="reset">
         </div> -->
     </div>
-</section>
-
-<!-- ゲーム画面 -->
-<section id="game">
-    <div class="bg">
-        <div class="inner">
-            <button class="leaving">退出する</button>
-            <div class="dealer"></div>
-            <ul class="player">
-                <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
-                    <div class="bet">
-                        <p>BET</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="credit">
-                        <p>CREDIT</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="name">
-                        <img src="../../img/icon_player.png" alt="">
-                        <p>Player1</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
-                    <div class="bet">
-                        <p>BET</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="credit">
-                        <p>CREDIT</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="name">
-                        <img src="../../img/icon_player.png" alt="">
-                        <p>Player2</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
-                    <div class="bet">
-                        <p>BET</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="credit">
-                        <p>CREDIT</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="name">
-                        <img src="../../img/icon_player.png" alt="">
-                        <p>Player3</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="img">
-                        <img src="../../img/" alt="">
-                        <img src="" alt="">
-                    </div>
-                    <div class="bet">
-                        <p>BET</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="credit">
-                        <p>CREDIT</p>
-                        <p>$500</p>
-                    </div>
-                    <div class="name">
-                        <img src="../../img/icon_player.png" alt="">
-                        <p>Izumi</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="btn">
-            <button class="hit">
-                <img src="../../img/img_icon-hit.png" alt="">
-                <p>HIT</p>
-            </button>
-            <button class="stand">
-                <img src="../../img/img_icon-stand.png" alt="">
-                <p>STAND</p>
-            </button>
-            <button class="surrender">
-                <img src="../../img/img_icon-surrender.png" alt="">
-                <p>SURRENDER</p>
-            </button>
-        </div>
-    </div>
-    <div class="under"></div>
 </section>
