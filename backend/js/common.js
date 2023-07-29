@@ -1,30 +1,47 @@
 $(document).ready(function() {
 // BET、クレジット表示
-var initialBet = parseInt($('.js-bet span').text()); // 初期ベット金額取得
+  var initialBet = parseInt($('.js-bet span').text()); // 初期ベット金額取得
 
-$('.coin-input').click(function () {
-  var coinValue = parseInt($(this).val()); // 選択コイン額
-  var currentBet = parseInt($('.js-bet span').text()); // 現在のベット金額の取得
-  var currentCredit = parseInt($('.js-credit span').text()); // 現在のクレジット金額の取得
+  $('.coin-value').click(function() {
+    var coinValue = parseInt($(this).attr('data-value')); // 選択コイン額
+    var currentBet = parseInt($('.js-bet span').text()); // 現在のベット金額の取得
+    var currentCredit = parseInt($('.js-credit span').text()); // 現在のクレジット金額の取得
 
-if ($(this).is(':checked')) {
     if (currentCredit >= coinValue + initialBet) {
       var newBet = currentBet + coinValue; // 現在ベット額＋選択コイン額
-        var newCredit = currentCredit - coinValue;
-        $('.js-bet span').text(newBet);
-        $('.js-credit span').text(newCredit);
+      var newCredit = currentCredit - coinValue;
+      $('.js-bet span').text(newBet);
+      $('.js-credit span').text(newCredit);
     } else {
-        $('.js-credit').text('クレジットが不足しています');
-        $(this).prop('checked', false);
+      $('.js-credit').text('クレジットが不足しています');
+      $(this).prop('checked', false);
     }
-    } else {
+    
     var newBet = currentBet - coinValue; // 現在のベット金額から選択コイン額を引く
     var newCredit = currentCredit + coinValue; // クレジットに選択コイン額を戻す
     $('.js-bet span').text(newBet);
     $('.js-credit span').text(newCredit);
     $('.js-credit').text('＄' + newCredit);
-}
-});
+
+
+    // if ($(this).is(':checked')) {
+    //     if (currentCredit >= coinValue + initialBet) {
+    //       var newBet = currentBet + coinValue; // 現在ベット額＋選択コイン額
+    //       var newCredit = currentCredit - coinValue;
+    //       $('.js-bet span').text(newBet);
+    //       $('.js-credit span').text(newCredit);
+    //     } else {
+    //       $('.js-credit').text('クレジットが不足しています');
+    //       $(this).prop('checked', false);
+    //     }
+    //     } else {
+    //     var newBet = currentBet - coinValue; // 現在のベット金額から選択コイン額を引く
+    //     var newCredit = currentCredit + coinValue; // クレジットに選択コイン額を戻す
+    //     $('.js-bet span').text(newBet);
+    //     $('.js-credit span').text(newCredit);
+    //     $('.js-credit').text('＄' + newCredit);
+    // }
+  });
 
 
     // $(".reset").on("click", function () {
@@ -36,6 +53,7 @@ if ($(this).is(':checked')) {
     //                 .prop("checked", false)
     //         }
     // });
+
 // モーダルウィンドウ
     $('.js-open').on('click', function() {
         $('.js-modal').addClass('open');
@@ -69,7 +87,3 @@ if ($(this).is(':checked')) {
         $("#game").hide();
     });
 });
-
-
-
-
