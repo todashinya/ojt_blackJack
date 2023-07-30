@@ -1,10 +1,10 @@
 <?php
-require_once 'config.php';
-
 use db\GamaQuery;
 use db\PlayerQuery;
 use model\GamaModel;
 use model\PlayerModel;
+
+index();
 
 function index() {
     try{
@@ -19,4 +19,3 @@ function index() {
     }
 }
 
-index();
