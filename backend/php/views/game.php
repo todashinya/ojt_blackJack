@@ -11,15 +11,15 @@
                     </div>
                     <div class="bet">
                         <p>BET</p>
-                        <p>$500</p>
+                        <p>$<?php echo $result[0]->bet; ?></p>
                     </div>
                     <div class="credit">
                         <p>CREDIT</p>
-                        <p>$500</p>
+                        <p>$<?php echo $result[0]->credit; ?></p>
                     </div>
                     <div class="name">
                         <img src="../../img/icon_player.png" alt="">
-                        <p>Player1</p>
+                        <p><?php echo $result[0]->name; ?></p>
                     </div>
                 </li>
                 <li>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="name">
                         <img src="../../img/icon_player.png" alt="">
-                        <p>Izumi</p>
+                        <p>Player4</p>
                     </div>
                 </li>
             </ul>

@@ -3,9 +3,12 @@ require_once 'config.php';
 
 //Model
 require_once SOURCE_PATH . 'models/player.model.php';
+require_once SOURCE_PATH . 'models/game.model.php';
 
 //DB
 require_once SOURCE_PATH . 'db/datasource.php';
+require_once SOURCE_PATH . 'db/player.query.php';
+require_once SOURCE_PATH . 'db/game.query.php';
 
 //ヘッダ情報(css読み込みなど)
 require_once SOURCE_PATH . 'partials/header.php';
