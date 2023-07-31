@@ -1,29 +1,14 @@
 $(document).ready(function() {
-// BET、クレジット表示
-var initialBet = parseInt($('.js-bet span').text()); // 初期ベット金額取得
-
-$('.coin-input').click(function () {
-  var coinValue = parseInt($(this).val()); // 選択コイン額
-  var currentBet = parseInt($('.js-bet span').text()); // 現在のベット金額の取得
-  var currentCredit = parseInt($('.js-credit span').text()); // 現在のクレジット金額の取得
-
-if ($(this).is(':checked')) {
-    if (currentCredit >= coinValue + initialBet) {
-      var newBet = currentBet + coinValue; // 現在ベット額＋選択コイン額
-        var newCredit = currentCredit - coinValue;
-        $('.js-bet span').text(newBet);
-        $('.js-credit span').text(newCredit);
-    } else {
-        $('.js-credit').text('クレジットが不足しています');
-        $(this).prop('checked', false);
-    }
-    } else {
-    var newBet = currentBet - coinValue; // 現在のベット金額から選択コイン額を引く
-    var newCredit = currentCredit + coinValue; // クレジットに選択コイン額を戻す
+  // BET、クレジット表示
+  $('.coin').click(function(){
+    const coinValue = parseInt($(this).find('input').val());
+    const currentBet = parseInt($('.js-bet span').text());
+    const currentCredit = parseInt($('.js-credit span').text());
+    var newBet = currentBet + coinValue;
+    var newCredit = currentCredit - coinValue;
     $('.js-bet span').text(newBet);
     $('.js-credit span').text(newCredit);
-    $('.js-credit').text('＄' + newCredit);
-}
+  });
 });
 
 // モーダルウィンドウ
@@ -36,7 +21,9 @@ if ($(this).is(':checked')) {
         $('.js-modal').removeClass('open');
         $('.js-overlay').removeClass('open');
     });
-
+    function reset() {
+      document.modal-form.reset();
+    }
 
 //アクションボタン 
   //カードのデータを用意
@@ -146,7 +133,7 @@ if ($(this).is(':checked')) {
         const selectedCard = cards[cardCount];
   
         // カードの画像を表示
-        const cardImage = `<img src="../../img/img_${selectedCard.rank}-${selectedCard.suit}.png" alt="card">`;
+        // const cardImage = `<img src="../../img/img_${selectedCard.rank}-${selectedCard.suit}.png" alt="card">`;
   
         // プレイヤーの手札にカードを追加して表示
         const playerHand = $(".player li:last-child .img");
@@ -176,7 +163,7 @@ if ($(this).is(':checked')) {
         // ゲーム画面を隠す処理を実装する
         $("#game").hide();
     });
-});
+
 
 
 
