@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </div>
         <div class="btn">
-            <button class="hit">
+            <button class="hit" onclick="hit()">
                 <img src="../../img/img_icon-hit.png" alt="">
                 <p>HIT</p>
             </button>

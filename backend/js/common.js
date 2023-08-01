@@ -87,6 +87,56 @@ $(document).ready(function() {
       // ジョーカー
       { suit : 'joker' , rank : 'joker'},
     ]
+  // カードをシャッフルする
+
+  // ヒットボタンがクリックされたとき
+  function hit() {
+    // action変数にhitを設定
+    action = hit ;
+    // sendAjaxRequest()関数に渡す
+    sendAjaxRequest(action, 0);
+  }
+
+
+
+  // スタンドボタンがクリックされたとき
+
+$.ajax({
+  url: "gameController.php",
+  type: "POST",
+  data: {
+    action: action,
+  },
+});
+
+
+
+  // サレンダーボタンがクリックされたとき
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // STARTボタンがクリックされたときの処理
   $(".start").on("click", function() {
     $(".player li .img").empty();
