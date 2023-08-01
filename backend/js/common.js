@@ -96,10 +96,16 @@ $(document).ready(function() {
     // sendAjaxRequest()関数に渡す
     sendAjaxRequest(action, 0);
   }
-
-
-
   // スタンドボタンがクリックされたとき
+  function stand() {
+    action = stand ;
+    sendAjaxRequest(action, 0);
+  }
+  // サレンダーボタンがクリックされたとき
+  function surrender() {
+    action = surrender ;
+    sendAjaxRequest(action, 0);
+  }
 
 $.ajax({
   url: "gameController.php",
@@ -107,11 +113,13 @@ $.ajax({
   data: {
     action: action,
   },
+  // 成功した時の処理を
+
+  // 失敗したときの処理を
 });
 
 
 
-  // サレンダーボタンがクリックされたとき
 
 
 

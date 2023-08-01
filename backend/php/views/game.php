@@ -86,11 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../../img/img_icon-hit.png" alt="">
                 <p>HIT</p>
             </button>
-            <button class="stand">
+            <button class="stand" onclick="stand()">
                 <img src="../../img/img_icon-stand.png" alt="">
                 <p>STAND</p>
             </button>
-            <button class="surrender">
+            <button class="surrender" onclick="surrender()">
                 <img src="../../img/img_icon-surrender.png" alt="">
                 <p>SURRENDER</p>
             </button>
