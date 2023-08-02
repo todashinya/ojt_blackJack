@@ -108,14 +108,11 @@ $(document).ready(function() {
   }
 
 $.ajax({
-  url: "gameController.php",
+  url: "controllers/game.php/hit",
   type: "POST",
   data: {
     action: action,
   },
-  // 成功した時の処理を
-
-  // 失敗したときの処理を
 });
 
 
