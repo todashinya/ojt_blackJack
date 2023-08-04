@@ -25,22 +25,33 @@ class GameController {
     function drowCard() {
         $mark = ['heart', 'spade', 'club', 'diamond'];
         $number = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+        $cards = [];
     
         for($i=0; $i<count($mark); $i++) {
             for($j=0; $j<count($number); $j++) {
-                $cards = [
+                $card = [
                     'mark' => $mark[$i],
                     'number' => $number[$j]
                 ];
     
-                echo('<pre>');
-                var_dump($cards);
-                echo('</pre>');
+                $cards[] = $card;
             }
         }
-    
-    }
 
+        $randKey = array_rand($cards, 2);
+
+        $drowCards =[
+            $cards[$randKey[0]],
+            $cards[$randKey[1]],
+        ];
+
+        echo('<pre>');
+        var_dump($drowCards);
+        echo('</pre>');
+
+        return $drowCards;
+
+    }
 }
 
 

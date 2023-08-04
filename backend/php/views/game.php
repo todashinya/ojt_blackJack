@@ -79,7 +79,13 @@
             </ul>
         </div>
         <div class="btn">
-            <button class="hit">
+            <!-- <form action="/game/drowCard">
+                <button class="hit" type="submit">
+                    <img src="../../img/img_icon-hit.png" alt="">
+                    <p>HIT</p>
+                </button>
+            </form> -->
+            <button class="hit" type="submit">
                 <img src="../../img/img_icon-hit.png" alt="">
                 <p>HIT</p>
             </button>

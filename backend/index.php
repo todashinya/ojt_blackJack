@@ -22,11 +22,11 @@ if($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->index();
+} elseif($requestPath === '/game/drowCard') {
+    require_once SOURCE_PATH . 'controllers/game.php';
+    $game = new \controller\GameController();
+    $game->drowCard();
 }
-// elseif($requestPath === '/game/drowcard') {
-//     $game = new Game;
-//     $game->drowcard();
-// }
 
 
 //フッタ情報(js読み込みなど)
