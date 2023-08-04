@@ -68,7 +68,14 @@ $(document).ready(function() {
 //アクションボタン 
     // ヒットボタンがクリックされたときの処理
     $(".hit").on("click", function() {
-
+      $.ajax({
+        type: 'POST',
+        url: '/game/drowCard'
+      }).done(function(data){
+          alert('ajax成功!');
+      }).fail(function(data){
+          alert('ajax失敗');
+      });
     });
 
       // スタンドボタンがクリックされたときの処理
