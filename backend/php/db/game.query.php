@@ -5,7 +5,7 @@ use PDO;
 use db\DataSource;
 use model\GamaModel;
 
-class GamaQuery {
+class GameQuery {
 
     public function getGameUser() {
         

@@ -1,7 +1,7 @@
 <?php
 namespace model;
 
-class GamaModel {
+class GameModel {
     public $id;
     public $name;
     public $bet;
