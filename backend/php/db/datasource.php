@@ -5,15 +5,27 @@ use PDO;
 
 class DataSource {
 
-    private $connection;
+    private $connection = null;
 
-    public function __construct($user='root', $password='just1nnext', $host='172.10.0.3', $port='3306', $dbName='jin')
-    {
+    // public function __construct($user='root', $password='just1nnext', $host='172.10.0.3', $port='3306', $dbName='jin')
+    // {
+    //     $dsn = "mysql:host={$host}; port={$port}; dbname={$dbName}";
+    //     $this->connection = new PDO($dsn, $user, $password);
+    //     $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    //     $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //     $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    // }
+
+    public function openConnection($user='root', $password='just1nnext', $host='172.10.0.3', $port='3306', $dbName='jin') {
         $dsn = "mysql:host={$host}; port={$port}; dbname={$dbName}";
         $this->connection = new PDO($dsn, $user, $password);
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    }
+
+    public function closeConnection() {
+        $this->connection = null;
     }
 
     private function executeSql($sql, $params=[]) {
@@ -40,6 +52,18 @@ class DataSource {
             return $stmt->fetchAll();
         }
     }
+
+    //insert,update,deleteは1つにまとめる
+
+    public function insert($sql="", $params=[]) {
+        $this->executeSql($sql, $params);
+    }
+
+    
+    public function delete($sql="", $params=[]) {
+        $this->executeSql($sql, $params);
+    }
+
 
     public function update($sql="", $params=[]) {
         $this->executeSql($sql, $params);
