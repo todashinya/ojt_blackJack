@@ -183,7 +183,14 @@ $.ajax({
     let cardCount = 0 ;
     // ヒットボタンがクリックされたときの処理
     $(".hit").on("click", function() {
-      if (cardCount < cards.length) {
+      $.ajax({
+        type: 'POST',
+        url: '/game/drowCard'
+      }).done(function(data){
+          alert('ajax成功!');
+      }).fail(function(data){
+          alert('ajax失敗');
+      });      if (cardCount < cards.length) {
         // ランダムなカードを選択
         const selectedCard = cards[cardCount];
   

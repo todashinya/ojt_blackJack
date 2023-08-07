@@ -23,15 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
-                        <p>$500</p>
+                        <p>$<?php echo $result[0]->bet; ?></p>
                     </div>
                     <div class="credit">
                         <p>CREDIT</p>
-                        <p>$500</p>
+                        <p>$<?php echo $result[0]->credit; ?></p>
                     </div>
                     <div class="name">
                         <img src="../../img/icon_player.png" alt="">
-                        <p>Player1</p>
+                        <p><?php echo $result[0]->name; ?></p>
                     </div>
                 </li>
                 <li>
@@ -76,24 +76,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="name">
                         <img src="../../img/icon_player.png" alt="">
-                        <p>Izumi</p>
+                        <p>Player4</p>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="btn">
             <button class="hit" onclick="hit()">
-                <img src="../../img/img_icon-hit.png" alt="">
-                <p>HIT</p>
-            </button>
-            <button class="stand" onclick="stand()">
-                <img src="../../img/img_icon-stand.png" alt="">
-                <p>STAND</p>
-            </button>
-            <button class="surrender" onclick="surrender()">
-                <img src="../../img/img_icon-surrender.png" alt="">
-                <p>SURRENDER</p>
-            </button>
+                <button class="hit" type="submit">
+                    <img src="../../img/img_icon-hit.png" alt="">
+                    <p>HIT</p>
+                </button>
+                <button class="stand" onclick="stand()">
+                    <img src="../../img/img_icon-stand.png" alt="">
+                    <p>STAND</p>
+                </button>
+                <button class="surrender" onclick="surrender()">
+                    <img src="../../img/img_icon-surrender.png" alt="">
+                    <p>SURRENDER</p>
+                </button>
         </div>
     </div>
     <div class="under"></div>
