@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- css -->
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>home.css">
+    <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>game.css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>style.css">
 </head>
 
