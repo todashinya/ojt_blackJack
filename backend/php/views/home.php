@@ -16,6 +16,22 @@ use model\PlayerModel;
 
 ?>
 
+<section id="home">
+    <div class="bg">
+        <div class="unit">
+            <h1>BLACKJACK</h1>
+            <form action="" method="post">
+                <div class="name">
+                    <input type="text" value="" name="name" class="textbox" placeholder="プレイヤー名を入力してください。">
+                </div>
+                <div class="btn js-open">
+                    <input type="submit" value="PLAY" class="play">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
 
 <!-- オーバーレイ -->
 <div class="overlay js-overlay"></div>

@@ -10,6 +10,7 @@ require_once SOURCE_PATH . 'db/datasource.php';
 require_once SOURCE_PATH . 'db/player.query.php';
 require_once SOURCE_PATH . 'db/game.query.php';
 
+
 //ヘッダ情報(css読み込みなど)
 require_once SOURCE_PATH . 'partials/header.php';
 
@@ -25,7 +26,7 @@ if($requestPath === '/') {
 } elseif($requestPath === '/game/drowCard') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
-    $game->drowCard();
+    // $game->drowCard();
 }
 
 
