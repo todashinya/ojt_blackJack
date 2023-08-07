@@ -107,13 +107,13 @@ $(document).ready(function() {
     sendAjaxRequest(action, 0);
   }
 
-$.ajax({
-  url: "controllers/game.php/hit",
-  type: "POST",
-  data: {
-    action: action,
-  },
-});
+// $.ajax({
+//   url: "controllers/game.php/hit",
+//   type: "POST",
+//   data: {
+//     action: action,
+//   },
+// });
 
 
 
