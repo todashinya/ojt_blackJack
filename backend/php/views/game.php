@@ -1,11 +1,3 @@
-<?php
-// game.php
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // フォームからのデータを受け取る
-    $player_name = $_POST['name'];
-}
-?>
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
