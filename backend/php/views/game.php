@@ -30,7 +30,7 @@
                     <div class="img"></div>
                     <div class="bet">
                         <p>BET</p>
-                        <p>$500</p>
+                        <p>$<?php echo $result[0]->bet; ?></p>
                     </div>
                     <div class="credit">
                         <p>CREDIT</p>
