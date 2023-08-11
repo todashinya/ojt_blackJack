@@ -8,6 +8,11 @@
             <ul class="dealer">
                 <li>
                     <div class="img card-back"></div>
+                    <?php foreach($resultHands as $handArray): ?>
+                        <?php foreach ($handArray as $hand): ?>
+                            <img src="<?php echo $hand->image_path; ?>">
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </li>
             </ul>
             <ul class="player">

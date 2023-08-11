@@ -2,8 +2,10 @@
 
 namespace controller;
 
+use db\CardQuery;
 use db\GameQuery;
 use db\PlayerQuery;
+use model\CardModel;
 use model\GameModel;
 use model\PlayerModel;
 
@@ -19,9 +21,9 @@ class GameController {
     public function index() {
         try{
             $db =  new PlayerQuery();
-            $result = $db->getUser();
+            $result = $db->getPlayer();
 
-            $this->dealCard();
+            $resultHands = $this->dealCard();
             
             require_once SOURCE_PATH . 'views/game.php';
             
@@ -32,11 +34,15 @@ class GameController {
     }
     
     /**
-     * 初期カード配布
-     * @return array 手札の配列
+     * 初期カード配布メソッド
+     * 処理概要
+     * 1. ランダムでmarkとnaumberを生成
+     * 2. カードマスタから1. のimage_pathを取得
+     * @return array $resultHands（手札の配列）
      */
     private function dealCard() {
     
+        //1. ランダムでmarkとnaumberを生成
         for($i=0; $i<count($this->mark); $i++) {
             for($j=0; $j<count($this->number); $j++) {
                 $card = [
@@ -55,11 +61,19 @@ class GameController {
             $this->cards[$randKey[1]],
         ];
 
-        echo('<pre>');
-        var_dump($hands);
-        echo('</pre>');
 
-        return $hands;
+        //2. カードマスタから1. のimage_pathを取得
+        try{
+            $db =  new CardQuery();
 
+            foreach($hands as $hand) {
+                $resultHands[] = $db->getCard($hand['mark'], $hand['number']);
+            }
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        return $resultHands;
     }
 }
