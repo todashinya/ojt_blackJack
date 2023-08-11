@@ -7,7 +7,7 @@ use model\PlayerModel;
 
 class PlayerQuery {
 
-    public function getUser() {
+    public function getPlayer() {
         
         $db = new DataSource;
         $db->openConnection();
@@ -19,7 +19,6 @@ class PlayerQuery {
         $db->closeConnection();
 
         return $result;
-
     }
-
+    
 }
