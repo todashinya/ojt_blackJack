@@ -23,6 +23,7 @@ class GameController {
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
 
+            // 初期カード配布メソッド
             $resultHands = $this->dealCard();
             
             require_once SOURCE_PATH . 'views/game.php';
@@ -31,6 +32,37 @@ class GameController {
             echo $e->getMessage();
             require_once SOURCE_PATH . 'views/game.php';
         }
+    }
+
+    public function hit() {
+        // hitの処理
+    }
+
+    public function stand() {
+        // standの処理
+    }
+
+    public function surrender() {
+        // surrenderの処理
+    }
+
+    public function countHands() {
+        //  最終決定したハンドの枚数を判定
+    }
+
+    public function countHandsNumber() {
+        // 最終決定したハンドのnumberの合計値を判定
+    }
+
+    public function checkWinOrLose() {
+        // 勝敗判定を行う
+        // ディーラーよりハンド合計値が低い場合は、プレイヤーの負け
+        // ディーラーのハンド合計値と同じ場合は引き分け
+        // ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
+    }
+
+    public function liquidateBetAmount() {
+        // BET額に応じて清算を行う
     }
     
     /**
@@ -76,4 +108,7 @@ class GameController {
 
         return $resultHands;
     }
+
+
+
 }
