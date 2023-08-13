@@ -17,7 +17,12 @@ $credit = $_POST['newCredit'];
             </ul>
             <ul class="player">
                 <li>
-                    <div class="img"></div>
+                    <div class="img">
+                        <img src="../../img/img_2-club.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_2-club.png" alt="">
+                    </div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>
@@ -32,7 +37,18 @@ $credit = $_POST['newCredit'];
                     </div>
                 </li>
                 <li>
-                    <div class="img"></div>
+                    <div class="img">
+                        <img src="../../img/img_10-heart.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_10-heart.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_10-heart.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_10-heart.png" alt="">
+                    </div>
                     <div class="bet">
                         <p>BET</p>
                         <p>$500</p>

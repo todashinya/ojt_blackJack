@@ -84,13 +84,19 @@
     display: flex;
     position: absolute;
     top: -30px;
-    left: 50%;
+    left: 60%;
     transform: translate(-50%, -50%);
     max-width: 150px;
     width: 100%;
   }
-  #game .player li .img img {
-    margin-left: -40px;
+  #game .player li .img:nth-child(2) {
+    left: 70%;
+  }
+  #game .player li .img:nth-child(3) {
+    left: 80%;
+  }
+  #game .player li .img:nth-child(4) {
+    left: 90%;
   }
   #game .player li .bet,
 #game .player li .credit {

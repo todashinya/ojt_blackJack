@@ -86,12 +86,18 @@
                 display: flex;
                 position: absolute;
                 top: -30px;
-                left: 50%;
+                left: 60%;
                 transform: translate(-50%,-50%);
                 max-width: 150px;
                 width: 100%;
-                img {
-                    margin-left: -40px;
+                &:nth-child(2) {
+                    left: 70%;
+                }
+                &:nth-child(3) {
+                    left: 80%;
+                }
+                &:nth-child(4) {
+                    left: 90%;
                 }
             }
             .bet ,
