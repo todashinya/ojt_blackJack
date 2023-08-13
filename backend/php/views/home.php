@@ -15,17 +15,32 @@ use model\PlayerModel;
 // }
 
 ?>
-
+<section id="home">
+    <div class="bg">
+        <div class="unit">
+            <h1>BLACKJACK</h1>
+            <form id="player-form">
+                <div class="name">
+                    <input type="text" value="" name="name" id="textbox" placeholder="プレイヤー名を入力してください。">
+                </div>
+                <div id="play-btn" class="btn js-open">
+                    <input type="submit" value="PLAY" class="play">
+                </div>
+                <div id="return"></div>
+            </form>
+        </div>
+    </div>
+</section>
 
 <!-- オーバーレイ -->
 <div class="overlay js-overlay"></div>
 <!-- モーダルウィンドウ -->
 <section class="modal-window js-modal">
-    <form action="game" method="post" id="modal-form" name="modal-form">
+    <form action="game" method="post" id="modal-form">
         <!-- 内容 -->
         <div class="content">
             <!-- 閉じるボタン -->
-            <div class="button-close js-close" onclick="reset">
+            <div class="button-close js-close">
                 <span></span>
             </div>
             <p>BETする金額を決めてください。</p>
@@ -57,9 +72,12 @@ use model\PlayerModel;
             </div>
             <div class="flex">
                 <div class="bet js-bet">＄<span>0</span></div>
+                <input type="hidden" name="newBet" id="new-bet">
                 <div class="credit js-credit">＄<span>200</span></div>
+                <input type="hidden" name="newCredit" id="new-credit">
             </div>
-            <div class="btn">
+            <div id="start-btn" class="btn">
+                <input type="hidden" name="newPlayerName" id="player-name">
                 <input type="submit" value="START" class="start">
             </div>
         </div>
