@@ -64,7 +64,7 @@
     height: 212px;
   }
   #game .player {
-    padding-top: 208px;
+    padding-top: 340px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,7 +130,7 @@
     margin-left: 4px;
   }
   #game .btn {
-    margin: 22px 113px 0 0;
+    margin: 50px 113px 0 0;
     text-align: right;
     display: flex;
     justify-content: end;
