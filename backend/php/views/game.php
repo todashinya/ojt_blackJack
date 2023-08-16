@@ -8,11 +8,20 @@ $credit = $_POST['newCredit'];
     <div class="bg">
         <div class="inner">
             <div class="leaving">
-                <button class="button">退出する</button>
+                <a href="/" class="button">退出する</a>
             </div>
             <ul class="dealer">
                 <li>
                     <div class="img card-back"></div>
+                    <div class="img">
+                        <img src="../../img/img_10-club.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_10-club.png" alt="">
+                    </div>
+                    <div class="img">
+                        <img src="../../img/img_10-club.png" alt="">
+                    </div>
                 </li>
             </ul>
             <ul class="player">
