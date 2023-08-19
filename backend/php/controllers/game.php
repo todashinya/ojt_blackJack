@@ -53,12 +53,46 @@ class GameController {
         return json_encode($drowCard);
     }
 
+
+    /**
+     * スタンドメソッド
+     * 処理概要
+     * 1. スタンドボタンクリック時、t_playerのstatusに1をセット
+     * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
+     */
     public function stand() {
-        // standの処理
+        try{
+
+            $db = new PlayerQuery();
+            $db->setStandStatus();
+            return true;
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+
+
     }
 
+
+    /**
+     * サレンダーメソッド
+     * 処理概要
+     * 1. サレンダーボタンクリック時、t_playerのstatusに2をセット
+     * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
+     */
     public function surrender() {
-        // surrenderの処理
+        try{
+            
+            $db = new PlayerQuery();
+            $db->setSurrenderStatus();
+            return true;
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
     public function countHands() {
@@ -80,6 +114,7 @@ class GameController {
         // BET額に応じて清算を行う
     }
     
+
     /**
      * 初期カード配布メソッド
      * 処理概要

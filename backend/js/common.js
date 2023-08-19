@@ -25,14 +25,41 @@ function reset() {
   document.modal-form.reset();
 }
 
-// ヒットボタンがクリックされたとき
+// HITボタンがクリックされたとき
 $(".hit").on("click", function() {
   $.ajax({
     type: 'POST',
-    url: '/game'
+    url: '/game/hit'
   }).done(function(data){
       // 成功したら以下の処理を行う
-      console.log(data);
+
+  }).fail(function(data){
+    alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+  });
+});
+
+
+// STANDボタンがクリックされたとき
+$(".stand").on("click", function() {
+  $.ajax({
+    type: 'POST',
+    url: '/game/stand'
+  }).done(function(data){
+      // 成功したら以下の処理を行う
+
+  }).fail(function(data){
+    alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+  });
+});
+
+
+// SURRENDERボタンがクリックされたとき
+$(".surrender").on("click", function() {
+  $.ajax({
+    type: 'POST',
+    url: '/game/surrender'
+  }).done(function(data){
+      // 成功したら以下の処理を行う
 
   }).fail(function(data){
     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
@@ -111,15 +138,7 @@ $(".hit").on("click", function() {
     //   }
     // });
 
-    //   // スタンドボタンがクリックされたときの処理
-    // $(".stand").on("click", function() {
-      
-    // });
 
-    //   // サレンダーボタンがクリックされたときの処理
-    // $(".surrender").on("click", function() {
-
-    // });
 
     //   // 退出するボタンがクリックされたときの処理
     // $(".leaving").on("click", function() {
