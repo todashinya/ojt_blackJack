@@ -55,10 +55,14 @@ class GameController {
 
     public function stand() {
         // standの処理
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r('stand called', true), 3, $logFilePath);
     }
 
     public function surrender() {
         // surrenderの処理
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r('surrender called', true), 3, $logFilePath);
     }
 
     public function countHands() {

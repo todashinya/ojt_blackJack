@@ -28,7 +28,15 @@ if($requestPath === '/') {
 } elseif($requestPath === '/game/hit') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
-    $game->hit();
+    $game->index(); //hit()読み込みにできるならそうしたい
+} elseif($requestPath === '/game/stand') {
+    require_once SOURCE_PATH . 'controllers/game.php';
+    $game = new \controller\GameController();
+    $game->stand();
+} elseif($requestPath === '/game/surrender') {
+    require_once SOURCE_PATH . 'controllers/game.php';
+    $game = new \controller\GameController();
+    $game->surrender();
 }
 
 
