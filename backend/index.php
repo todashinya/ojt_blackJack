@@ -25,10 +25,10 @@ if($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->index();
-} elseif($requestPath === '/game/drowCard') {
+} elseif($requestPath === '/game/hit') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
-    // $game->drowCard();
+    $game->hit();
 }
 
 
