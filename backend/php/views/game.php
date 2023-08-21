@@ -13,18 +13,11 @@ $credit = $_POST['newCredit'];
             <ul class="dealer">
                 <li>
                     <div class="img card-back"></div>
-                    <div class="img">
-                        <img src="../../img/img_10-club.png" alt="">
-                    </div>
-                    <div class="img">
-                        <img src="../../img/img_10-club.png" alt="">
-                    </div>
-                    <div class="img">
-                        <img src="../../img/img_10-club.png" alt="">
-                    </div>
                     <?php foreach ($resultHands as $handArray) : ?>
                         <?php foreach ($handArray as $hand) : ?>
-                            <img src="<?php echo $hand->image_path; ?>">
+                            <div class="img">
+                                <img src="<?php echo $hand->image_path; ?>">
+                            </div>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
                 </li>
@@ -65,7 +58,7 @@ $credit = $_POST['newCredit'];
                     </div>
                     <div class="bet">
                         <p>BET</p>
-                        <p>$<?php echo $result[0]->bet; ?></p>
+                        <p>$500</p>
                     </div>
                     <div class="credit">
                         <p>CREDIT</p>
