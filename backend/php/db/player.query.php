@@ -1,14 +1,17 @@
 <?php
+
 namespace db;
 
 use PDO;
 use db\DataSource;
 use model\PlayerModel;
 
-class PlayerQuery {
+class PlayerQuery
+{
 
-    public function getPlayer() {
-        
+    public function getPlayer()
+    {
+
         $db = new DataSource;
         $db->openConnection();
 
@@ -21,8 +24,9 @@ class PlayerQuery {
         return $result;
     }
 
-    public function setStandStatus() {
-        
+    public function setStandStatus()
+    {
+
         $db = new DataSource;
         $db->openConnection();
 
@@ -35,12 +39,13 @@ class PlayerQuery {
         return $result;
     }
 
-    public function setSurrenderStatus() {
-        
+    public function setSurrenderStatus()
+    {
+
         $db = new DataSource;
         $db->openConnection();
 
-        $sql = 'update t_player set status = 2 where id = :id;';
+        $sql = 'update t_player set status = 1 where id = :id;';
 
         $result = $db->update($sql, [':id' => 2], 'cls', 'model\PlayerModel');
 
@@ -48,5 +53,26 @@ class PlayerQuery {
 
         return $result;
     }
-    
+    // ↓POSTされた内容をDBに登録↓
+    public function addPlayer($data)
+    {
+
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
+
+        $params = [
+            ':name' => $data['name'],
+            ':bet' => $data['bet'],
+            ':credit' => $data['credit'],
+            ':start_date' => $data['startDate'],
+            ':status' => 0,  // 初期ステータスを設定
+        ];
+
+        $db->insert($sql, $params);
+
+
+        $db->closeConnection();
+    }
 }

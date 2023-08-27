@@ -1,8 +1,3 @@
-<?php
-$playerName = $_POST['newPlayerName'];
-$bet = $_POST['newBet'];
-$credit = $_POST['newCredit'];
-?>
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
@@ -85,31 +80,33 @@ $credit = $_POST['newCredit'];
                     <div class="img">
                         <img src="../../img/img_10-heart.png" alt="">
                     </div>
-                    <div class="bet">
-                        <p>BET</p>
-                        <p>$<?php echo $bet; ?></p>
-                    </div>
-                    <div class="credit">
-                        <p>CREDIT</p>
-                        <p>$<?php echo $credit; ?></p>
-                    </div>
-                    <div class="name">
-                        <img src="../../img/icon_player.png" alt="">
-                        <p><?php echo $playerName; ?></p>
-                    </div>
+                    <?php foreach ($result as $column) : ?>
+                        <div class="bet">
+                            <p>BET</p>
+                            <p>$<?php echo $column->bet; ?></p>
+                        </div>
+                        <div class="credit">
+                            <p>CREDIT</p>
+                            <p>$<?php echo $column->credit; ?></p>
+                        </div>
+                        <div class="name">
+                            <img src="../../img/icon_player.png" alt="">
+                            <p><?php echo $column->name; ?></p>
+                        </div>
+                    <?php endforeach; ?>
                 </li>
             </ul>
         </div>
         <div class="btn">
-            <button class="hit" type="submit">
+            <button class="hit">
                 <img src="../../img/img_icon-hit.png" alt="">
                 <p>HIT</p>
             </button>
-            <button class="stand" onclick="stand()">
+            <button class="stand">
                 <img src="../../img/img_icon-stand.png" alt="">
                 <p>STAND</p>
             </button>
-            <button class="surrender" onclick="surrender()">
+            <button class="surrender">
                 <img src="../../img/img_icon-surrender.png" alt="">
                 <p>SURRENDER</p>
             </button>

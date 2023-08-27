@@ -36,7 +36,7 @@ use model\PlayerModel;
 <div class="overlay js-overlay"></div>
 <!-- モーダルウィンドウ -->
 <section class="modal-window js-modal">
-    <form action="game" method="post" id="modal-form">
+    <form method="post" id="modal-form">
         <!-- 内容 -->
         <div class="content">
             <!-- 閉じるボタン -->
@@ -72,13 +72,14 @@ use model\PlayerModel;
             </div>
             <div class="flex">
                 <div class="bet js-bet">＄<span>0</span></div>
-                <input type="hidden" name="newBet" id="new-bet">
+                <input type="hidden" name="bet" id="new-bet">
                 <div class="credit js-credit">＄<span>200</span></div>
-                <input type="hidden" name="newCredit" id="new-credit">
+                <input type="hidden" name="credit" id="new-credit">
             </div>
             <div id="start-btn" class="btn">
-                <input type="hidden" name="newPlayerName" id="player-name">
+                <input type="hidden" name="name" id="player-name">
                 <input type="submit" value="START" class="start">
             </div>
         </div>
+    </form>
 </section>

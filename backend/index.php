@@ -19,21 +19,25 @@ require_once SOURCE_PATH . 'partials/header.php';
 //routing
 $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-if($requestPath === '/') {
+if ($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/home.php';
-} elseif($requestPath === '/game') {
+    // } elseif ($requestPath === '/home/register') {
+    //     require_once SOURCE_PATH . 'controllers/home.php';
+    //     $game = new \controller\HomeController();
+    //     $game->register($data);
+} elseif ($requestPath === '/game') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->index();
-} elseif($requestPath === '/game/hit') {
+} elseif ($requestPath === '/game/hit') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->index(); //hit()読み込みにできるならそうしたい
-} elseif($requestPath === '/game/stand') {
+} elseif ($requestPath === '/game/stand') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->stand();
-} elseif($requestPath === '/game/surrender') {
+} elseif ($requestPath === '/game/surrender') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->surrender();
