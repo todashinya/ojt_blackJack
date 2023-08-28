@@ -4,6 +4,7 @@ namespace controller;
 
 use db\PlayerQuery;
 use model\PlayerModel;
+use model\GameModel;
 
 require_once SOURCE_PATH . 'views/home.php';
 
@@ -27,8 +28,8 @@ class HomeController
         }
     }
 }
-$homeController = new HomeController();
-$homeController->register();
+// $homeController = new HomeController();
+// $homeController->register();
 
 
 

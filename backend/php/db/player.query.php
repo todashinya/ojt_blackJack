@@ -67,7 +67,7 @@ class PlayerQuery
             ':bet' => $data['bet'],
             ':credit' => $data['credit'],
             ':start_date' => $data['startDate'],
-            ':status' => 0,  // 初期ステータスを設定
+            ':status' => 0,
         ];
 
         $db->insert($sql, $params);
