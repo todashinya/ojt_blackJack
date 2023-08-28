@@ -28,9 +28,6 @@ class HomeController
         }
     }
 }
-// $homeController = new HomeController();
-// $homeController->register();
-
 
 
 
