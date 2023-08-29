@@ -53,6 +53,7 @@ class PlayerQuery
 
         return $result;
     }
+
     // ↓POSTされた内容をDBに登録↓
     public function addPlayer($data)
     {
@@ -71,8 +72,6 @@ class PlayerQuery
         ];
 
         $db->insert($sql, $params);
-
-
         $db->closeConnection();
     }
 }

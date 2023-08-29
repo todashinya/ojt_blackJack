@@ -24,9 +24,8 @@ use model\PlayerModel;
                     <input type="text" value="" name="name" id="textbox" placeholder="プレイヤー名を入力してください。">
                 </div>
                 <div id="play-btn" class="btn js-open">
-                    <input type="submit" value="PLAY" class="play">
+                    <a href="" class="play">PLAY</a>
                 </div>
-                <div id="return"></div>
             </form>
         </div>
     </div>

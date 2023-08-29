@@ -21,10 +21,8 @@ $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 if ($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/home.php';
-    // } elseif ($requestPath === '/home/register') {
-    //     require_once SOURCE_PATH . 'controllers/home.php';
-    //     $game = new \controller\HomeController();
-    //     $game->register($data);
+    $home = new \controller\HomeController();
+    $home->register();
 } elseif ($requestPath === '/game') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
