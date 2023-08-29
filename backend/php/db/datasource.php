@@ -1,9 +1,11 @@
 <?php
+
 namespace db;
 
 use PDO;
 
-class DataSource {
+class DataSource
+{
 
     private $connection = null;
 
@@ -16,7 +18,8 @@ class DataSource {
     //     $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     // }
 
-    public function openConnection($user='root', $password='just1nnext', $host='172.10.0.3', $port='3306', $dbName='jin') {
+    public function openConnection($user = 'root', $password = 'just1nnext', $host = '172.10.0.3', $port = '3306', $dbName = 'jin')
+    {
         $dsn = "mysql:host={$host}; port={$port}; dbname={$dbName}";
         $this->connection = new PDO($dsn, $user, $password);
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -24,11 +27,13 @@ class DataSource {
         $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
 
-    public function closeConnection() {
+    public function closeConnection()
+    {
         $this->connection = null;
     }
 
-    private function executeSql($sql, $params=[]) {
+    private function executeSql($sql, $params = [])
+    {
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($params);
         return $stmt;
@@ -44,9 +49,10 @@ class DataSource {
      * @param string $class
      * @return void
      */
-    public function select($sql="", $params=[], $type="", $class="") {
+    public function select($sql = "", $params = [], $type = "", $class = "")
+    {
         $stmt = $this->executeSql($sql, $params);
-        if($type === 'cls') {
+        if ($type === 'cls') {
             return $stmt->fetchAll(PDO::FETCH_CLASS, $class);
         } else {
             return $stmt->fetchAll();
@@ -55,17 +61,20 @@ class DataSource {
 
     //insert,update,deleteは1つにまとめる
 
-    public function insert($sql="", $params=[]) {
-        $this->executeSql($sql, $params);
-    }
-
-    
-    public function delete($sql="", $params=[]) {
+    public function insert($sql = "", $params = [])
+    {
         $this->executeSql($sql, $params);
     }
 
 
-    public function update($sql="", $params=[]) {
+    public function delete($sql = "", $params = [])
+    {
+        $this->executeSql($sql, $params);
+    }
+
+
+    public function update($sql = "", $params = [])
+    {
         $this->executeSql($sql, $params);
     }
 
@@ -73,20 +82,23 @@ class DataSource {
     /**
      * トランザクション処理
      * update処理の際は必ず記載する
-    */
+     */
 
     //try内のupdate文の前に記載
-    public function begin() {
+    public function begin()
+    {
         $this->connection->beginTransaction();
     }
 
     //try内のupdate文の後に記載
-    public function commit() {
+    public function commit()
+    {
         $this->connection->commit();
     }
 
     //catch内に記載
-    public function rollback() {
+    public function rollback()
+    {
         $this->connection->rollBack();
     }
 }
