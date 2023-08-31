@@ -41,7 +41,6 @@ class GameController
             $this->countHands();
             $this->countHandsNumber();
 
-
             require_once SOURCE_PATH . 'views/game.php';
         } catch (\PDOException $e) {
             echo $e->getMessage();
