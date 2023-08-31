@@ -18,8 +18,11 @@ require_once SOURCE_PATH . 'partials/header.php';
 
 //routing
 $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
 if ($requestPath === '/') {
+    require_once SOURCE_PATH . 'controllers/home.php';
+    $home = new \controller\HomeController();
+    $home->index();
+} elseif ($requestPath === '/home/register') {
     require_once SOURCE_PATH . 'controllers/home.php';
     $home = new \controller\HomeController();
     $home->register();
