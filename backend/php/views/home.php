@@ -1,20 +1,3 @@
-<?php
-
-use db\DataSource;
-use model\PlayerModel;
-
-// try{
-//     $db =  new DataSource();
-//     $result = $db->select("select * from t_player where id = :id;", [':id' => 2], 'cls', 'model\PlayerModel');  
-//     echo('<pre>');
-//     var_dump($result);
-//     echo('</pre>');
-
-// } catch(PDOException $e) {
-//     echo $e->getMessage();
-// }
-
-?>
 <section id="home">
     <div class="bg">
         <div class="unit">
@@ -77,7 +60,7 @@ use model\PlayerModel;
             </div>
             <div id="start-btn" class="btn">
                 <input type="hidden" name="name" id="player-name">
-                <input type="submit" value="START" class="start">
+                <input type="button" value="START" class="start">
             </div>
         </div>
     </form>
