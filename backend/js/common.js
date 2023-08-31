@@ -15,7 +15,6 @@ $(document).ready(function() {
   });
 
   // プレイヤー名取得
-// モーダル内のフォームが送信される際にプレイヤー名も合わせて送信
 $("#start-btn").on("click", function() {
   var playerName = $("#textbox").val();
   $("#player-name").val(playerName);
@@ -74,13 +73,14 @@ $(".surrender").on("click", function() {
 
   // STARTボタンがクリックされたときの処理
   $(".start").on("click", function() {
+    // e.preventDefault();
     $.ajax({
       type: 'POST',
       url: '/home/register'
-    }).done(function(data){
+    }).done(function(){
         // 成功したら以下の処理を行う
         window.location.href = 'http://localhost:8080/game';
-      }).fail(function(data){
+      }).fail(function(){
         alert("Ajax通信が失敗しました。エラー: " + errorThrown);
       });
     // モーダルウィンドウを非表示にする

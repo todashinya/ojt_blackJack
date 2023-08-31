@@ -486,22 +486,21 @@ label img {
         }
     }
     .dealer {
+        display: flex;
+        justify-content: center;
+        .card-back img {
+            max-width: 150px;
+            width: 100%;
+        }
         li {
             list-style: none;
-            display: flex;
-            justify-content: center;
-            .img {
-                margin-left: -60px;
-                img{
-                    max-width: 150px;
-                }
+        }
+        .img {
+            margin-left: -60px;
+            img{
+                max-width: 150px;
+                width: 100%;
             }
-            .card-back {
-                background-image: url('../../img/img_ura.png');
-                background-size: contain;
-                width: 150px;
-                height: 212px;
-                }
         }
     }
     .player {

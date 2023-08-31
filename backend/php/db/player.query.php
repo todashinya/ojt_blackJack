@@ -15,9 +15,10 @@ class PlayerQuery
         $db = new DataSource;
         $db->openConnection();
 
-        $sql = 'select * from t_player where id = :id;';
+        // DBから最新4つのデータを抽出
+        $sql = 'SELECT id,name,bet,credit FROM t_player ORDER BY id DESC LIMIT 4;';
 
-        $result = $db->select($sql, [':id' => 2], 'cls', 'model\PlayerModel');
+        $result = $db->select($sql, [], 'cls', 'model\PlayerModel');
 
         $db->closeConnection();
 
@@ -73,5 +74,8 @@ class PlayerQuery
 
         $db->insert($sql, $params);
         $db->closeConnection();
+
+        // $logFilePath = BASE_LOG_PATH . 'console.log';
+        // error_log(print_r($data, true), 3, $logFilePath);
     }
 }

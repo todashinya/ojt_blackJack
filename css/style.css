@@ -458,22 +458,23 @@ input, select {
     filter: brightness(110%);
     transition: 1s;
   }
-  #game .dealer li {
-    list-style: none;
+  #game .dealer {
     display: flex;
     justify-content: center;
   }
-  #game .dealer li .img {
+  #game .dealer .card-back img {
+    max-width: 150px;
+    width: 100%;
+  }
+  #game .dealer li {
+    list-style: none;
+  }
+  #game .dealer .img {
     margin-left: -60px;
   }
-  #game .dealer li .img img {
+  #game .dealer .img img {
     max-width: 150px;
-  }
-  #game .dealer li .card-back {
-    background-image: url("../../img/img_ura.png");
-    background-size: contain;
-    width: 150px;
-    height: 212px;
+    width: 100%;
   }
   #game .player {
     padding-top: 340px;
