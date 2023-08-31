@@ -33,13 +33,13 @@ class GameController
 
             // 初期カード配布メソッド
             $this->dealCard();
-            $this->dealCard();
+            // $this->dealCard();
 
             $logFilePath = BASE_LOG_PATH . 'console.log';
             error_log(print_r($this->resultHands, true), 3, $logFilePath);
 
             $this->countHands();
-            // $this->countHandsNumber();
+            $this->countHandsNumber();
 
 
             require_once SOURCE_PATH . 'views/game.php';
@@ -114,14 +114,23 @@ class GameController
     public function countHandsNumber()
     {
         // 最終決定したハンドのnumberの合計値を判定
+        $handTotal = 0;
 
-        // $handTotal = 0;
+        foreach ($this->resultHands as $cardArray) {
+            foreach ($cardArray as $card) {
+                //J・Q・Kの絵札はすべて10としてカウント
+                if ($card->number >= 11 && $card->number <= 13) {
+                    $card->number = 10;
+                } 
 
-        // foreach ($this->resultHands as $cardArray) {
-        //     foreach ($cardArray as $card) {
-        //         $handTotal += $card->number;
-        //     }
-        // }
+                //TODO Aを1として扱うか11として扱うか
+
+                $handTotal += $card->number;
+            }
+        }
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log('手札合計値:' . $handTotal, 3, $logFilePath);
 
     }
 
