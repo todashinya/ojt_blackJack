@@ -33,15 +33,4 @@ class HomeController
         header('Location: ' . $redirectUrl);
         exit;
     }
-
-    public function run()
-    {
-        try {
-            require_once SOURCE_PATH . 'views/game.php';
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
-            require_once SOURCE_PATH . 'views/game.php';
-        }
-    }
 }
-?>
