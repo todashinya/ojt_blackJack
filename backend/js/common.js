@@ -79,7 +79,6 @@ $(".surrender").on("click", function() {
       url: '/home/register'
     }).done(function(){
         // 成功したら以下の処理を行う
-        window.location.href = 'http://localhost:8080/game';
       }).fail(function(){
         alert("Ajax通信が失敗しました。エラー: " + errorThrown);
       });
