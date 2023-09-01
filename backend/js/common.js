@@ -14,6 +14,11 @@ $(document).ready(function() {
     $('#new-credit').val(newCredit);
   });
 
+  // プレイヤー名取得
+$("#start-btn").on("click", function() {
+  var playerName = $("#textbox").val();
+  $("#player-name").val(playerName);
+});
 
   // モーダルウィンドウ
   $('.js-open').on('click', function() {

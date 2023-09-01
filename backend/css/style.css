@@ -388,7 +388,7 @@ input, select {
     border-radius: 20px;
     border: 1px solid #fff;
   }
-  .modal-window .btn input[type=submit] {
+  .modal-window .btn input[type=button] {
     background: #000;
     border: none;
     color: #fff;
@@ -404,7 +404,7 @@ input, select {
     border-radius: 20px;
     transition: 1s;
   }
-  .modal-window .btn input[type=submit]:hover {
+  .modal-window .btn input[type=button]:hover {
     background: #fff;
     color: #000;
     filter: brightness(110%);
@@ -458,22 +458,23 @@ input, select {
     filter: brightness(110%);
     transition: 1s;
   }
-  #game .dealer li {
-    list-style: none;
+  #game .dealer {
     display: flex;
     justify-content: center;
   }
-  #game .dealer li .img {
+  #game .dealer .card-back img {
+    max-width: 150px;
+    width: 100%;
+  }
+  #game .dealer li {
+    list-style: none;
+  }
+  #game .dealer .img {
     margin-left: -60px;
   }
-  #game .dealer li .img img {
+  #game .dealer .img img {
     max-width: 150px;
-  }
-  #game .dealer li .card-back {
-    background-image: url("../../img/img_ura.png");
-    background-size: contain;
-    width: 150px;
-    height: 212px;
+    width: 100%;
   }
   #game .player {
     padding-top: 340px;
