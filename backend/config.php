@@ -10,4 +10,8 @@ define('SOURCE_PATH', __DIR__ . '/php/');
  * 簡易ログ出力
  * $logFilePath = BASE_LOG_PATH . 'console.log';
  * error_log('game読み込み', 3, $logFilePath);
+ * 
+ * 配列は以下のように指定する
+ * $logFilePath = BASE_LOG_PATH . 'console.log';
+ * error_log(print_r($this->resultHands, true), 3, $logFilePath);
  */

@@ -19,8 +19,6 @@ class GameController
     // 確定した後の手札
     private $resultHands = [];
 
-    // 初期配布判別用フラグ
-    private $firstDealCardFlag = false;
 
     public function __construct()
     {
@@ -35,9 +33,13 @@ class GameController
 
             // 初期カード配布メソッド
             $this->dealCard();
+            // $this->dealCard();
 
-            // $logFilePath = BASE_LOG_PATH . 'console.log';
-            // error_log(print_r($this->resultHands, true), 3, $logFilePath);
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log(print_r($this->resultHands, true), 3, $logFilePath);
+
+            $this->countHands();
+            $this->countHandsNumber();
 
             require_once SOURCE_PATH . 'views/game.php';
         } catch (\PDOException $e) {
@@ -69,6 +71,7 @@ class GameController
             $db = new PlayerQuery();
             $db->setStandStatus();
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -89,6 +92,7 @@ class GameController
             $db = new PlayerQuery();
             $db->setSurrenderStatus();
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -97,12 +101,36 @@ class GameController
 
     public function countHands()
     {
-        //  最終決定したハンドの枚数を判定
+        // 最終決定したハンドの枚数を判定
+        $handCount = count($this->resultHands);
+        
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log('手札枚数:' . $handCount, 3, $logFilePath);
+        
+        // return $handCount;
     }
 
     public function countHandsNumber()
     {
         // 最終決定したハンドのnumberの合計値を判定
+        $handTotal = 0;
+
+        foreach ($this->resultHands as $cardArray) {
+            foreach ($cardArray as $card) {
+                //J・Q・Kの絵札はすべて10としてカウント
+                if ($card->number >= 11 && $card->number <= 13) {
+                    $card->number = 10;
+                } 
+
+                //TODO Aを1として扱うか11として扱うか
+
+                $handTotal += $card->number;
+            }
+        }
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log('手札合計値:' . $handTotal, 3, $logFilePath);
+
     }
 
     public function checkWinOrLose()
@@ -164,9 +192,6 @@ class GameController
         }
 
 
-        // $logFilePath = BASE_LOG_PATH . 'console.log';
-        // error_log(print_r($hands, true), 3, $logFilePath);
-
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
@@ -176,9 +201,6 @@ class GameController
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
-
-        // $logFilePath = BASE_LOG_PATH . 'console.log';
-        // error_log(print_r($this->resultHands, true), 3, $logFilePath);
 
         return $this->resultHands;
     }
