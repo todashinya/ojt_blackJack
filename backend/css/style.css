@@ -388,7 +388,7 @@ input, select {
     border-radius: 20px;
     border: 1px solid #fff;
   }
-  .modal-window .btn input[type=submit] {
+  .modal-window .btn input[type=button] {
     background: #000;
     border: none;
     color: #fff;
@@ -404,7 +404,7 @@ input, select {
     border-radius: 20px;
     transition: 1s;
   }
-  .modal-window .btn input[type=submit]:hover {
+  .modal-window .btn input[type=button]:hover {
     background: #fff;
     color: #000;
     filter: brightness(110%);
