@@ -486,13 +486,13 @@ label img {
         }
     }
     .dealer {
-        display: flex;
-        justify-content: center;
         .card-back img {
             max-width: 150px;
             width: 100%;
         }
         li {
+            display: flex;
+            justify-content: center;
             list-style: none;
         }
         .img {

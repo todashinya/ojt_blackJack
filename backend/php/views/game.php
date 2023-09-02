@@ -6,28 +6,33 @@
                 <a href="/" class="button">退出する</a>
             </div>
             <ul class="dealer">
-                <li class="img card-back">
-                    <img src="../../img/img_ura.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li>
                 <li>
+                    <div class="img card-back">
+                        <img src="/img/img_ura.png" alt="トランプカード裏">
+                    </div>
                     <?php foreach ($this->resultHands as $handArray) : ?>
                         <?php foreach ($handArray as $hand) : ?>
                             <div class="img">
-                                <img src="../../img/img_<?php echo $hand->image_path; ?>.png">
+                                <img src="<?php echo $hand->image_path; ?>">
                             </div>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
                 </li>
             </ul>
+            <!-- <ul class="dealer">
+                <li class="img card-back">
+                    <img src="/backend/img/img_j-heart.png" alt="トランプカード裏">
+                </li>
+                <li>
+                    <?php foreach ($this->resultHands as $handArray) : ?>
+                        <?php foreach ($handArray as $hand) : ?>
+                            <div class="img">
+                                <img src="<?php echo $hand->image_path; ?>">
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </li>
+            </ul> -->
             <ul class="player">
                 <?php foreach ($result as $column) : ?>
                     <li>

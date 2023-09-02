@@ -458,15 +458,13 @@ input, select {
     filter: brightness(110%);
     transition: 1s;
   }
-  #game .dealer {
-    display: flex;
-    justify-content: center;
-  }
   #game .dealer .card-back img {
     max-width: 150px;
     width: 100%;
   }
   #game .dealer li {
+    display: flex;
+    justify-content: center;
     list-style: none;
   }
   #game .dealer .img {
