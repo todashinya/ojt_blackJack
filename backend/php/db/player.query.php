@@ -8,10 +8,30 @@ use model\PlayerModel;
 
 class PlayerQuery
 {
+    /**
+     * nameをもとにプレイヤー情報を取得するメソッド
+     */
+    public function fetchByName($name)
+    {
+        $db = new DataSource;
+        $db->openConnection();
 
+        $sql = 'SELECT * FROM t_player WHERE name = :name;';
+
+        $result = $db->select($sql, [':name' => $name], 'cls', 'model\PlayerModel');
+
+        $db->closeConnection();
+
+        return $result;
+    }
+
+    /**
+     * Undocumented function
+     * ゲームする最大人数のプレイヤーを取得するメソッド
+     * @return void
+     */
     public function getPlayer()
     {
-
         $db = new DataSource;
         $db->openConnection();
 
@@ -46,7 +66,7 @@ class PlayerQuery
         $db = new DataSource;
         $db->openConnection();
 
-        $sql = 'update t_player set status = 1 where id = :id;';
+        $sql = 'update t_player set status = 2 where id = :id;';
 
         $result = $db->update($sql, [':id' => 2], 'cls', 'model\PlayerModel');
 
@@ -75,7 +95,5 @@ class PlayerQuery
         $db->insert($sql, $params);
         $db->closeConnection();
 
-        // $logFilePath = BASE_LOG_PATH . 'console.log';
-        // error_log(print_r($data, true), 3, $logFilePath);
     }
 }
