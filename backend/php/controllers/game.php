@@ -18,6 +18,11 @@ class GameController
 
     // 確定した後の手札
     private $resultHands = [];
+    private $playerHands1 = [];
+    private $playerHands2 = [];
+    private $playerHands3 = [];
+    private $playerHands4 = [];
+
 
 
     public function __construct()
@@ -35,8 +40,8 @@ class GameController
             $this->dealCard();
             // $this->dealCard();
 
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log(print_r($this->resultHands, true), 3, $logFilePath);
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log(print_r($this->resultHands, true), 3, $logFilePath);
 
             $this->countHands();
             $this->countHandsNumber();
@@ -71,7 +76,6 @@ class GameController
             $db = new PlayerQuery();
             $db->setStandStatus();
             return true;
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -92,7 +96,6 @@ class GameController
             $db = new PlayerQuery();
             $db->setSurrenderStatus();
             return true;
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -103,10 +106,10 @@ class GameController
     {
         // 最終決定したハンドの枚数を判定
         $handCount = count($this->resultHands);
-        
+
         $logFilePath = BASE_LOG_PATH . 'console.log';
         error_log('手札枚数:' . $handCount, 3, $logFilePath);
-        
+
         // return $handCount;
     }
 
@@ -120,7 +123,7 @@ class GameController
                 //J・Q・Kの絵札はすべて10としてカウント
                 if ($card->number >= 11 && $card->number <= 13) {
                     $card->number = 10;
-                } 
+                }
 
                 //TODO Aを1として扱うか11として扱うか
 
@@ -130,7 +133,6 @@ class GameController
 
         $logFilePath = BASE_LOG_PATH . 'console.log';
         error_log('手札合計値:' . $handTotal, 3, $logFilePath);
-
     }
 
     public function checkWinOrLose()
@@ -180,6 +182,22 @@ class GameController
                 $cards[$randKey[1]],
             ];
         }
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $randKey = array_rand($cards, 2);
+
+            $playerHands1 = [
+                $cards[$randKey[0]],
+                $cards[$randKey[1]],
+            ];
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $randKey = array_rand($cards, 2);
+
+            $playerHands2 = [
+                $cards[$randKey[0]],
+                $cards[$randKey[1]],
+            ];
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $randKey = array_rand($cards, 1);
@@ -195,13 +213,26 @@ class GameController
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
+            // ディーラー
             foreach ($hands as $hand) {
                 $this->resultHands[] = $db->getCard($hand['mark'], $hand['number']);
+            }
+            // プレイヤー１
+            foreach ($playerHands1 as $hand) {
+                $this->playerHands1[] = $db->getCard($hand['mark'], $hand['number']);
+            }
+            // プレイヤー２
+            foreach ($playerHands2 as $hand) {
+                $this->playerHands2[] = $db->getCard($hand['mark'], $hand['number']);
             }
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 
-        return $this->resultHands;
+        return [
+            'dealerHands' => $this->resultHands,
+            'playerHands1' => $this->playerHands1,
+            'playerHands2' => $this->playerHands2,
+        ];
     }
 }

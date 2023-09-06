@@ -78,4 +78,18 @@ class PlayerQuery
         // $logFilePath = BASE_LOG_PATH . 'console.log';
         // error_log(print_r($data, true), 3, $logFilePath);
     }
+
+    // 退出ボタンが押下されたらプレイヤー物理削除
+    public function deletePlayer()
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'DELETE FROM t_player';
+
+        $db->execute($sql);
+
+        // データベース接続を閉じる
+        $db->closeConnection();
+    }
 }

@@ -19,35 +19,16 @@
                     <?php endforeach; ?>
                 </li>
             </ul>
-            <!-- <ul class="dealer">
-                <li class="img card-back">
-                    <img src="/backend/img/img_j-heart.png" alt="トランプカード裏">
-                </li>
-                <li>
-                    <?php foreach ($this->resultHands as $handArray) : ?>
-                        <?php foreach ($handArray as $hand) : ?>
-                            <div class="img">
-                                <img src="<?php echo $hand->image_path; ?>">
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
-                </li>
-            </ul> -->
             <ul class="player">
                 <?php foreach ($result as $column) : ?>
                     <li>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
+                        <?php foreach ($this->playerHands1 as $handArray) : ?>
+                            <?php foreach ($handArray as $hand) : ?>
+                                <div class="img">
+                                    <img src="<?php echo $hand->image_path; ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                         <div class="bet">
                             <p>BET</p>
                             <p>$<?php echo $column->bet; ?></p>
