@@ -87,7 +87,7 @@ class PlayerQuery
 
         $sql = 'DELETE FROM t_player';
 
-        $db->execute($sql);
+        $db->delete($sql);
 
         // データベース接続を閉じる
         $db->closeConnection();

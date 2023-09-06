@@ -439,6 +439,8 @@ input, select {
     padding: 14px 50px 14px 21px;
     transition: 1s;
     position: relative;
+    background: transparent;
+    appearance: none;
   }
   #game .leaving .button::after {
     position: absolute;

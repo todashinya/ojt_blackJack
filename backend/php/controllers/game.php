@@ -235,4 +235,22 @@ class GameController
             'playerHands2' => $this->playerHands2,
         ];
     }
+
+    /**
+     * DBプレイヤー削除
+     * 処理概要
+     * 1. 退出ボタンクリック時、DBプレイヤー情報物理削除
+     * @return bool t_playerのプレイヤー情報全て削除できれば true / できない場合は false
+     */
+    public function exit()
+    {
+        try {
+            $db = new PlayerQuery();
+            $db->deletePlayer();
+            return true;
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }

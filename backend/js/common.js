@@ -116,4 +116,17 @@ $("#start-btn").on("click", function() {
     $(".js-modal").hide();
     $(".js-overlay").hide();
   });
+
+  // 退出ボタンがクリックされたとき
+  $(".button").on("click", function() {
+    $.ajax({
+      type: 'POST',
+      url: '/game/exit'
+    }).done(function(data){
+        // 成功したら以下の処理を行う
+        window.location.href = "http://localhost:8080/";
+    }).fail(function(data){
+      alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+    });
+  });
 });

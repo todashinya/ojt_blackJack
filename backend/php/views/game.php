@@ -3,7 +3,7 @@
     <div class="bg">
         <div class="inner">
             <div class="leaving">
-                <a href="/" class="button">退出する</a>
+                <button class="button">退出する</button>
             </div>
             <ul class="dealer">
                 <li>
