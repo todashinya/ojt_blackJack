@@ -18,6 +18,11 @@ class HomeController
         require_once SOURCE_PATH . 'views/home.php';
     }
 
+    /**
+     * Undocumented function register()
+     * home.phpモーダルのSTARTボタン押下時、DBとSESSIONにプレイヤー情報を登録するメソッド
+     * @return void
+     */
     public function register()
     {
         $data = [];
@@ -26,11 +31,12 @@ class HomeController
             $data = $_POST;
             $db = new PlayerQuery();
             $db->addPlayer($data);
-        }
+            
+            $player = $db->fetchByName($data['name']);
+            $_SESSION['player'] = $player; 
 
-        $redirectUrl = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . "/game";
-        // $redirectUrl = "http://localhost:8080/game";
-        header('Location: ' . $redirectUrl);
-        exit;
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log(print_r( $_SESSION['player'], true), 3, $logFilePath);
+        }
     }
 }
