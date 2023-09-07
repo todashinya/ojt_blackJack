@@ -14,6 +14,7 @@ require_once SOURCE_PATH . 'db/game.query.php';
 
 
 //ヘッダ情報(css読み込みなど)
+session_start();
 require_once SOURCE_PATH . 'partials/header.php';
 
 //routing

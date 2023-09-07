@@ -56,10 +56,10 @@ class GameController
     public function hit()
     {
 
+        //TODO:条件分岐(t_player.name = $_SESSION['name'])
         $drowCard = $this->dealCard();
         array_push($this->resultHands[], $drowCard);
 
-        return json_encode($drowCard);
     }
 
 
@@ -71,10 +71,18 @@ class GameController
      */
     public function stand()
     {
-        try {
+        $data = [];
 
-            $db = new PlayerQuery();
-            $db->setStandStatus();
+        try {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = $_POST;
+
+                $logFilePath = BASE_LOG_PATH . 'console.log';
+                error_log(print_r($data, true), 3, $logFilePath);
+
+                $db = new PlayerQuery();
+                $db->setStandStatus($data);
+            }
             return true;
         } catch (\PDOException $e) {
             echo $e->getMessage();
@@ -199,8 +207,11 @@ class GameController
             ];
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["hit"] == "hit") {
             $randKey = array_rand($cards, 1);
+
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log('hit', 3, $logFilePath);
 
             $drowHands = [
                 $cards[$randKey],
@@ -254,3 +265,5 @@ class GameController
         }
     }
 }
+
+?>

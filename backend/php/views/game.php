@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * if (isset($_SESSION['player'])) {
+ *   var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
+ *   echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
+ * } else {
+ *  echo 'SESSIONがありません';
+ * }
+ */
+?>
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
@@ -47,16 +58,19 @@
         </div>
         <div class="btn">
             <button class="hit">
-                <img src="../../img/img_icon-hit.png" alt="">
+                <img src="../../img/img_icon-hit.png" alt="HIT">
                 <p>HIT</p>
+                <input type="hidden" name="hit" value="hit">
             </button>
             <button class="stand">
-                <img src="../../img/img_icon-stand.png" alt="">
+                <img src="../../img/img_icon-stand.png" alt="STAND">
                 <p>STAND</p>
+                <input type="hidden" name="stand" value="stand">
             </button>
             <button class="surrender">
-                <img src="../../img/img_icon-surrender.png" alt="">
+                <img src="../../img/img_icon-surrender.png" alt="SURRENDER">
                 <p>SURRENDER</p>
+                <input type="hidden" name="surrender" value="surrender">
             </button>
         </div>
     </div>
