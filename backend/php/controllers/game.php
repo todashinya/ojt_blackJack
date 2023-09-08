@@ -35,8 +35,8 @@ class GameController
             $this->dealCard();
             // $this->dealCard();
 
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log(print_r($this->resultHands, true), 3, $logFilePath);
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log(print_r($this->resultHands, true), 3, $logFilePath);
 
             $this->countHands();
             $this->countHandsNumber();
@@ -66,17 +66,27 @@ class GameController
      */
     public function stand()
     {
-        $data = [];
+        $sessionData = [];
+        $dbData = [];
 
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $data = $_POST;
+
+                $sessionData = $_SESSION['player'][0];
+                
+                $db = new PlayerQuery();
+                $dbData = $db->fetchByName($sessionData->name);
 
                 $logFilePath = BASE_LOG_PATH . 'console.log';
-                error_log(print_r($data, true), 3, $logFilePath);
+                error_log('stand', 3, $logFilePath);
+                error_log(print_r($sessionData, true), 3, $logFilePath);
+                error_log(print_r($dbData[0], true), 3, $logFilePath);
 
-                $db = new PlayerQuery();
-                $db->setStandStatus($data);
+                if($sessionData->name === $dbData[0]->name) {
+                    $db->setStandStatus($sessionData->id);
+                }
+
+                
             }
             return true;
 
@@ -112,8 +122,8 @@ class GameController
         // 最終決定したハンドの枚数を判定
         $handCount = count($this->resultHands);
         
-        $logFilePath = BASE_LOG_PATH . 'console.log';
-        error_log('手札枚数:' . $handCount, 3, $logFilePath);
+        // $logFilePath = BASE_LOG_PATH . 'console.log';
+        // error_log('手札枚数:' . $handCount, 3, $logFilePath);
         
         // return $handCount;
     }
@@ -136,8 +146,8 @@ class GameController
             }
         }
 
-        $logFilePath = BASE_LOG_PATH . 'console.log';
-        error_log('手札合計値:' . $handTotal, 3, $logFilePath);
+        // $logFilePath = BASE_LOG_PATH . 'console.log';
+        // error_log('手札合計値:' . $handTotal, 3, $logFilePath);
 
     }
 
@@ -192,8 +202,8 @@ class GameController
         if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["hit"] == "hit") {
             $randKey = array_rand($cards, 1);
 
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log('hit', 3, $logFilePath);
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log('hit', 3, $logFilePath);
 
             $drowHands = [
                 $cards[$randKey],

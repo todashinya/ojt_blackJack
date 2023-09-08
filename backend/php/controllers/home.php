@@ -35,8 +35,8 @@ class HomeController
             $player = $db->fetchByName($data['name']);
             $_SESSION['player'] = $player; 
 
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log(print_r( $_SESSION['player'], true), 3, $logFilePath);
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log(print_r($_SESSION['player'], true), 3, $logFilePath);
         }
     }
 }
