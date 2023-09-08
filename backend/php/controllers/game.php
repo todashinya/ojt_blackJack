@@ -85,8 +85,6 @@ class GameController
                 if($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
-
-                
             }
             return true;
 
@@ -107,8 +105,22 @@ class GameController
     {
         try {
 
-            $db = new PlayerQuery();
-            $db->setSurrenderStatus();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $sessionData = $_SESSION['player'][0];
+                
+                $db = new PlayerQuery();
+                $dbData = $db->fetchByName($sessionData->name);
+
+                $logFilePath = BASE_LOG_PATH . 'console.log';
+                error_log('stand', 3, $logFilePath);
+                error_log(print_r($sessionData, true), 3, $logFilePath);
+                error_log(print_r($dbData[0], true), 3, $logFilePath);
+
+                if($sessionData->name === $dbData[0]->name) {
+                    $db->setSurrenderStatus($sessionData->id);
+                }
+            }
             return true;
 
         } catch (\PDOException $e) {
