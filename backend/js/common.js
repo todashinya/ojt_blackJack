@@ -50,27 +50,14 @@ $(document).ready(function () {
 
   // STANDボタンがクリックされたとき
   $(".stand").on("click", function () {
-
-    // const playerName = $("#textbox").val();
-    // const bet = $('#new-bet').val();
-    // const credit = $('#new-credit').val();
-
-    // const requestData = {
-    //   name: playerName,
-    //   bet: bet,
-    //   credit: credit,
-    // };
-
     $.ajax({
       type: 'POST',
       url: '/game/stand',
-      // data: requestData
-      
     }).done(function (data) {
       // 成功したら以下の処理を行う
 
     }).fail(function (data) {
-      // alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+      alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });
 
@@ -82,7 +69,6 @@ $(document).ready(function () {
       url: '/game/surrender'
     }).done(function (data) {
       // 成功したら以下の処理を行う
-      // alert("event called")
 
     }).fail(function (data) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
