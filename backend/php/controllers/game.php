@@ -59,7 +59,6 @@ class GameController
         //TODO:条件分岐(t_player.name = $_SESSION['name'])
         $drowCard = $this->dealCard();
         array_push($this->resultHands[], $drowCard);
-
     }
 
 
@@ -247,7 +246,7 @@ class GameController
         ];
     }
 
-    /**
+    /** 
      * DBプレイヤー削除
      * 処理概要
      * 1. 退出ボタンクリック時、DBプレイヤー情報物理削除
@@ -256,8 +255,17 @@ class GameController
     public function exit()
     {
         try {
+            if (isset($_SESSION['player'])) {
+                $playerName = $_SESSION['player'][0]->name;
+            } else {
+                echo 'SESSIONがありません';
+                return false;
+            }
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log(print_r($playerName, true), 3, $logFilePath);
+
             $db = new PlayerQuery();
-            $db->deletePlayer();
+            $db->deletePlayer($playerName);
             return true;
         } catch (\PDOException $e) {
             echo $e->getMessage();
@@ -265,5 +273,3 @@ class GameController
         }
     }
 }
-
-?>

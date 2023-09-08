@@ -1,13 +1,14 @@
 <?php
 
-/**
- * if (isset($_SESSION['player'])) {
- *   var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
- *   echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
- * } else {
- *  echo 'SESSIONがありません';
- * }
- */
+
+// if (isset($_SESSION['player'])) {
+//     var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
+//     echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
+// } else {
+//     echo 'SESSIONがありません';
+// }
+
+
 ?>
 <!-- ゲーム画面 -->
 <section id="game">
