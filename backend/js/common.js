@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
   // BET、クレジット表示
-  $('.coin').click(function(){
+  $('.coin').click(function () {
     const coinValue = parseInt($(this).find('input').val());
     const currentBet = parseInt($('.js-bet span').text());
     const currentCredit = parseInt($('.js-credit span').text());
@@ -15,91 +15,76 @@ $(document).ready(function() {
   });
 
   // プレイヤー名取得
-  $("#start-btn").on("click", function() {
+  $("#start-btn").on("click", function () {
     var playerName = $("#textbox").val();
     $("#player-name").val(playerName);
   });
 
   // モーダルウィンドウ
-  $('.js-open').on('click', function() {
-      $('.js-modal').addClass('open');
-      $('.js-overlay').addClass('open');
-      return false; 
+  $('.js-open').on('click', function () {
+    $('.js-modal').addClass('open');
+    $('.js-overlay').addClass('open');
+    return false;
   });
-  $('.js-close').on('click', function() {
-      $('.js-modal').removeClass('open');
-      $('.js-overlay').removeClass('open');
+  $('.js-close').on('click', function () {
+    $('.js-modal').removeClass('open');
+    $('.js-overlay').removeClass('open');
   });
-    
+
 
   // HITボタンがクリックされたとき
-  $(".hit").on("click", function() {
-
-    // alert('HIT');
-
-    // var hitValue = $('input[name="hit"]').val();
-
-    // console.log('event called');
-    // console.log(hitValue);
-
-    // var postData = {
-    //   hit: hitValue
-    // };
-
-    // console.log(postData);
-
+  $(".hit").on("click", function () {
     $.ajax({
       type: 'POST',
-      url: '/game/hit',
-      data: postData
-    }).done(function(data){
+      url: '/game/hit'
+      // data: postData
+    }).done(function (data) {
       //   // 成功したらカードのDOMを作成し、要素を追加する
-      alert("event called")
-    }).fail(function(data){
+      // alert("event called")
+    }).fail(function (data) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
 
   });
 
+
   // STANDボタンがクリックされたとき
-  $(".stand").on("click", function() {
+  $(".stand").on("click", function () {
 
-    const playerName = $("#textbox").val();
-    const bet = $('#new-bet').val();
-    const credit = $('#new-credit').val();
+    // const playerName = $("#textbox").val();
+    // const bet = $('#new-bet').val();
+    // const credit = $('#new-credit').val();
 
-    const requestData = {
-      name: playerName,
-      bet: bet,
-      credit: credit,
-      startDate: formattedDate
-    };
-
-    console.log(requestData);
+    // const requestData = {
+    //   name: playerName,
+    //   bet: bet,
+    //   credit: credit,
+    // };
 
     $.ajax({
       type: 'POST',
-      url: '/game/stand'
-    }).done(function(data){
-        // 成功したら以下の処理を行う
-        alert("event called")
+      url: '/game/stand',
+      // data: requestData
+      
+    }).done(function (data) {
+      // 成功したら以下の処理を行う
 
-    }).fail(function(data){
-      alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+    }).fail(function (data) {
+      // alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });
 
 
   // SURRENDERボタンがクリックされたとき
-  $(".surrender").on("click", function() {
+  $(".surrender").on("click", function () {
     $.ajax({
       type: 'POST',
       url: '/game/surrender'
-    }).done(function(data){
-        // 成功したら以下の処理を行う
-        alert("event called")
-        
-    }).fail(function(data){
+    }).done(function (data) {
+      // 成功したら以下の処理を行う
+      // alert("event called")
+
+    }).fail(function (data) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });

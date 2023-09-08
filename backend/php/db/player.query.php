@@ -45,35 +45,37 @@ class PlayerQuery
         return $result;
     }
 
-    public function setStandStatus()
-    {
 
+    
+    public function setStandStatus($id)
+    {
         $db = new DataSource;
         $db->openConnection();
 
         $sql = 'update t_player set status = 1 where id = :id;';
 
-        $result = $db->update($sql, [':id' => 2], 'cls', 'model\PlayerModel');
+        $result = $db->update($sql, [':id' => $id], 'cls', 'model\PlayerModel');
 
         $db->closeConnection();
 
         return $result;
     }
 
-    public function setSurrenderStatus()
-    {
 
+    public function setSurrenderStatus($id)
+    {
         $db = new DataSource;
         $db->openConnection();
 
         $sql = 'update t_player set status = 2 where id = :id;';
 
-        $result = $db->update($sql, [':id' => 2], 'cls', 'model\PlayerModel');
+        $result = $db->update($sql, [':id' => $id], 'cls', 'model\PlayerModel');
 
         $db->closeConnection();
 
         return $result;
     }
+
 
     // ↓POSTされた内容をDBに登録↓
     public function addPlayer($data)
