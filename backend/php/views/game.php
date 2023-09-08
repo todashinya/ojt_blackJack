@@ -34,7 +34,7 @@
             <ul class="player">
                 <?php foreach ($result as $column) : ?>
                     <li>
-                        <?php foreach ($this->playerHands1 as $handArray) : ?>
+                        <?php foreach ($this->playerHands as $handArray) : ?>
                             <?php foreach ($handArray as $hand) : ?>
                                 <div class="img">
                                     <img src="<?php echo $hand->image_path; ?>">

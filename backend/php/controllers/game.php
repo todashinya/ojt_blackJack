@@ -18,11 +18,7 @@ class GameController
 
     // 確定した後の手札
     private $resultHands = [];
-    private $playerHands1 = [];
-    private $playerHands2 = [];
-    private $playerHands3 = [];
-    private $playerHands4 = [];
-
+    private $playerHands = [];
 
 
     public function __construct()
@@ -215,15 +211,7 @@ class GameController
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $randKey = array_rand($cards, 2);
 
-            $playerHands1 = [
-                $cards[$randKey[0]],
-                $cards[$randKey[1]],
-            ];
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $randKey = array_rand($cards, 2);
-
-            $playerHands2 = [
+            $playerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
@@ -251,12 +239,8 @@ class GameController
                 $this->resultHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
             // プレイヤー１
-            foreach ($playerHands1 as $hand) {
-                $this->playerHands1[] = $db->getCard($hand['mark'], $hand['number']);
-            }
-            // プレイヤー２
-            foreach ($playerHands2 as $hand) {
-                $this->playerHands2[] = $db->getCard($hand['mark'], $hand['number']);
+            foreach ($playerHands as $hand) {
+                $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
         } catch (\PDOException $e) {
             echo $e->getMessage();
@@ -264,8 +248,7 @@ class GameController
 
         return [
             'dealerHands' => $this->resultHands,
-            'playerHands1' => $this->playerHands1,
-            'playerHands2' => $this->playerHands2,
+            'playerHands' => $this->playerHands,
         ];
     }
 
