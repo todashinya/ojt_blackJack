@@ -465,6 +465,8 @@ label img {
             padding: 14px 50px 14px 21px;
             transition : 1s;
             position: relative;
+            background: transparent;
+            appearance: none;
             &::after {
                 position: absolute;
                 content: "";
@@ -486,13 +488,13 @@ label img {
         }
     }
     .dealer {
-        display: flex;
-        justify-content: center;
         .card-back img {
             max-width: 150px;
             width: 100%;
         }
         li {
+            display: flex;
+            justify-content: center;
             list-style: none;
         }
         .img {

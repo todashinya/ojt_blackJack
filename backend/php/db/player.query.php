@@ -96,6 +96,19 @@ class PlayerQuery
 
         $db->insert($sql, $params);
         $db->closeConnection();
+    }
 
+    // 退出ボタンが押下されたらプレイヤー物理削除
+    public function deletePlayer($playerName)
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'DELETE FROM t_player WHERE name = :name LIMIT 1';
+
+        $db->delete($sql, [':name' => $playerName]);
+
+        // データベース接続を閉じる
+        $db->closeConnection();
     }
 }

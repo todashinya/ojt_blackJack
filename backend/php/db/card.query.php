@@ -1,13 +1,16 @@
 <?php
+
 namespace db;
 
 use PDO;
 use db\DataSource;
 use model\CardModel;
 
-class CardQuery {
+class CardQuery
+{
 
-    public function getCard($mark, $number) {
+    public function getCard($mark, $number)
+    {
 
         $db = new DataSource;
         $db->openConnection();

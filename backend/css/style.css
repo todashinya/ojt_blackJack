@@ -439,6 +439,10 @@ input, select {
     padding: 14px 50px 14px 21px;
     transition: 1s;
     position: relative;
+    background: transparent;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
   #game .leaving .button::after {
     position: absolute;
@@ -458,15 +462,13 @@ input, select {
     filter: brightness(110%);
     transition: 1s;
   }
-  #game .dealer {
-    display: flex;
-    justify-content: center;
-  }
   #game .dealer .card-back img {
     max-width: 150px;
     width: 100%;
   }
   #game .dealer li {
+    display: flex;
+    justify-content: center;
     list-style: none;
   }
   #game .dealer .img {

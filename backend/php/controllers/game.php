@@ -18,6 +18,7 @@ class GameController
 
     // 確定した後の手札
     private $resultHands = [];
+    private $playerHands = [];
 
 
     public function __construct()
@@ -35,8 +36,8 @@ class GameController
             $this->dealCard();
             // $this->dealCard();
 
-            // $logFilePath = BASE_LOG_PATH . 'console.log';
-            // error_log(print_r($this->resultHands, true), 3, $logFilePath);
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log(print_r($this->resultHands, true), 3, $logFilePath);
 
             $this->countHands();
             $this->countHandsNumber();
@@ -54,7 +55,6 @@ class GameController
         //TODO:条件分岐(t_player.name = $_SESSION['name'])
         $drowCard = $this->dealCard();
         array_push($this->resultHands[], $drowCard);
-
     }
 
 
@@ -73,7 +73,7 @@ class GameController
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $sessionData = $_SESSION['player'][0];
-                
+
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
 
@@ -82,12 +82,11 @@ class GameController
                 error_log(print_r($sessionData, true), 3, $logFilePath);
                 error_log(print_r($dbData[0], true), 3, $logFilePath);
 
-                if($sessionData->name === $dbData[0]->name) {
+                if ($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
             }
             return true;
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -108,7 +107,7 @@ class GameController
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $sessionData = $_SESSION['player'][0];
-                
+
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
 
@@ -117,12 +116,11 @@ class GameController
                 error_log(print_r($sessionData, true), 3, $logFilePath);
                 error_log(print_r($dbData[0], true), 3, $logFilePath);
 
-                if($sessionData->name === $dbData[0]->name) {
+                if ($sessionData->name === $dbData[0]->name) {
                     $db->setSurrenderStatus($sessionData->id);
                 }
             }
             return true;
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -133,10 +131,10 @@ class GameController
     {
         // 最終決定したハンドの枚数を判定
         $handCount = count($this->resultHands);
-        
+
         // $logFilePath = BASE_LOG_PATH . 'console.log';
         // error_log('手札枚数:' . $handCount, 3, $logFilePath);
-        
+
         // return $handCount;
     }
 
@@ -150,7 +148,7 @@ class GameController
                 //J・Q・Kの絵札はすべて10としてカウント
                 if ($card->number >= 11 && $card->number <= 13) {
                     $card->number = 10;
-                } 
+                }
 
                 //TODO Aを1として扱うか11として扱うか
 
@@ -210,6 +208,14 @@ class GameController
                 $cards[$randKey[1]],
             ];
         }
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $randKey = array_rand($cards, 2);
+
+            $playerHands = [
+                $cards[$randKey[0]],
+                $cards[$randKey[1]],
+            ];
+        }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["hit"] == "hit") {
             $randKey = array_rand($cards, 1);
@@ -228,15 +234,48 @@ class GameController
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
+            // ディーラー
             foreach ($hands as $hand) {
                 $this->resultHands[] = $db->getCard($hand['mark'], $hand['number']);
+            }
+            // プレイヤー１
+            foreach ($playerHands as $hand) {
+                $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 
-        return $this->resultHands;
+        return [
+            'dealerHands' => $this->resultHands,
+            'playerHands' => $this->playerHands,
+        ];
+    }
+
+    /** 
+     * DBプレイヤー削除
+     * 処理概要
+     * 1. 退出ボタンクリック時、DBプレイヤー情報物理削除
+     * @return bool t_playerのプレイヤー情報全て削除できれば true / できない場合は false
+     */
+    public function exit()
+    {
+        try {
+            if (isset($_SESSION['player'])) {
+                $playerName = $_SESSION['player'][0]->name;
+            } else {
+                echo 'SESSIONがありません';
+                return false;
+            }
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log(print_r($playerName, true), 3, $logFilePath);
+
+            $db = new PlayerQuery();
+            $db->deletePlayer($playerName);
+            return true;
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 }
-
-?>

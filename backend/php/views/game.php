@@ -1,34 +1,27 @@
 <?php
-/**
- * if (isset($_SESSION['player'])) {
- *   var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
- *   echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
- * } else {
- *  echo 'SESSIONがありません';
- * }
- */
+
+
+// if (isset($_SESSION['player'])) {
+//     var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
+//     echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
+// } else {
+//     echo 'SESSIONがありません';
+// }
+
+
 ?>
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
         <div class="inner">
             <div class="leaving">
-                <a href="/" class="button">退出する</a>
+                <button class="button">退出する</button>
             </div>
             <ul class="dealer">
-                <!-- <li class="img card-back">
-                    <img src="../../img/img_ura.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li>
-                <li class="img">
-                    <img src="../../img/img_10-club.png" alt="トランプカード裏">
-                </li> -->
                 <li>
+                    <div class="img card-back">
+                        <img src="/img/img_ura.png" alt="トランプカード裏">
+                    </div>
                     <?php foreach ($this->resultHands as $handArray) : ?>
                         <?php foreach ($handArray as $hand) : ?>
                             <div class="img">
@@ -41,18 +34,13 @@
             <ul class="player">
                 <?php foreach ($result as $column) : ?>
                     <li>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
-                        <div class="img">
-                            <img src="../../img/img_10-heart.png" alt="">
-                        </div>
+                        <?php foreach ($this->playerHands as $handArray) : ?>
+                            <?php foreach ($handArray as $hand) : ?>
+                                <div class="img">
+                                    <img src="<?php echo $hand->image_path; ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                         <div class="bet">
                             <p>BET</p>
                             <p>$<?php echo $column->bet; ?></p>

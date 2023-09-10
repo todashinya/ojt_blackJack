@@ -43,6 +43,10 @@ if ($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->surrender();
+} elseif ($requestPath === '/game/exit') {
+    require_once SOURCE_PATH . 'controllers/game.php';
+    $game = new \controller\GameController();
+    $game->exit();
 }
 
 
