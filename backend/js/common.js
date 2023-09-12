@@ -32,22 +32,29 @@ $(document).ready(function () {
   });
 
 
-  //初回アクセス時にdealcard()を呼び出すajax作成
+  // ajax処理
+  var g_playerHands;
+
   $.ajax({
     type: 'GET',
     url: '/game/dealcard',
     dataType: 'json'
+
   }).done(function (response) {
 
-    console.log(response);
+    g_playerHands = response.playerHands;
+
+    $.each(response.playerHands, function(i, playerHands) {
+      $.each(playerHands, function(i, playerHand) {
+        var imgElement = $("<img>");
+        imgElement.attr("src", playerHand.image_path);
+        $(".img.hand-area").append(imgElement);
+      });
+    });
 
   }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
-    console.log(XMLHttpRequest);
-    console.log(textStatus);
-    console.log(errorThrown);
   });
-
 
 
 
@@ -63,14 +70,11 @@ $(document).ready(function () {
       type: 'POST',
       url: '/game/hit',
       data: requestData,
-      // dataType: 'json',
+      dataType: 'json',
     }).done(function (response) {
-      //   // 成功したらカードのDOMを作成し、要素を追加する
+      // 成功したらカードのDOMを作成し、要素を追加する
       console.log(response);
-      // console.log(response.playerHands.id);
-      // console.log(response.playerHands.mark);
-      // console.log(response.playerHands.number);
-      // console.log(response.playerHands.image_path);
+
 
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);

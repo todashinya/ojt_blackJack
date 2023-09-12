@@ -17,12 +17,12 @@ require_once SOURCE_PATH . 'partials/header.php';
             </div>
             <ul class="dealer">
                 <li>
-                    <div class="img card-back">
+                    <div class="img card-back dealer">
                         <img src="/img/img_ura.png" alt="トランプカード裏">
                     </div>
                     <?php foreach ($this->dealerHands as $handArray) : ?>
                         <?php foreach ($handArray as $hand) : ?>
-                            <div class="img">
+                            <div class="img dealer">
                                 <img src="<?php echo $hand->image_path; ?>">
                             </div>
                         <?php endforeach; ?>
@@ -32,13 +32,8 @@ require_once SOURCE_PATH . 'partials/header.php';
             <ul class="player">
                 <?php foreach ($result as $column) : ?>
                     <li>
-                        <?php foreach ($this->playerHands as $handArray) : ?>
-                            <?php foreach ($handArray as $hand) : ?>
-                                <div class="img">
-                                    <img src="<?php echo $hand->image_path; ?>">
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endforeach; ?>
+                        <div class="img hand-area">
+                        </div>
                         <div class="bet">
                             <p>BET</p>
                             <p>$<?php echo $column->bet; ?></p>
