@@ -35,7 +35,7 @@ if ($requestPath === '/') {
 } elseif ($requestPath === '/game/hit') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
-    $game->hit();
+    $game->dealCard();
 } elseif ($requestPath === '/game/stand') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();

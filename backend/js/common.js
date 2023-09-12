@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 
   // ajax処理
-  var g_playerHands;
+  var g_playerHands = [];
 
   $.ajax({
     type: 'GET',
@@ -51,16 +51,15 @@ $(document).ready(function () {
         $(".img.hand-area").append(imgElement);
       });
     });
+    console.log(g_playerHands);
 
   }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
   });
 
 
-
   // HITボタンがクリックされたとき
   $(".hit").on("click", function () {
-
     const hitFlag = $('input[name="hit"]').val();
     const requestData = {
       hit: hitFlag
@@ -72,9 +71,17 @@ $(document).ready(function () {
       data: requestData,
       dataType: 'json',
     }).done(function (response) {
-      // 成功したらカードのDOMを作成し、要素を追加する
-      console.log(response);
 
+      g_playerHands = g_playerHands.concat(response.playerHands);
+
+      $.each(response.playerHands, function(i, playerHands) {
+        $.each(playerHands, function(i, playerHand) {
+          var imgElement = $("<img>");
+          imgElement.attr("src", playerHand.image_path);
+          $(".img.hand-area").append(imgElement);
+        });
+      });
+      console.log(g_playerHands);
 
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
@@ -84,6 +91,7 @@ $(document).ready(function () {
 
 
   // STANDボタンがクリックされたとき
+  // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".stand").on("click", function () {
     $.ajax({
       type: 'POST',
@@ -98,6 +106,7 @@ $(document).ready(function () {
 
 
   // SURRENDERボタンがクリックされたとき
+  // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".surrender").on("click", function () {
     $.ajax({
       type: 'POST',
