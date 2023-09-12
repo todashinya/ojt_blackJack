@@ -1,15 +1,13 @@
 <?php
-
-
 // if (isset($_SESSION['player'])) {
 //     var_dump($_SESSION['player']); //SESSIONオブジェクトを格納
 //     echo $_SESSION['player'][0]->name; //SESSIONオブジェクトのnameのみ格納
 // } else {
 //     echo 'SESSIONがありません';
 // }
-
-
+require_once SOURCE_PATH . 'partials/header.php';
 ?>
+
 <!-- ゲーム画面 -->
 <section id="game">
     <div class="bg">
@@ -22,7 +20,7 @@
                     <div class="img card-back">
                         <img src="/img/img_ura.png" alt="トランプカード裏">
                     </div>
-                    <?php foreach ($this->resultHands as $handArray) : ?>
+                    <?php foreach ($this->dealerHands as $handArray) : ?>
                         <?php foreach ($handArray as $hand) : ?>
                             <div class="img">
                                 <img src="<?php echo $hand->image_path; ?>">
@@ -77,3 +75,7 @@
     </div>
     <div class="under"></div>
 </section>
+
+<?php
+require_once SOURCE_PATH . 'partials/footer.php';
+?>
