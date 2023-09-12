@@ -32,16 +32,47 @@ $(document).ready(function () {
   });
 
 
+  //初回アクセス時にdealcard()を呼び出すajax作成
+  $.ajax({
+    type: 'GET',
+    url: '/game/dealcard',
+    dataType: 'json'
+  }).done(function (response) {
+
+    console.log(response);
+
+  }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+    alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+    console.log(XMLHttpRequest);
+    console.log(textStatus);
+    console.log(errorThrown);
+  });
+
+
+
+
   // HITボタンがクリックされたとき
   $(".hit").on("click", function () {
+
+    const hitFlag = $('input[name="hit"]').val();
+    const requestData = {
+      hit: hitFlag
+    };
+
     $.ajax({
       type: 'POST',
-      url: '/game/hit'
-      // data: postData
-    }).done(function (data) {
+      url: '/game/hit',
+      data: requestData,
+      // dataType: 'json',
+    }).done(function (response) {
       //   // 成功したらカードのDOMを作成し、要素を追加する
-      // alert("event called")
-    }).fail(function (data) {
+      console.log(response);
+      // console.log(response.playerHands.id);
+      // console.log(response.playerHands.mark);
+      // console.log(response.playerHands.number);
+      // console.log(response.playerHands.image_path);
+
+    }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
 
@@ -80,8 +111,6 @@ $(document).ready(function () {
 
     // 現在の日付と時刻を取得
     const currentDate = new Date();
-
-    // 年、月、日、時、分、秒を取得
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
