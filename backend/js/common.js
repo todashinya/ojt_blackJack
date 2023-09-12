@@ -32,16 +32,58 @@ $(document).ready(function () {
   });
 
 
+  // ajax処理
+  var g_playerHands = [];
+
+  $.ajax({
+    type: 'GET',
+    url: '/game/dealcard',
+    dataType: 'json'
+
+  }).done(function (response) {
+
+    g_playerHands = response.playerHands;
+
+    $.each(response.playerHands, function(i, playerHands) {
+      $.each(playerHands, function(i, playerHand) {
+        var imgElement = $("<img>");
+        imgElement.attr("src", playerHand.image_path);
+        $(".img.hand-area").append(imgElement);
+      });
+    });
+    console.log(g_playerHands);
+
+  }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+    alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+  });
+
+
   // HITボタンがクリックされたとき
   $(".hit").on("click", function () {
+    const hitFlag = $('input[name="hit"]').val();
+    const requestData = {
+      hit: hitFlag
+    };
+
     $.ajax({
       type: 'POST',
-      url: '/game/hit'
-      // data: postData
-    }).done(function (data) {
-      //   // 成功したらカードのDOMを作成し、要素を追加する
-      // alert("event called")
-    }).fail(function (data) {
+      url: '/game/hit',
+      data: requestData,
+      dataType: 'json',
+    }).done(function (response) {
+
+      g_playerHands = g_playerHands.concat(response.playerHands);
+
+      $.each(response.playerHands, function(i, playerHands) {
+        $.each(playerHands, function(i, playerHand) {
+          var imgElement = $("<img>");
+          imgElement.attr("src", playerHand.image_path);
+          $(".img.hand-area").append(imgElement);
+        });
+      });
+      console.log(g_playerHands);
+
+    }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
 
@@ -49,6 +91,7 @@ $(document).ready(function () {
 
 
   // STANDボタンがクリックされたとき
+  // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".stand").on("click", function () {
     $.ajax({
       type: 'POST',
@@ -63,6 +106,7 @@ $(document).ready(function () {
 
 
   // SURRENDERボタンがクリックされたとき
+  // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".surrender").on("click", function () {
     $.ajax({
       type: 'POST',
@@ -80,8 +124,6 @@ $(document).ready(function () {
 
     // 現在の日付と時刻を取得
     const currentDate = new Date();
-
-    // 年、月、日、時、分、秒を取得
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');

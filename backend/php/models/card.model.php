@@ -5,5 +5,5 @@ class CardModel {
     public $id;
     public $mark;
     public $number;
-    public $imagepath;
+    public $image_path;
 }

@@ -1,3 +1,7 @@
+<?php
+require_once SOURCE_PATH . 'partials/header.php';
+?>
+
 <section id="home">
     <div class="bg">
         <div class="unit">
@@ -65,3 +69,7 @@
         </div>
     </form>
 </section>
+
+<?php
+require_once SOURCE_PATH . 'partials/footer.php';
+?>
