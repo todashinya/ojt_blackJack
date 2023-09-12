@@ -46,7 +46,7 @@ class PlayerQuery
     }
 
 
-    
+
     public function setStandStatus($id)
     {
         $db = new DataSource;
@@ -84,19 +84,48 @@ class PlayerQuery
         $db = new DataSource;
         $db->openConnection();
 
-        $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
+        $countSql = "SELECT COUNT(id) FROM t_player"; //DBの件数をカウント
+        $result = $db->select($countSql);
 
-        $params = [
-            ':name' => $data['name'],
-            ':bet' => $data['bet'],
-            ':credit' => $data['credit'],
-            ':start_date' => $data['startDate'],
-            ':status' => 0,
-        ];
+        $row = $result[0]['COUNT(id)']; // クエリの結果から値を取得
 
-        $db->insert($sql, $params);
-        $db->closeConnection();
+        if ($row >= 4) { //DBのデータが4件以上であれば登録しない
+            echo "データベースに登録できる件数を超えています。";
+        } else { //DBのデータが4件以内であれば登録実行
+            // DBに新しいデータを登録する処理を行う
+            $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
+
+            $params = [
+                ':name' => $data['name'],
+                ':bet' => $data['bet'],
+                ':credit' => $data['credit'],
+                ':start_date' => $data['startDate'],
+                ':status' => 0,
+            ];
+
+            $db->insert($sql, $params);
+            $db->closeConnection();
+        }
     }
+    // public function addPlayer($data)
+    // {
+
+    //     $db = new DataSource;
+    //     $db->openConnection();
+
+    //     $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
+
+    //     $params = [
+    //         ':name' => $data['name'],
+    //         ':bet' => $data['bet'],
+    //         ':credit' => $data['credit'],
+    //         ':start_date' => $data['startDate'],
+    //         ':status' => 0,
+    //     ];
+
+    //     $db->insert($sql, $params);
+    //     $db->closeConnection();
+    // }
 
     // 退出ボタンが押下されたらプレイヤー物理削除
     public function deletePlayer($playerName)
