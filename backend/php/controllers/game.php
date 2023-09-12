@@ -15,10 +15,9 @@ class GameController
 
     private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
+    # 後で削除が必要かも
     private $playerResultHands = [];
-
     private $dealerHands = [];
-
     private $playerHands = [];
 
 
@@ -45,88 +44,6 @@ class GameController
             require_once SOURCE_PATH . 'views/game.php';
         }
     }
-
-    // public function hit()
-    // {
-    //     $sessionData = [];
-    //     $dbData = [];
-    //     $hitFlag = $_POST['hit'];
-        
-    //     try {
-    //         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $hitFlag === 'hit') {
-
-    //             $sessionData = $_SESSION['player'][0];
-
-    //             $db = new PlayerQuery();
-    //             $dbData = $db->fetchByName($sessionData->name);
-
-    //             if ($sessionData->name === $dbData[0]->name) {
-                    
-    //                 $logFilePath = BASE_LOG_PATH . 'console.log';
-    //                 error_log("hit event start\n", 3, $logFilePath);
-    //                 error_log("hitしたプレイヤー名: " . print_r($sessionData->name, true) . "\n", 3, $logFilePath);
-
-    //                 $hands = [];
-    //                 $cards = [];
-
-    //                 //1. ランダムでmarkとnaumberを生成
-    //                 for ($i = 0; $i < count($this->mark); $i++) {
-    //                     for ($j = 0; $j < count($this->number); $j++) {
-    //                         $card = [
-    //                             'mark' => $this->mark[$i],
-    //                             'number' => $this->number[$j]
-    //                         ];
-
-    //                         $cards[] = $card;
-    //                     }
-    //                 }
-
-    //                 $randKey = array_rand($cards, 1);
-
-    //                 $dealerHands = [
-    //                     $cards[$randKey]
-    //                 ];
-        
-    //                 $playerHands = [
-    //                     $cards[$randKey]
-    //                 ];
-
-    //                 $hands = $this->dealCard();
-
-                    
-    //                 //2. カードマスタから1. のimage_pathを取得
-    //                 try {
-    //                     $db = new CardQuery();
-    //                     // ディーラーの手札
-    //                     $dealerDrowHand = $db->getCard($dealerHands[0]['mark'], $dealerHands[0]['number']);
-    //                     // error_log(print_r($dealerDrowHand, true), 3, $logFilePath);
-
-    //                     // プレイヤーの手札
-    //                     $playerDrowHand = $db->getCard($playerHands[0]['mark'], $playerHands[0]['number']);
-    //                     error_log("引く前の手札\n" . print_r($hands, true), 3, $logFilePath);
-    //                     error_log("新しく引いた手札\n" . print_r($playerDrowHand, true), 3, $logFilePath);
-
-    //                     $this->playerResultHands = array_merge($this->playerHands, $playerDrowHand);
-    //                     error_log("引いた後の手札\n" . print_r($this->playerResultHands, true), 3, $logFilePath);
-
-    //                 } catch (\PDOException $e) {
-    //                     echo $e->getMessage();
-    //                 }
-            
-    //                 $responseData =  [
-    //                     'dealerHands' => $dealerDrowHand,
-    //                     'playerHands' => $playerDrowHand,
-    //                 ];
-
-    //                 header('Content-Type: application/json');
-    //                 echo json_encode($responseData);
-    //             }
-    //         }
-
-    //     } catch (\PDOException $e) {
-    //         echo $e->getMessage();
-    //     }
-    // }
 
 
     /**
@@ -267,16 +184,20 @@ class GameController
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $randKey = array_rand($cards, 2);
-
             $dealerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
-
             $playerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
+            $randKey = array_rand($cards, 1);
+            $dealerHands = [$cards[$randKey]];
+            $playerHands = [$cards[$randKey]];
         }
 
         //2. カードマスタから1. のimage_pathを取得
@@ -295,15 +216,13 @@ class GameController
             echo $e->getMessage();
         }
         
-        $firstHands = [
+        $afterDealHands = [
             'dealerHands' => $this->dealerHands,
             'playerHands' => $this->playerHands,
         ];
         
-        $logFilePath = BASE_LOG_PATH . 'console.log';
         header('Content-Type: application/json');
-        $json = json_encode($firstHands);
-        error_log("\n引いたカード\n" . print_r($json, true), 3, $logFilePath);
+        $json = json_encode($afterDealHands);
         echo $json;
     }
 
