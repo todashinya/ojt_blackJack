@@ -107,6 +107,10 @@ class PlayerQuery
             $db->closeConnection();
         }
     }
+
+    //  現状、DBに登録はされなくなったがgame.phpに遷移されるので
+    //  4件以上にだっだ場合はhome.phpに登録できないメッセージを出すようにする
+
     // public function addPlayer($data)
     // {
 
