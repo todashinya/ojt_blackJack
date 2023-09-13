@@ -11,18 +11,19 @@ use model\PlayerModel;
 
 class GameController
 {
-
     private $mark = ['heart', 'spade', 'club', 'diamond'];
 
     private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-    // 確定した後の手札
-    private $resultHands = [];
+    # 後で削除が必要かも
+    private $playerResultHands = [];
+    private $dealerHands = [];
     private $playerHands = [];
 
 
     public function __construct()
     {
+
     }
 
 
@@ -33,28 +34,15 @@ class GameController
             $result = $db->getPlayer();
 
             // 初期カード配布メソッド
-            $this->dealCard();
             // $this->dealCard();
-
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log(print_r($this->resultHands, true), 3, $logFilePath);
-
-            $this->countHands();
-            $this->countHandsNumber();
+            // $this->countHands();
+            // $this->countHandsNumber();
 
             require_once SOURCE_PATH . 'views/game.php';
         } catch (\PDOException $e) {
             echo $e->getMessage();
             require_once SOURCE_PATH . 'views/game.php';
         }
-    }
-
-    public function hit()
-    {
-
-        //TODO:条件分岐(t_player.name = $_SESSION['name'])
-        $drowCard = $this->dealCard();
-        array_push($this->resultHands[], $drowCard);
     }
 
 
@@ -77,11 +65,6 @@ class GameController
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
 
-                $logFilePath = BASE_LOG_PATH . 'console.log';
-                error_log('stand', 3, $logFilePath);
-                error_log(print_r($sessionData, true), 3, $logFilePath);
-                error_log(print_r($dbData[0], true), 3, $logFilePath);
-
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
@@ -102,19 +85,16 @@ class GameController
      */
     public function surrender()
     {
-        try {
+        $sessionData = [];
+        $dbData = [];
 
+        try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $sessionData = $_SESSION['player'][0];
 
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
-
-                $logFilePath = BASE_LOG_PATH . 'console.log';
-                error_log('stand', 3, $logFilePath);
-                error_log(print_r($sessionData, true), 3, $logFilePath);
-                error_log(print_r($dbData[0], true), 3, $logFilePath);
 
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setSurrenderStatus($sessionData->id);
@@ -130,7 +110,7 @@ class GameController
     public function countHands()
     {
         // 最終決定したハンドの枚数を判定
-        $handCount = count($this->resultHands);
+        $handCount = count($this->playerHands);
 
         // $logFilePath = BASE_LOG_PATH . 'console.log';
         // error_log('手札枚数:' . $handCount, 3, $logFilePath);
@@ -143,18 +123,18 @@ class GameController
         // 最終決定したハンドのnumberの合計値を判定
         $handTotal = 0;
 
-        foreach ($this->resultHands as $cardArray) {
-            foreach ($cardArray as $card) {
-                //J・Q・Kの絵札はすべて10としてカウント
-                if ($card->number >= 11 && $card->number <= 13) {
-                    $card->number = 10;
-                }
+        // foreach ($this->resultHands as $cardArray) {
+        //     foreach ($cardArray as $card) {
+        //         //J・Q・Kの絵札はすべて10としてカウント
+        //         if ($card->number >= 11 && $card->number <= 13) {
+        //             $card->number = 10;
+        //         }
 
-                //TODO Aを1として扱うか11として扱うか
+        //         //TODO Aを1として扱うか11として扱うか
 
-                $handTotal += $card->number;
-            }
-        }
+        //         $handTotal += $card->number;
+        //     }
+        // }
 
         // $logFilePath = BASE_LOG_PATH . 'console.log';
         // error_log('手札合計値:' . $handTotal, 3, $logFilePath);
@@ -167,6 +147,7 @@ class GameController
         // ディーラーよりハンド合計値が低い場合は、プレイヤーの負け
         // ディーラーのハンド合計値と同じ場合は引き分け
         // ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
+
     }
 
     public function liquidateBetAmount()
@@ -180,13 +161,14 @@ class GameController
      * 処理概要
      * 1. ランダムでmarkとnaumberを生成
      * 2. カードマスタから1. のimage_pathを取得
-     * @return array $resultHands（手札の配列）
+     * @return array
      */
-    private function dealCard()
+    public function dealCard()
     {
-
         $hands = [];
         $cards = [];
+        $sessionData = [];
+        $dbData = [];
 
         //1. ランダムでmarkとnaumberを生成
         for ($i = 0; $i < count($this->mark); $i++) {
@@ -202,55 +184,48 @@ class GameController
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $randKey = array_rand($cards, 2);
-
-            $hands = [
+            $dealerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $randKey = array_rand($cards, 2);
-
             $playerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["hit"] == "hit") {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
-
-            // $logFilePath = BASE_LOG_PATH . 'console.log';
-            // error_log('hit', 3, $logFilePath);
-
-            $drowHands = [
-                $cards[$randKey],
-            ];
-
-            $hands = array_merge($hands, $drowHands);
+            $dealerHands = [$cards[$randKey]];
+            $playerHands = [$cards[$randKey]];
         }
-
 
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
-            // ディーラー
-            foreach ($hands as $hand) {
-                $this->resultHands[] = $db->getCard($hand['mark'], $hand['number']);
+            // ディーラーの手札
+            foreach ($dealerHands as $hand) {
+                $this->dealerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
-            // プレイヤー１
+            // プレイヤーの手札
             foreach ($playerHands as $hand) {
                 $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
-
-        return [
-            'dealerHands' => $this->resultHands,
+        
+        $afterDealHands = [
+            'dealerHands' => $this->dealerHands,
             'playerHands' => $this->playerHands,
         ];
+        
+        header('Content-Type: application/json');
+        $json = json_encode($afterDealHands);
+        echo $json;
     }
+
 
     /** 
      * DBプレイヤー削除
@@ -267,8 +242,6 @@ class GameController
                 echo 'SESSIONがありません';
                 return false;
             }
-            // $logFilePath = BASE_LOG_PATH . 'console.log';
-            // error_log(print_r($playerName, true), 3, $logFilePath);
 
             $db = new PlayerQuery();
             $db->deletePlayer($playerName);
