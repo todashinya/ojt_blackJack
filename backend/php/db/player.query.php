@@ -89,10 +89,9 @@ class PlayerQuery
 
         $row = $result[0]['COUNT(id)']; // クエリの結果から値を取得
 
-        if ($row >= 4) { //DBのデータが4件以上であれば登録しない
+        if ($row >= 1) {
             echo "データベースに登録できる件数を超えています。";
-        } else { //DBのデータが4件以内であれば登録実行
-            // DBに新しいデータを登録する処理を行う
+        } else {
             $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
 
             $params = [

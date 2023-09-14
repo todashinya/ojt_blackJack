@@ -17,16 +17,8 @@ require_once SOURCE_PATH . 'partials/header.php';
             </div>
             <ul class="dealer">
                 <li>
-                    <div class="img card-back dealer">
-                        <img src="/img/img_ura.png" alt="トランプカード裏">
-                    </div>
-                    <?php foreach ($this->dealerHands as $handArray) : ?>
-                        <?php foreach ($handArray as $hand) : ?>
-                            <div class="img dealer">
-                                <img src="<?php echo $hand->image_path; ?>">
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
+                    <div class="img card-back"></div>
+                    <div class="img dealer-hand-area"></div>
                 </li>
             </ul>
             <ul class="player">

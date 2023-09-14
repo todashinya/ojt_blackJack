@@ -23,7 +23,6 @@ class GameController
 
     public function __construct()
     {
-
     }
 
 
@@ -183,14 +182,14 @@ class GameController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $randKey = array_rand($cards, 2);
+            $randKey = array_rand($cards, 4);
             $dealerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
             $playerHands = [
-                $cards[$randKey[0]],
-                $cards[$randKey[1]],
+                $cards[$randKey[2]],
+                $cards[$randKey[3]],
             ];
         }
 
@@ -211,16 +210,15 @@ class GameController
             foreach ($playerHands as $hand) {
                 $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
-        
+
         $afterDealHands = [
             'dealerHands' => $this->dealerHands,
             'playerHands' => $this->playerHands,
         ];
-        
+
         header('Content-Type: application/json');
         $json = json_encode($afterDealHands);
         echo $json;

@@ -34,6 +34,7 @@ $(document).ready(function () {
 
   // ajax処理
   var g_playerHands = [];
+  var g_dealerHands = [];
 
   $.ajax({
     type: 'GET',
@@ -43,6 +44,7 @@ $(document).ready(function () {
   }).done(function (response) {
 
     g_playerHands = response.playerHands;
+    g_dealerHands = response.dealerHands;
 
     $.each(response.playerHands, function(i, playerHands) {
       $.each(playerHands, function(i, playerHand) {
@@ -51,12 +53,31 @@ $(document).ready(function () {
         $(".img.hand-area").append(imgElement);
       });
     });
+    
+    var firstCard = true;
+    $.each(response.dealerHands, function(i, dealerHands) {
+      $.each(dealerHands, function(i, dealerHand) {
+        var imgElement = $("<img>");
+        if (firstCard) {
+          // 最初のカードは裏トランプの画像を設定
+          imgElement.attr("src", "/img/img_ura.png");
+          $(".img.card-back").append(imgElement);
+          firstCard = false; // 最初のカードを処理したらフラグを更新
+      } else {
+          // それ以外のカードは通常のトランプ画像を設定
+          imgElement.attr("src", dealerHand.image_path);
+          $(".img.dealer-hand-area").append(imgElement);
+      }
+      
+      });
+    });
+    
     console.log(g_playerHands);
+    console.log(g_dealerHands);
 
   }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
   });
-
 
   // HITボタンがクリックされたとき
   $(".hit").on("click", function () {
