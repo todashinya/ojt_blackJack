@@ -31,13 +31,8 @@ class GameController
         try {
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
-
-            // 初期カード配布メソッド
-            // $this->dealCard();
-            // $this->countHands();
-            // $this->countHandsNumber();
-
             require_once SOURCE_PATH . 'views/game.php';
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             require_once SOURCE_PATH . 'views/game.php';
@@ -55,11 +50,13 @@ class GameController
     {
         $sessionData = [];
         $dbData = [];
+        $hands = [];
 
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $sessionData = $_SESSION['player'][0];
+                $hands = $_POST;
 
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
@@ -67,11 +64,17 @@ class GameController
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
+
+                $logFilePath = BASE_LOG_PATH . 'console.log';
+                error_log("start count hands and count num\n", 3, $logFilePath);
+
+                $this->countHands($hands);
+                $this->countHandsNumber($hands);
             }
-            return true;
+            // return true;
         } catch (\PDOException $e) {
             echo $e->getMessage();
-            return false;
+            // return false;
         }
     }
 
@@ -88,6 +91,7 @@ class GameController
         $dbData = [];
 
         try {
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $sessionData = $_SESSION['player'][0];
@@ -100,44 +104,67 @@ class GameController
                 }
             }
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
         }
     }
 
-    public function countHands()
+
+    // 最終決定したハンドの枚数を判定
+    private function countHands($hands)
     {
-        // 最終決定したハンドの枚数を判定
-        $handCount = count($this->playerHands);
+        if(isset($hands['playerHands'])) {
 
-        // $logFilePath = BASE_LOG_PATH . 'console.log';
-        // error_log('手札枚数:' . $handCount, 3, $logFilePath);
+            $playerHandsCount = count($hands['playerHands']);
+            $playerHands = $hands['playerHands'];
 
-        // return $handCount;
+            foreach ($playerHands as $handArray) {
+                foreach ($handArray as $hand) {
+                    //J・Q・Kの絵札はすべて10としてカウント
+                    if ($hand['number'] >= 11 && $hand['number'] <= 13) {
+                        $hand['number'] = 10;
+                    }
+                    $playerHandsTotal += $hand['number'];
+                }
+            }
+
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log('プレイヤー手札枚数:' . $playerHandsCount . "\n", 3, $logFilePath);
+            error_log('プレイヤー手札合計値:' . $playerHandsTotal . "\n", 3, $logFilePath);
+        }
+
+        if(isset($hands['dealerHands'])) {
+
+            $dealerHandsCount = count($hands['dealerHands']);
+            $dealerHands = $hands['dealerHands'];
+
+            foreach ($dealerHands as $handArray) {
+                foreach ($handArray as $hand) {
+                    //J・Q・Kの絵札はすべて10としてカウント
+                    if ($hand['number'] >= 11 && $hand['number'] <= 13) {
+                        $hand['number'] = 10;
+                    }
+                    $dealerHandsTotal += $hand['number'];
+                }
+            }
+
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log('ディーラー手札枚数:' . $dealerHandsCount . "\n", 3, $logFilePath);
+            error_log('ディーラー手札合計値:' . $dealerHandsTotal . "\n", 3, $logFilePath);
+        }
+
+        return $handsCount = [
+            'playerHandsCount' => $playerHandsCount,
+            'dealerHandsCount' => $dealerHandsCount,
+        ];
     }
 
-    public function countHandsNumber()
+
+    // 最終決定したハンドのnumberの合計値を判定
+    private function countHandsNumber($hands)
     {
-        // 最終決定したハンドのnumberの合計値を判定
-        $handTotal = 0;
-
-        // foreach ($this->resultHands as $cardArray) {
-        //     foreach ($cardArray as $card) {
-        //         //J・Q・Kの絵札はすべて10としてカウント
-        //         if ($card->number >= 11 && $card->number <= 13) {
-        //             $card->number = 10;
-        //         }
-
-        //         //TODO Aを1として扱うか11として扱うか
-
-        //         $handTotal += $card->number;
-        //     }
-        // }
-
-        // $logFilePath = BASE_LOG_PATH . 'console.log';
-        // error_log('手札合計値:' . $handTotal, 3, $logFilePath);
-
     }
 
     public function checkWinOrLose()

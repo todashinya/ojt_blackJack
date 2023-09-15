@@ -76,8 +76,6 @@ $(document).ready(function () {
     // var imgNewCard = $("<img>");
     // imgNewCard.attr("src", newCard.image_path); 
     // $(".img.dealer-hand-area").append(imgNewCard); 
-
-
     
     console.log(g_playerHands);
     console.log(g_dealerHands);
@@ -121,13 +119,42 @@ $(document).ready(function () {
   // STANDボタンがクリックされたとき
   // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".stand").on("click", function () {
+
+    // var total = [];
+    // var playerHandsTotal = 0;
+
+    // $.each(g_playerHands, function(i, playerHands) {
+    //   $.each(playerHands, function(i, playerHand) {
+    //     total.push(playerHand.number);
+    //   });
+    // });
+
+    // $.each(total, function(index, value) {
+    //   if (value >= 11 && value <= 13) {
+    //     value = 10;
+    //   }
+    //   playerHandsTotal += value;
+    // });
+
+  
+    // console.log(playerHandsTotal);
+
+    var requestData = {
+      playerHands : g_playerHands,
+      dealerHands : g_dealerHands
+    };
+
+    console.log(requestData);
+      
     $.ajax({
       type: 'POST',
       url: '/game/stand',
-    }).done(function (data) {
+      data: requestData
+    }).done(function (response) {
       // 成功したら以下の処理を行う
+      // alert("Ajax通信が成功しました");
 
-    }).fail(function (data) {
+    }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });

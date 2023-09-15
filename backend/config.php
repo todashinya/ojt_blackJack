@@ -14,4 +14,5 @@ define('SOURCE_PATH', __DIR__ . '/php/');
  * 配列は以下のように指定する
  * $logFilePath = BASE_LOG_PATH . 'console.log';
  * error_log(print_r($this->resultHands, true), 3, $logFilePath);
+ * print_r の第二引数にtrueを設定すると配列を表示できる
  */
