@@ -203,7 +203,7 @@ class GameController
                 $newCard = $cards[$randKeys];
                 $dealerHands[] = $newCard;
 
-                // カードを引くたびにディーラーの手札を再計算し17以上になったか計算するため
+                // カードを引くたびにディーラーの手札を再計算し17になったか計算するため
                 // ディーラーの手札の合計を再計算
                 $dealerTotal = $this->calculateHand($dealerHands);
             }
