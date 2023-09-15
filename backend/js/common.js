@@ -64,15 +64,20 @@ $(document).ready(function () {
           imgElement.attr("src", "/img/img_ura.png");
           $(".img.card-back").append(imgElement);
           firstCard = false; // 最初のカードを処理したらフラグを更新
-      } else {
-          // それ以外のカードは通常のトランプ画像を設定
-          imgElement.attr("src", dealerHand.image_path);
-          $(".img.dealer-hand-area").append(imgElement);
-      }
-      imgNewCard.attr("src", newCard.image_path);
-      $(".img.dealer-hand-area").append(imgNewCard)
+        } else {
+            // それ以外のカードは通常のトランプ画像を設定
+            imgElement.attr("src", dealerHand.image_path);
+            $(".img.dealer-hand-area").append(imgElement);
+        }
       });
     });
+
+    //ディーラーのアクション処理時、新しいトランプを画像表示
+    // var imgNewCard = $("<img>");
+    // imgNewCard.attr("src", newCard.image_path); 
+    // $(".img.dealer-hand-area").append(imgNewCard); 
+
+
     
     console.log(g_playerHands);
     console.log(g_dealerHands);
