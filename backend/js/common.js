@@ -58,6 +58,7 @@ $(document).ready(function () {
     $.each(response.dealerHands, function(i, dealerHands) {
       $.each(dealerHands, function(i, dealerHand) {
         var imgElement = $("<img>");
+        var imgNewCard = $("<img>");
         if (firstCard) {
           // 最初のカードは裏トランプの画像を設定
           imgElement.attr("src", "/img/img_ura.png");
@@ -68,7 +69,8 @@ $(document).ready(function () {
           imgElement.attr("src", dealerHand.image_path);
           $(".img.dealer-hand-area").append(imgElement);
       }
-      
+      imgNewCard.attr("src", newCard.image_path);
+      $(".img.dealer-hand-area").append(imgNewCard)
       });
     });
     

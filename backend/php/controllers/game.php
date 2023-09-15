@@ -191,7 +191,24 @@ class GameController
                 $cards[$randKey[2]],
                 $cards[$randKey[3]],
             ];
+
+            // calculateHandを使用してディーラーの手札の合計を計算
+            $dealerTotal = $this->calculateHand($dealerHands);
+
+            // $logFilePath = BASE_LOG_PATH . 'console.log';
+            // error_log('ディーラー手札合計値:' . $dealerTotal, 3, $logFilePath);
+
+            while ($dealerHands < 17) {
+                $randKeys = array_rand($cards, 1);
+                $newCard = $cards[$randKeys];
+                $dealerHands[] = $newCard;
+
+                // カードを引くたびにディーラーの手札を再計算し17以上になったか計算するため
+                // ディーラーの手札の合計を再計算
+                $dealerTotal = $this->calculateHand($dealerHands);
+            }
         }
+
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
@@ -248,5 +265,29 @@ class GameController
             echo $e->getMessage();
             return false;
         }
+    }
+
+
+    public function calculateHand($dealerHands)
+    {
+        $value = 0;
+        $ace = 0;
+
+        foreach ($dealerHands as $card) {
+            $num = $card['number'];
+
+            // エースの処理
+            if ($num === 'a') {
+                // エースを11で設定
+                $ace++;
+                $value += 11;
+            } elseif (is_numeric($num)) {
+                $value += intval($num);
+            } else {
+                $value += 10;
+            }
+        }
+        // 合計値を計算して返す
+        return $value;
     }
 }
