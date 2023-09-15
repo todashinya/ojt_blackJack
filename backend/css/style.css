@@ -471,9 +471,6 @@ input, select {
     justify-content: center;
     list-style: none;
   }
-  #game .dealer .img {
-    margin-left: -60px;
-  }
   #game .dealer .img img {
     max-width: 150px;
     width: 100%;

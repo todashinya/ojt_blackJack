@@ -8,7 +8,7 @@ require_once SOURCE_PATH . 'partials/header.php';
             <h1>BLACKJACK</h1>
             <form id="player-form">
                 <div class="name">
-                    <input type="text" value="" name="name" id="textbox" placeholder="プレイヤー名を入力してください。">
+                    <input type="text" value="" name="name" id="textbox" placeholder="プレイヤー名を入力してください。" required>
                 </div>
                 <div id="play-btn" class="btn js-open">
                     <a href="" class="play">PLAY</a>
@@ -63,7 +63,7 @@ require_once SOURCE_PATH . 'partials/header.php';
                 <input type="hidden" name="credit" id="new-credit">
             </div>
             <div id="start-btn" class="btn">
-                <input type="hidden" name="name" id="player-name">
+                <input type="hidden" name="name" id="player-name" required>
                 <input type="button" value="START" class="start">
             </div>
         </div>
