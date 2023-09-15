@@ -16,7 +16,7 @@ class GameController
     private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
     # 後で削除が必要かも
-    private $playerResultHands = [];
+    private $resultHands = [];
     private $dealerHands = [];
     private $playerHands = [];
 
@@ -65,16 +65,16 @@ class GameController
                     $db->setStandStatus($sessionData->id);
                 }
 
-                $logFilePath = BASE_LOG_PATH . 'console.log';
-                error_log("start count hands and count num\n", 3, $logFilePath);
-
-                $this->countHands($hands);
-                $this->countHandsNumber($hands);
+                // $this->countHands($hands);
+                // $this->countHandsNumber($hands);
+                $this->checkWinOrLose($hands);
             }
-            // return true;
+
+            return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
-            // return false;
+            return false;
         }
     }
 
@@ -118,6 +118,7 @@ class GameController
         if(isset($hands['playerHands'])) {
 
             $playerHandsCount = count($hands['playerHands']);
+            $playerHandsTotal = 0;
             $playerHands = $hands['playerHands'];
 
             foreach ($playerHands as $handArray) {
@@ -129,15 +130,12 @@ class GameController
                     $playerHandsTotal += $hand['number'];
                 }
             }
-
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log('プレイヤー手札枚数:' . $playerHandsCount . "\n", 3, $logFilePath);
-            error_log('プレイヤー手札合計値:' . $playerHandsTotal . "\n", 3, $logFilePath);
         }
 
         if(isset($hands['dealerHands'])) {
 
             $dealerHandsCount = count($hands['dealerHands']);
+            $dealerHandsTotal = 0;
             $dealerHands = $hands['dealerHands'];
 
             foreach ($dealerHands as $handArray) {
@@ -149,30 +147,77 @@ class GameController
                     $dealerHandsTotal += $hand['number'];
                 }
             }
-
-            $logFilePath = BASE_LOG_PATH . 'console.log';
-            error_log('ディーラー手札枚数:' . $dealerHandsCount . "\n", 3, $logFilePath);
-            error_log('ディーラー手札合計値:' . $dealerHandsTotal . "\n", 3, $logFilePath);
         }
 
-        return $handsCount = [
+        return $resultHands = [
             'playerHandsCount' => $playerHandsCount,
+            'playerHandsTotal' => $playerHandsTotal,
             'dealerHandsCount' => $dealerHandsCount,
+            'dealerHandsTotal' => $dealerHandsTotal,
         ];
     }
 
 
     // 最終決定したハンドのnumberの合計値を判定
-    private function countHandsNumber($hands)
-    {
-    }
+    // private function countHandsNumber($hands)
+    // {
+    // }
 
-    public function checkWinOrLose()
+    /**
+     * 勝敗判定を行うメソッド
+     * ディーラーよりハンド合計値が低い場合は、プレイヤーの負け
+     * ディーラーのハンド合計値と同じ場合は引き分け
+     * ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
+     * @param array $hands:[playerとdealerの手札の枚数と合計値の配列]
+     * @return $resultCode:[1]プレイヤー勝利 [2]引き分け [3]ディーラー勝利 [99]例外終了
+     * @author todashinya <s.toda@jin-it.co.jp>
+     */
+
+    public function checkWinOrLose($hands)
     {
-        // 勝敗判定を行う
-        // ディーラーよりハンド合計値が低い場合は、プレイヤーの負け
-        // ディーラーのハンド合計値と同じ場合は引き分け
-        // ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
+        $resultHands = $this->countHands($hands);
+        $resultCode = 0;
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r($resultHands, true), 3, $logFilePath);
+
+        try {
+
+            if($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal']) {
+                error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
+                $resultCode = 1;
+                //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
+    
+            } else if ($resultHands['playerHandsTotal'] === $resultHands['dealerHandsTotal']) {
+                if($resultHands['playerHandsCount'] > $resultHands['dealerHandsCount']) {
+                    error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
+                    $resultCode = 1;
+                    //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
+
+                } else if (($resultHands['playerHandsCount'] === $resultHands['dealerHandsCount'])) {
+                    error_log("引き分けです\n", 3, $logFilePath);
+                    $resultCode = 2;
+                    //プレイヤーのBET を CREDIT に追加し　BETを0でUPDATE
+
+                } else {
+                    error_log("ディーラーの勝ちです\n", 3, $logFilePath);
+                    $resultCode = 3;
+                    //プレイヤーのBETを0でUPDATE
+                }
+    
+            } else  {
+                error_log("ディーラーの勝ちです\n", 3, $logFilePath);
+                $resultCode = 3;
+                //プレイヤーのBETを0でUPDATE
+            }
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+            $resultCode = 99;
+        }
+
+        error_log($resultCode, 3, $logFilePath);
+        return $resultCode;
 
     }
 
