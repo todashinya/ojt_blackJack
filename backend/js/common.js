@@ -117,27 +117,8 @@ $(document).ready(function () {
 
 
   // STANDボタンがクリックされたとき
-  // g_playerHandsの配列の数とnumberの合計値をPOSTする
+  // g_playerHandsとg_dealerHandsをPOSTする
   $(".stand").on("click", function () {
-
-    // var total = [];
-    // var playerHandsTotal = 0;
-
-    // $.each(g_playerHands, function(i, playerHands) {
-    //   $.each(playerHands, function(i, playerHand) {
-    //     total.push(playerHand.number);
-    //   });
-    // });
-
-    // $.each(total, function(index, value) {
-    //   if (value >= 11 && value <= 13) {
-    //     value = 10;
-    //   }
-    //   playerHandsTotal += value;
-    // });
-
-  
-    // console.log(playerHandsTotal);
 
     var requestData = {
       playerHands : g_playerHands,
@@ -151,8 +132,8 @@ $(document).ready(function () {
       url: '/game/stand',
       data: requestData
     }).done(function (response) {
-      // 成功したら以下の処理を行う
-      // alert("Ajax通信が成功しました");
+
+      
 
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
