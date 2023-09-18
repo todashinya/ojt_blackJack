@@ -134,7 +134,6 @@ $(document).ready(function () {
     }).done(function (response) {
 
       
-
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
@@ -149,11 +148,17 @@ $(document).ready(function () {
       url: '/game/surrender'
     }).done(function (data) {
       // 成功したら以下の処理を行う
+      // modalを表示する
+      // ゲームに負けてしまいますがよろしいですか?
+      // YES or NO button
+      // YESの場合ゲーム終了しBET画面へ遷移
+      // Noの場合はモーダルを非表示にしゲームに戻る
 
     }).fail(function (data) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });
+
 
   // STARTボタンがクリックされたときの処理
   $(".start").on("click", function() {
