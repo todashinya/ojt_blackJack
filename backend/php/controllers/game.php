@@ -51,27 +51,29 @@ class GameController
         $sessionData = [];
         $dbData = [];
         $hands = [];
-
+    
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    
                 $sessionData = $_SESSION['player'][0];
                 $hands = $_POST;
-
+    
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
-
+    
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
-
-                // $this->countHands($hands);
-                // $this->countHandsNumber($hands);
-                $this->checkWinOrLose($hands);
+    
+                $resultCode = $this->checkWinOrLose($hands);
+    
+                if(isset($resultCode)) {
+                    $this->liquidateBetAmount($resultCode);
+                }
             }
-
+    
             return true;
-
+    
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -102,6 +104,14 @@ class GameController
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setSurrenderStatus($sessionData->id);
                 }
+
+                // updataBetAndCredit()に渡すsurrender時のresultCode
+                $resultCode = 4;
+    
+                if(isset($resultCode)) {
+                    $this->liquidateBetAmount($resultCode);
+                    // プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
+                }
             }
             return true;
 
@@ -128,6 +138,9 @@ class GameController
                         $hand['number'] = 10;
                     }
                     $playerHandsTotal += $hand['number'];
+
+                    #TODO hands合計値が21の場合t_player.status=20にする処理
+                    // if($hand['number'] === 21) { updataPlayerStatus }
                 }
             }
         }
@@ -145,6 +158,7 @@ class GameController
                         $hand['number'] = 10;
                     }
                     $dealerHandsTotal += $hand['number'];
+
                 }
             }
         }
@@ -169,11 +183,11 @@ class GameController
      * ディーラーのハンド合計値と同じ場合は引き分け
      * ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
      * @param array $hands:[playerとdealerの手札の枚数と合計値の配列]
-     * @return $resultCode:[1]プレイヤー勝利 [2]引き分け [3]ディーラー勝利 [99]例外終了
+     * @return $resultCode:[1]プレイヤー勝利 [2]引き分け [3]ディーラー勝利 [4]サレンダーによるディーラーの勝利 [99]例外終了
      * @author todashinya <s.toda@jin-it.co.jp>
      */
 
-    public function checkWinOrLose($hands)
+    private function checkWinOrLose($hands)
     {
         $resultHands = $this->countHands($hands);
         $resultCode = 0;
@@ -186,28 +200,33 @@ class GameController
             if($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal']) {
                 error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 1;
+                $message = "プレイヤーの勝ちです";
                 //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
     
             } else if ($resultHands['playerHandsTotal'] === $resultHands['dealerHandsTotal']) {
                 if($resultHands['playerHandsCount'] > $resultHands['dealerHandsCount']) {
                     error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                     $resultCode = 1;
+                    $message = "プレイヤーの勝ちです";
                     //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
 
                 } else if (($resultHands['playerHandsCount'] === $resultHands['dealerHandsCount'])) {
                     error_log("引き分けです\n", 3, $logFilePath);
                     $resultCode = 2;
+                    $message = "引き分けです";
                     //プレイヤーのBET を CREDIT に追加し　BETを0でUPDATE
 
                 } else {
                     error_log("ディーラーの勝ちです\n", 3, $logFilePath);
                     $resultCode = 3;
+                    $message = "ディーラーの勝ちです";
                     //プレイヤーのBETを0でUPDATE
                 }
     
-            } else  {
+            } else {
                 error_log("ディーラーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 3;
+                $message = "ディーラーの勝ちです";
                 //プレイヤーのBETを0でUPDATE
             }
 
@@ -216,14 +235,35 @@ class GameController
             $resultCode = 99;
         }
 
-        error_log($resultCode, 3, $logFilePath);
         return $resultCode;
 
     }
 
-    public function liquidateBetAmount()
+
+    /**
+     * プレイヤーの勝敗($resultCode)により、BETの分配を行うメソッド
+     * 分配のルール
+     * $resultCode:[1]  プレイヤーのBET * 3 をCREDITに追加し BETを0でUPDATE
+     * $resultCode:[2]  プレイヤーのBET を CREDIT に追加し BETを0でUPDATE
+     * $resultCode:[3]  プレイヤーのBETを0でUPDATE
+     * $resultCode:[4]  プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
+     * $resultCode:[99] 例外終了のためrollback
+     * @param int $resultCode:[1]プレイヤー勝利 [2]引き分け [3]ディーラー勝利 [4]サレンダーによるディーラーの勝利 [99]例外終了
+     * @return void
+     * @author todashinya <s.toda@jin-it.co.jp>
+     */
+    private function liquidateBetAmount($resultCode)
     {
-        // BET額に応じて清算を行う
+        $id = isset($_SESSION['player'][0]->id) ? $_SESSION['player'][0]->id : '';
+
+        $db = new GameQuery();
+        $result = $db->updataBetAndCredit($id, $resultCode);
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
+        error_log(print_r($id, true), 3, $logFilePath);
+        error_log(print_r($resultCode, true), 3, $logFilePath);
+        error_log($result, 3, $logFilePath);
     }
 
 
@@ -232,7 +272,8 @@ class GameController
      * 処理概要
      * 1. ランダムでmarkとnaumberを生成
      * 2. カードマスタから1. のimage_pathを取得
-     * @return array
+     * @return array $afterDealHands[dealerHands] : ディーラーの手札情報 / [playerHands] : プレイヤーの手札情報
+     * @author todashinya <s.toda@jin-it.co.jp>
      */
     public function dealCard()
     {
