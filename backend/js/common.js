@@ -132,7 +132,7 @@ $(document).ready(function () {
       url: '/game/stand',
       data: requestData
     }).done(function (response) {
-
+      
       
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
