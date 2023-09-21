@@ -29,6 +29,7 @@ class GameController
     public function index()
     {
         try {
+
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
             require_once SOURCE_PATH . 'views/game.php';
@@ -45,12 +46,16 @@ class GameController
      * 処理概要
      * 1. スタンドボタンクリック時、t_playerのstatusに1をセット
      * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
+     * @author todashinya <s.toda@jin-it.co.jp>
      */
     public function stand()
     {
         $sessionData = [];
         $dbData = [];
         $hands = [];
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r("stand start\n", true), 3, $logFilePath);
     
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,7 +73,7 @@ class GameController
                 $resultCode = $this->checkWinOrLose($hands);
     
                 if(isset($resultCode)) {
-                    $this->liquidateBetAmount($resultCode);
+                    $liquidation = $this->liquidateBetAmount($resultCode);
                 }
             }
     
@@ -82,13 +87,18 @@ class GameController
 
 
     /**
-     * サレンダーメソッド
+     * サレンダーするメソッド
      * 処理概要
      * 1. サレンダーボタンクリック時、t_playerのstatusに2をセット
      * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
+     * @author todashinya <s.toda@jin-it.co.jp>
      */
     public function surrender()
     {
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r("surrender start\n", true), 3, $logFilePath);
+
         $sessionData = [];
         $dbData = [];
 
@@ -122,7 +132,16 @@ class GameController
     }
 
 
-    // 最終決定したハンドの枚数を判定
+
+
+    /**
+     * 最終決定したハンドの枚数と合計値を判定するメソッド
+     * 
+     * @param array $hands
+     * @return array $resultHands['playerHandsCount'] : プレイヤーの手札枚数 / ['playerHandsTotal'] : プレイヤーの手札合計値
+     * @return array $resultHands['dealerHandsCount'] : ディーラーの手札枚数 / ['dealerHandsTotal'] : ディーラーの手札合計値
+     * @author todashinya <s.toda@jin-it.co.jp>
+     */
     private function countHands($hands)
     {
         if(isset($hands['playerHands'])) {
@@ -130,6 +149,21 @@ class GameController
             $playerHandsCount = count($hands['playerHands']);
             $playerHandsTotal = 0;
             $playerHands = $hands['playerHands'];
+
+            $sessionData = [];
+            $dbData = [];
+
+
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+
+            $sessionData = $_SESSION['player'][0];
+            $db = new PlayerQuery();
+            $dbData = $db->fetchByName($sessionData->name);
+
+
+            error_log(print_r($sessionData, true), 3, $logFilePath);
+            error_log(print_r($dbData, true), 3, $logFilePath);
+            
 
             foreach ($playerHands as $handArray) {
                 foreach ($handArray as $hand) {
@@ -139,8 +173,21 @@ class GameController
                     }
                     $playerHandsTotal += $hand['number'];
 
-                    #TODO hands合計値が21の場合t_player.status=20にする処理
-                    // if($hand['number'] === 21) { updataPlayerStatus }
+                    error_log(print_r($playerHandsTotal . "\n", true), 3, $logFilePath);
+
+                    if($playerHandsTotal === 21) { 
+                        #TODO hands合計値が21の場合t_player.status=20にする処理
+                        if ($sessionData->name === $dbData[0]->name) {
+                            $db->setBlackjackStatus($sessionData->id);
+                        }
+                        error_log(print_r("ブラックジャックです\n", true), 3, $logFilePath);
+                    } else if($playerHandsTotal > 21) {
+                        #TODO hands合計値が21より大きい場合t_player.status=10にする処理
+                        if ($sessionData->name === $dbData[0]->name) {
+                            $db->setBurstStatus($sessionData->id);
+                        }
+                        error_log(print_r("バーストです\n", true), 3, $logFilePath);
+                    }
                 }
             }
         }
@@ -172,16 +219,17 @@ class GameController
     }
 
 
-    // 最終決定したハンドのnumberの合計値を判定
-    // private function countHandsNumber($hands)
-    // {
-    // }
 
     /**
      * 勝敗判定を行うメソッド
+     * 勝敗条件
      * ディーラーよりハンド合計値が低い場合は、プレイヤーの負け
      * ディーラーのハンド合計値と同じ場合は引き分け
      * ディーラーよりハンド合計値が高い場合は、プレイヤーの勝ち
+     * 
+     * 関連メソッド
+     * db/game.query.php > updataBetAndCredit()
+     * 
      * @param array $hands:[playerとdealerの手札の枚数と合計値の配列]
      * @return $resultCode:[1]プレイヤー勝利 [2]引き分け [3]ディーラー勝利 [4]サレンダーによるディーラーの勝利 [99]例外終了
      * @author todashinya <s.toda@jin-it.co.jp>
@@ -201,33 +249,28 @@ class GameController
                 error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 1;
                 $message = "プレイヤーの勝ちです";
-                //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
     
             } else if ($resultHands['playerHandsTotal'] === $resultHands['dealerHandsTotal']) {
                 if($resultHands['playerHandsCount'] > $resultHands['dealerHandsCount']) {
                     error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                     $resultCode = 1;
                     $message = "プレイヤーの勝ちです";
-                    //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
 
                 } else if (($resultHands['playerHandsCount'] === $resultHands['dealerHandsCount'])) {
                     error_log("引き分けです\n", 3, $logFilePath);
                     $resultCode = 2;
                     $message = "引き分けです";
-                    //プレイヤーのBET を CREDIT に追加し　BETを0でUPDATE
 
                 } else {
                     error_log("ディーラーの勝ちです\n", 3, $logFilePath);
                     $resultCode = 3;
                     $message = "ディーラーの勝ちです";
-                    //プレイヤーのBETを0でUPDATE
                 }
     
             } else {
                 error_log("ディーラーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 3;
                 $message = "ディーラーの勝ちです";
-                //プレイヤーのBETを0でUPDATE
             }
 
         } catch(\PDOException $e) {
@@ -236,13 +279,12 @@ class GameController
         }
 
         return $resultCode;
-
     }
 
 
     /**
      * プレイヤーの勝敗($resultCode)により、BETの分配を行うメソッド
-     * 分配のルール
+     * 分配条件
      * $resultCode:[1]  プレイヤーのBET * 3 をCREDITに追加し BETを0でUPDATE
      * $resultCode:[2]  プレイヤーのBET を CREDIT に追加し BETを0でUPDATE
      * $resultCode:[3]  プレイヤーのBETを0でUPDATE
@@ -254,16 +296,25 @@ class GameController
      */
     private function liquidateBetAmount($resultCode)
     {
-        $id = isset($_SESSION['player'][0]->id) ? $_SESSION['player'][0]->id : '';
+        try {
+            $id = isset($_SESSION['player'][0]->id) ? $_SESSION['player'][0]->id : '';
 
-        $db = new GameQuery();
-        $result = $db->updataBetAndCredit($id, $resultCode);
+            $db = new GameQuery();
+            $result = $db->updataBetAndCredit($id, $resultCode);
+    
+            $logFilePath = BASE_LOG_PATH . 'console.log';
+            error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
+            error_log(print_r($id, true), 3, $logFilePath);
+            error_log(print_r($resultCode, true), 3, $logFilePath);
+            error_log($result, 3, $logFilePath);
 
-        $logFilePath = BASE_LOG_PATH . 'console.log';
-        error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
-        error_log(print_r($id, true), 3, $logFilePath);
-        error_log(print_r($resultCode, true), 3, $logFilePath);
-        error_log($result, 3, $logFilePath);
+            return true;
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+        
     }
 
 

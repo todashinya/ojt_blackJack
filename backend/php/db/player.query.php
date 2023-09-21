@@ -77,6 +77,36 @@ class PlayerQuery
     }
 
 
+    public function setBlackjackStatus($id)
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'update t_player set status = 20 where id = :id;';
+
+        $result = $db->update($sql, [':id' => $id], 'cls', 'model\PlayerModel');
+
+        $db->closeConnection();
+
+        return $result;
+    }
+
+
+    public function setBurstStatus($id)
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'update t_player set status = 10 where id = :id;';
+
+        $result = $db->update($sql, [':id' => $id], 'cls', 'model\PlayerModel');
+
+        $db->closeConnection();
+
+        return $result;
+    }
+
+
     // ↓POSTされた内容をDBに登録↓
     public function addPlayer($data)
     {
