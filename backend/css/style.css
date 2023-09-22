@@ -462,10 +462,6 @@ input, select {
     filter: brightness(110%);
     transition: 1s;
   }
-  #game .dealer .card-back img {
-    max-width: 150px;
-    width: 100%;
-  }
   #game .dealer li {
     display: flex;
     justify-content: center;
@@ -474,6 +470,7 @@ input, select {
   #game .dealer .img img {
     max-width: 150px;
     width: 100%;
+    position: relative;
   }
   #game .player {
     padding-top: 340px;

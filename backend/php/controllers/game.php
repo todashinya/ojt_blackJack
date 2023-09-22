@@ -32,7 +32,6 @@ class GameController
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
             require_once SOURCE_PATH . 'views/game.php';
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             require_once SOURCE_PATH . 'views/game.php';
@@ -51,29 +50,28 @@ class GameController
         $sessionData = [];
         $dbData = [];
         $hands = [];
-    
+
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+
                 $sessionData = $_SESSION['player'][0];
                 $hands = $_POST;
-    
+
                 $db = new PlayerQuery();
                 $dbData = $db->fetchByName($sessionData->name);
-    
+
                 if ($sessionData->name === $dbData[0]->name) {
                     $db->setStandStatus($sessionData->id);
                 }
-    
+
                 $resultCode = $this->checkWinOrLose($hands);
-    
-                if(isset($resultCode)) {
+
+                if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
                 }
             }
-    
+
             return true;
-    
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -107,14 +105,13 @@ class GameController
 
                 // updataBetAndCredit()に渡すsurrender時のresultCode
                 $resultCode = 4;
-    
-                if(isset($resultCode)) {
+
+                if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
                     // プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
                 }
             }
             return true;
-
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -125,7 +122,7 @@ class GameController
     // 最終決定したハンドの枚数を判定
     private function countHands($hands)
     {
-        if(isset($hands['playerHands'])) {
+        if (isset($hands['playerHands'])) {
 
             $playerHandsCount = count($hands['playerHands']);
             $playerHandsTotal = 0;
@@ -145,7 +142,7 @@ class GameController
             }
         }
 
-        if(isset($hands['dealerHands'])) {
+        if (isset($hands['dealerHands'])) {
 
             $dealerHandsCount = count($hands['dealerHands']);
             $dealerHandsTotal = 0;
@@ -158,7 +155,6 @@ class GameController
                         $hand['number'] = 10;
                     }
                     $dealerHandsTotal += $hand['number'];
-
                 }
             }
         }
@@ -197,14 +193,14 @@ class GameController
 
         try {
 
-            if($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal']) {
+            if ($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal']) {
                 error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 1;
                 $message = "プレイヤーの勝ちです";
                 //プレイヤーのBET * 3 をCREDITに追加し　BETを0でUPDATE
-    
+
             } else if ($resultHands['playerHandsTotal'] === $resultHands['dealerHandsTotal']) {
-                if($resultHands['playerHandsCount'] > $resultHands['dealerHandsCount']) {
+                if ($resultHands['playerHandsCount'] > $resultHands['dealerHandsCount']) {
                     error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                     $resultCode = 1;
                     $message = "プレイヤーの勝ちです";
@@ -222,21 +218,18 @@ class GameController
                     $message = "ディーラーの勝ちです";
                     //プレイヤーのBETを0でUPDATE
                 }
-    
             } else {
                 error_log("ディーラーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 3;
                 $message = "ディーラーの勝ちです";
                 //プレイヤーのBETを0でUPDATE
             }
-
-        } catch(\PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
             $resultCode = 99;
         }
 
         return $resultCode;
-
     }
 
 
@@ -263,7 +256,7 @@ class GameController
         error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
         error_log(print_r($id, true), 3, $logFilePath);
         error_log(print_r($resultCode, true), 3, $logFilePath);
-        error_log($result, 3, $logFilePath);
+        // error_log($result, 3, $logFilePath);
     }
 
 
@@ -304,30 +297,19 @@ class GameController
                 $cards[$randKey[2]],
                 $cards[$randKey[3]],
             ];
-
-            // calculateHandを使用してディーラーの手札の合計を計算
-            $dealerTotal = $this->calculateHand($dealerHands);
-
-            // $logFilePath = BASE_LOG_PATH . 'console.log';
-            // error_log('ディーラー手札合計値:' . $dealerTotal, 3, $logFilePath);
-
-            while ($dealerHands < 17) {
-                $randKeys = array_rand($cards, 1);
-                $newCard = $cards[$randKeys];
-                $dealerHands[] = $newCard;
-
-                // カードを引くたびにディーラーの手札を再計算し17になったか計算するため
-                // ディーラーの手札の合計を再計算
-                $dealerTotal = $this->calculateHand($dealerHands);
-            }
         }
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
             $dealerHands = [$cards[$randKey]];
             $playerHands = [$cards[$randKey]];
         }
+
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['stand'] === 'stand') {
+        //     $randKey = array_rand($cards, 1);
+        //     $dealerHands = [$cards[$randKey]];
+        //     $playerHands = [$cards[$randKey]];
+        // }
 
         //2. カードマスタから1. のimage_pathを取得
         try {
@@ -378,29 +360,5 @@ class GameController
             echo $e->getMessage();
             return false;
         }
-    }
-
-
-    public function calculateHand($dealerHands)
-    {
-        $value = 0;
-        $ace = 0;
-
-        foreach ($dealerHands as $card) {
-            $num = $card['number'];
-
-            // エースの処理
-            if ($num === 'a') {
-                // エースを11で設定
-                $ace++;
-                $value += 11;
-            } elseif (is_numeric($num)) {
-                $value += intval($num);
-            } else {
-                $value += 10;
-            }
-        }
-        // 合計値を計算して返す
-        return $value;
     }
 }

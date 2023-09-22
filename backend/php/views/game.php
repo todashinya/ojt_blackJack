@@ -17,7 +17,6 @@ require_once SOURCE_PATH . 'partials/header.php';
             </div>
             <ul class="dealer">
                 <li>
-                    <div class="img card-back"></div>
                     <div class="img dealer-hand-area"></div>
                 </li>
             </ul>
