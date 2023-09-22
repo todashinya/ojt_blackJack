@@ -488,9 +488,7 @@ label img {
         }
     }
     .dealer {
-        .card-back img {
-            max-width: 150px;
-            width: 100%;
+        .dealer-hand-area img{
         }
         li {
             display: flex;
@@ -501,6 +499,7 @@ label img {
             img{
                 max-width: 150px;
                 width: 100%;
+                position: relative;
             }
         }
     }

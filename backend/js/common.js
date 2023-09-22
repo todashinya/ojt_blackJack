@@ -1,3 +1,34 @@
+// ディーラーの手札を処理する関数
+function calculateDealerHands(dealerHands) {
+  var total = 0; // 合計値を初期化
+  var numAces = 0; // エースの数をカウント
+
+  // ディーラーの手札を処理
+  $.each(dealerHands, function (i, dealerHand) {
+    var rank = dealerHand.number;
+    console.log(rank);
+
+    // J、Q、Kの場合、値を10に設定
+    if (rank === 11 || rank === 'q' || rank === 'k') {
+      total += 10;
+    } else if (rank === 'a') { // エースの場合
+      numAces++; // エースの数をカウント
+      total += 11; // 一時的にエースを11として計算
+    } else {
+      total += parseInt(rank);
+    }
+  });
+
+  // エースの処理：合計が21を超えている場合、エースを1として計算
+  while (numAces > 0 && total > 21) {
+    total -= 10;
+    numAces--;
+  }
+
+  return total;
+}
+
+
 $(document).ready(function () {
   // BET、クレジット表示
   $('.coin').click(function () {
@@ -14,10 +45,10 @@ $(document).ready(function () {
     $('#new-credit').val(newCredit);
   });
 
-  // プレイヤー名取得
   $("#start-btn").on("click", function () {
+    // プレイヤー名取得
     var playerName = $("#textbox").val();
-    $("#player-name").val(playerName);
+    $("#player-name").val(playerName);    
   });
 
   // モーダルウィンドウ
@@ -53,32 +84,22 @@ $(document).ready(function () {
         $(".img.hand-area").append(imgElement);
       });
     });
-    
-    var firstCard = true;
+
     $.each(response.dealerHands, function(i, dealerHands) {
       $.each(dealerHands, function(i, dealerHand) {
         var imgElement = $("<img>");
-        var imgNewCard = $("<img>");
-        if (firstCard) {
-          // 最初のカードは裏トランプの画像を設定
-          imgElement.attr("src", "/img/img_ura.png");
-          $(".img.card-back").append(imgElement);
-          firstCard = false; // 最初のカードを処理したらフラグを更新
-        } else {
-            // それ以外のカードは通常のトランプ画像を設定
             imgElement.attr("src", dealerHand.image_path);
             $(".img.dealer-hand-area").append(imgElement);
-        }
       });
     });
-
-    //ディーラーのアクション処理時、新しいトランプを画像表示
-    // var imgNewCard = $("<img>");
-    // imgNewCard.attr("src", newCard.image_path); 
-    // $(".img.dealer-hand-area").append(imgNewCard); 
     
     console.log(g_playerHands);
     console.log(g_dealerHands);
+
+    //ディーラー手札の1枚目に裏トランプカードを被せる
+    var uraCard =  $(".img.dealer-hand-area img").eq(0);
+    uraCard.data('custom-src' , uraCard.attr('src'));
+    uraCard.attr('src' , '../img/img_ura.png');
 
   }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
@@ -119,6 +140,51 @@ $(document).ready(function () {
   // STANDボタンがクリックされたとき
   // g_playerHandsとg_dealerHandsをPOSTする
   $(".stand").on("click", function () {
+    //処理開始
+    //ディーラーの手札オープン
+    var uraCard =  $(".img.dealer-hand-area img").eq(0);
+    var customSrc = uraCard.data('custom-src');
+    uraCard.attr('src' , customSrc);
+
+    var standFlag = $('input[name="stand"]').val();
+    var standFlagData = {
+      stand: standFlag
+    };
+    
+    // $.ajax({
+    //   type: 'POST',
+    //   url: '/game/hit',
+    //   data: standFlagData,
+    //   dataType: 'json'
+    // }).done(function (response) {
+    //     g_dealerHands = g_dealerHands.concat(response.dealerHands);
+        
+    //     //現状表示されているg_dealerHandsの合計を算出
+    //     var dealerTotal = calculateDealerHands(g_dealerHands);
+    //     console.log("ディーラーの手札の合計値: " + dealerTotal);
+        
+    // //ディーラーの手札をみて合計値17になるまで引く(ログをみながら値を確認、ヒット処理と同じ感じで)
+    // //繰り返す処理をする、トランプ画像表示
+    //   if (dealerTotal < 17) {
+    //   $.each(response.dealerHands, function (i, dealerHands) {
+    //     $.each(dealerHands, function (i, dealerHand) {
+    //       var imgElement = $("<img>");
+    //       imgElement.attr("src", dealerHand.image_path);
+    //       $(".img.dealer-hand-area").append(imgElement);
+    //     });
+    //   });
+    // }
+
+    // }).fail(function (response, errorThrown) {
+    //   alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+    // });
+
+      
+
+    //その合計値が17以下である場合一枚引く
+    //合計値が17以下であり続ける限り一枚引くを繰り返す（自動）
+
+    //17以上になったらrequestDataにPOSTする
 
     var requestData = {
       playerHands : g_playerHands,
@@ -132,13 +198,17 @@ $(document).ready(function () {
       url: '/game/stand',
       data: requestData
     }).done(function (response) {
-      
-      
+      // 成功したら以下の処理を行う
+      // modalを表示する
+      // ゲームに負けてしまいますがよろしいですか?
+      // プレイヤーの勝ちです
+      // YES or NO button
+      // YESの場合ゲーム終了しBET画面へ遷移
+      // Noの場合はモーダルを非表示にしゲームに戻る
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });
-
 
   // SURRENDERボタンがクリックされたとき
   // g_playerHandsの配列の数とnumberの合計値をPOSTする
