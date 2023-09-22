@@ -146,20 +146,12 @@ class GameController
             $playerHandsCount = count($hands['playerHands']);
             $playerHandsTotal = 0;
             $playerHands = $hands['playerHands'];
-
             $sessionData = [];
-            $dbData = [];
-
 
             $logFilePath = BASE_LOG_PATH . 'console.log';
 
             $sessionData = $_SESSION['player'][0];
             $db = new PlayerQuery();
-            $dbData = $db->fetchByName($sessionData->name);
-
-
-            error_log(print_r($sessionData, true), 3, $logFilePath);
-            error_log(print_r($dbData, true), 3, $logFilePath);
 
 
             foreach ($playerHands as $handArray) {
@@ -173,16 +165,10 @@ class GameController
                     error_log(print_r($playerHandsTotal . "\n", true), 3, $logFilePath);
 
                     if ($playerHandsTotal === 21) {
-                        #TODO hands合計値が21の場合t_player.status=20にする処理
-                        if ($sessionData->name === $dbData[0]->name) {
-                            $db->setBlackjackStatus($sessionData->id);
-                        }
+                        $db->setBlackjackStatus($sessionData->id);
                         error_log(print_r("ブラックジャックです\n", true), 3, $logFilePath);
                     } else if ($playerHandsTotal > 21) {
-                        #TODO hands合計値が21より大きい場合t_player.status=10にする処理
-                        if ($sessionData->name === $dbData[0]->name) {
-                            $db->setBurstStatus($sessionData->id);
-                        }
+                        $db->setBurstStatus($sessionData->id);
                         error_log(print_r("バーストです\n", true), 3, $logFilePath);
                     }
                 }
@@ -236,12 +222,27 @@ class GameController
         $resultHands = $this->countHands($hands);
         $resultCode = 0;
 
+        $sessionData = [];
+        $sessionData = $_SESSION['player'][0];
+
+        $db = new PlayerQuery();
+        $player = $db->getPlayerStatus($sessionData->id);
+        $status = $player[0]['status'];
+
         $logFilePath = BASE_LOG_PATH . 'console.log';
         error_log(print_r($resultHands, true), 3, $logFilePath);
+        error_log(print_r($player[0]['status'], true), 3, $logFilePath);
 
         try {
 
-            if ($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal']) {
+            if ($status === 10) {
+                error_log("プレイヤーバーストのためディーラーの勝ちです\n", 3, $logFilePath);
+                $resultCode = 3;
+                $message = "ディーラーの勝ちです";
+                return $resultCode;
+            }
+
+            if ($resultHands['playerHandsTotal'] > $resultHands['dealerHandsTotal'] || $resultHands['dealerHandsTotal'] > 21) {
                 error_log("プレイヤーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 1;
                 $message = "プレイヤーの勝ちです";
