@@ -11,14 +11,16 @@ use model\PlayerModel;
 
 class GameController
 {
+
     private $mark = ['heart', 'spade', 'club', 'diamond'];
 
     private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-    # 後で削除が必要かも
-    private $resultHands = [];
     private $dealerHands = [];
+    
     private $playerHands = [];
+    
+    private $resultHands = [];
 
 
     public function __construct()
@@ -29,7 +31,6 @@ class GameController
     public function index()
     {
         try {
-
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
             require_once SOURCE_PATH . 'views/game.php';
@@ -118,10 +119,10 @@ class GameController
 
                 if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
-                    // プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
                 }
             }
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -347,17 +348,12 @@ class GameController
             ];
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $randKey = array_rand($cards, 1);
-            $dealerHands = [$cards[$randKey]];
             $playerHands = [$cards[$randKey]];
+            $dealerHands = [$cards[$randKey]];
         }
 
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['stand'] === 'stand') {
-        //     $randKey = array_rand($cards, 1);
-        //     $dealerHands = [$cards[$randKey]];
-        //     $playerHands = [$cards[$randKey]];
-        // }
 
         //2. カードマスタから1. のimage_pathを取得
         try {
