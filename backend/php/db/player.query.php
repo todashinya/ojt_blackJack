@@ -46,6 +46,21 @@ class PlayerQuery
     }
 
 
+    public function getPlayerStatus($id)
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'SELECT status FROM t_player WHERE id = :id;';
+
+        $result = $db->select($sql, [':id' => $id], '', '');
+
+        $db->closeConnection();
+
+        return $result;
+    }
+
+
 
     public function setStandStatus($id)
     {
