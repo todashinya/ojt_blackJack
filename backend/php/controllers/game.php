@@ -297,7 +297,7 @@ class GameController
             error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
             error_log(print_r($id, true), 3, $logFilePath);
             error_log(print_r($resultCode, true), 3, $logFilePath);
-            error_log($result, 3, $logFilePath);
+            // error_log($result, 3, $logFilePath);
 
             return true;
         } catch (\PDOException $e) {
