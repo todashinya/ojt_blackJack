@@ -5,6 +5,7 @@
 // } else {
 //     echo 'SESSIONがありません';
 // }
+
 require_once SOURCE_PATH . 'partials/header.php';
 ?>
 
@@ -60,6 +61,25 @@ require_once SOURCE_PATH . 'partials/header.php';
         </div>
     </div>
     <div class="under"></div>
+</section>
+
+<!-- ゲーム勝敗後モーダル表示 -->
+<!-- オーバーレイ -->
+<div id="issue-overlay" class="overlay js-issue-overlay"></div>
+<!-- モーダルウィンドウ -->
+<section id="issue-modal" class="modal-window js-issue-modal">
+    <!-- 内容 -->
+    <div id="issue-content" class="content">
+        <p id="p1">ゲームを続けますか？</p>
+        <div class="issue-wrapper">
+            <div id="yes-btn" class="issue-yes">
+                <button>YES</button>
+            </div>
+            <div id="no-btn" class="issue-no">
+                <button>NO</button>
+            </div>
+        </div>
+    </div>
 </section>
 
 <?php

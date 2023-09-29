@@ -120,6 +120,10 @@ class GameController
                 if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
                 }
+
+                header('Content-Type: application/json');
+                $json = json_encode(['resultCode' => $resultCode]);
+                echo $json;
             }
             return true;
 
@@ -218,13 +222,19 @@ class GameController
      * @author todashinya <s.toda@jin-it.co.jp>
      */
 
-    private function checkWinOrLose($hands)
+    public function checkWinOrLose($hands)
     {
         $resultHands = $this->countHands($hands);
         $resultCode = 0;
 
         $sessionData = [];
         $sessionData = $_SESSION['player'][0];
+
+        //初期化
+        $responseResult = [
+            'resultCode' => '',
+            'message' => ''
+        ];
 
         $db = new PlayerQuery();
         $player = $db->getPlayerStatus($sessionData->id);
@@ -239,7 +249,17 @@ class GameController
             if ($status === 10) {
                 error_log("プレイヤーバーストのためディーラーの勝ちです\n", 3, $logFilePath);
                 $resultCode = 3;
-                $message = "ディーラーの勝ちです";
+                $message = "プレイヤーバーストのためディーラーの勝ちです";
+
+                $responseResult = [
+                    'resultCode' => $resultCode,
+                    'message' => $message
+                ];
+
+                header('Content-Type: application/json');
+                $json = json_encode($responseResult);
+                echo $json;
+
                 return $resultCode;
             }
 
@@ -270,6 +290,15 @@ class GameController
             echo $e->getMessage();
             $resultCode = 99;
         }
+
+        $responseResult = [
+            'resultCode' => $resultCode,
+            'message' => $message
+        ];
+
+        header('Content-Type: application/json');
+        $json = json_encode($responseResult);
+        echo $json;
 
         return $resultCode;
     }

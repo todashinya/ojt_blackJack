@@ -1,27 +1,4 @@
 @charset "utf-8";
-//見出しfont
-@mixin ttlfont($size:32px, $weight:bold){
-  color: #03c983;
-  font-size: $size;
-  font-family: 'Kaisei Tokumin', serif;
-  font-weight: $weight;
-  text-align: center;
-}
-
-//background
-@mixin bg($url, $reposi:no-repeat center, $size:contain){
-  background: url($url) $reposi;
-  background-size: $size;
-}
-
-//flex
-@mixin flex($jc:center, $ai:stretch, $ac:stretch, $wrap:wrap){
-  display: flex;
-  justify-content: $jc;
-  align-items: $ai;
-  align-content: $ac;
-  flex-wrap: $wrap;
-}
 
 //reset
 html, body, div, span, object, iframe,
@@ -129,79 +106,6 @@ input, select {
 }
 
 .ac{text-align: center;}
-
-//アニメーション用
-.js-sec{
-    opacity: 0;
-    &.active{
-        transition: 1s;
-        opacity: 1;
-    }
-}
-.js-up-sec{
-  position: relative;
-  opacity: 0;
-  top: 60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    top: 0;
-  }
-}
-.js-down-sec{
-  position: relative;
-  opacity: 0;
-  top: -60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    top: 0;
-  }
-}
-.js-left-sec{
-  position: relative;
-  opacity: 0;
-  left: -60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    left: 0;
-  }
-}
-.js-right-sec{
-  position: relative;
-  opacity: 0;
-  right: -60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    right: 0;
-  }
-}
-.js-rightdown-sec{
-  position: relative;
-  opacity: 0;
-  top: -60px;
-  right: -60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    top: 0;
-    right: 0;
-  }
-}
-.js-leftdown-sec{
-  position: relative;
-  opacity: 0;
-  top: -60px;
-  left: -60px;
-  &.active{
-    transition: 1s;
-    opacity: 1;
-    top: 0;
-    left: 0;
-  }
-}
 
 .none{display: none;}
 
@@ -619,5 +523,70 @@ label img {
     background: linear-gradient(#6c2703 0%, #0e0500 100%);
     width: 100%;
     height: 62px;
+}
+
+// 勝敗後のモーダルスタイル
+#issue-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: none;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.7;
+    &.open {
+        display: block;
+    }
+}
+#issue-modal {
+    width: 65%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    display: none;
+    &.open {
+        display: block;
+    }
+    #p1 {
+        margin-top: 40px;
+    }
+    
+    .issue-wrapper {
+        display: flex;
+        justify-content: space-between;
+        max-width: 753px;
+        margin: 80px auto 0;
+        width: 100%;
+    }
+    
+    .issue-yes,
+    .issue-no {
+        button {
+            font-family: 'Kaisei Tokumin', serif;
+            position: relative;
+            border: 1px solid #fff;
+            padding: 19px 88px;
+            color: #fff;
+            font-size: 36px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            display: inline-block;
+            background-color: transparent;
+            transition : 1s;
+            &:hover {
+                background: #fff;
+                color: #000;
+                filter: brightness(110%);
+                transition : 1s;
+            }
+        }
+    }
 }
 }
