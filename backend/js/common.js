@@ -1,34 +1,3 @@
-// ディーラーの手札を処理する関数
-function calculateDealerHands(dealerHands) {
-  var total = 0; // 合計値を初期化
-  var numAces = 0; // エースの数をカウント
-
-  // ディーラーの手札を処理
-  $.each(dealerHands, function (i, dealerHand) {
-    var rank = dealerHand.number;
-    console.log(rank);
-
-    // J、Q、Kの場合、値を10に設定
-    if (rank === 11 || rank === 'q' || rank === 'k') {
-      total += 10;
-    } else if (rank === 'a') { // エースの場合
-      numAces++; // エースの数をカウント
-      total += 11; // 一時的にエースを11として計算
-    } else {
-      total += parseInt(rank);
-    }
-  });
-
-  // エースの処理：合計が21を超えている場合、エースを1として計算
-  while (numAces > 0 && total > 21) {
-    total -= 10;
-    numAces--;
-  }
-
-  return total;
-}
-
-
 $(document).ready(function () {
   // BET、クレジット表示
   $('.coin').click(function () {
@@ -51,17 +20,19 @@ $(document).ready(function () {
     $("#player-name").val(playerName);    
   });
 
-  // モーダルウィンドウ
+  // BET/credit モーダルウィンドウ
   $('.js-open').on('click', function () {
-    $('.js-modal').addClass('open');
-    $('.js-overlay').addClass('open');
+    betOpenModal ();
     return false;
   });
   $('.js-close').on('click', function () {
-    $('.js-modal').removeClass('open');
-    $('.js-overlay').removeClass('open');
+    betCloseModal ()
   });
-
+  // 勝敗後モーダルウィンドウ
+  $('.js-issue-close').on('click', function () {
+    $('.js-issue-modal').removeClass('open');
+    $('.js-issue-overlay').removeClass('open');
+  });
 
   // ajax処理
   var g_playerHands = [];
@@ -199,12 +170,57 @@ $(document).ready(function () {
       data: requestData
     }).done(function (response) {
       // 成功したら以下の処理を行う
-      // modalを表示する
-      // ゲームに負けてしまいますがよろしいですか?
-      // プレイヤーの勝ちです
-      // YES or NO button
-      // YESの場合ゲーム終了しBET画面へ遷移
-      // Noの場合はモーダルを非表示にしゲームに戻る
+      // checkWinOrLoseメソッドから結果メッセージを取得する
+      console.log(response);
+      var resultCode = response.resultCode;
+      var message = response.message;
+      // resultCodeに応じてmodalを表示する
+      // モーダル処理を関数にまとめる
+      if (resultCode === 1) {
+        openModal(message);
+      } else if (resultCode === 2 ){
+        openModal(message);
+      } else if (resultCode === 3) {
+        openModal(message);
+      } 
+      const yesBtn = document.getElementById('yes-btn');
+      const noBtn = document.getElementById('no-btn');
+
+      //YESボタンをクリックしたら
+      //TODO
+        // BET額選択後、新たに無名プレイヤーが追加されてしまうので現プレイヤーでBET額表示
+        // クレジット額の継承
+      yesBtn.addEventListener('click' , function(){
+        $.ajax({
+          url: '/',
+          type: 'GET',
+          dataType: 'html',
+          success: function(data) {
+            // 現ページに取得したhtmlデータを追加
+            $('body').append(data);
+          
+            // モーダルを表示する処理をここに追加
+            betOpenModal();
+          },
+          error: function() {
+            console.error('外部HTMLの読み込みに失敗しました。');
+          }
+        });
+      });
+
+      //NOボタンをクリックしたら
+      noBtn.addEventListener('click' , function(){
+        $.ajax({
+          type: 'POST',
+          url: '/game/exit'
+        }).done(function(data){
+            // 成功したら以下の処理を行う
+            window.location.href = "/";
+        }).fail(function(data){
+          alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+        });
+      });
+    
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
@@ -216,14 +232,33 @@ $(document).ready(function () {
     $.ajax({
       type: 'POST',
       url: '/game/surrender'
-    }).done(function (data) {
+    }).done(function (response) {
       // 成功したら以下の処理を行う
-      // modalを表示する
-      // ゲームに負けてしまいますがよろしいですか?
-      // YES or NO button
-      // YESの場合ゲーム終了しBET画面へ遷移
-      // Noの場合はモーダルを非表示にしゲームに戻る
+      // checkWinOrLoseメソッドから結果メッセージを取得する
+      console.log(response);
+      var resultCode = response.resultCode;
+      var message = response.message;
+      // resultCodeに応じてmodalを表示する
+      // モーダル処理を関数にまとめる
+      if (resultCode === 4) {
+        openModal(message);
+      } 
+      // yesBtn.addEventListener('click' , function(){
+      //   betOpenModal ();
+      //   return false;
+      // });
 
+      noBtn.addEventListener('click' , function(){
+        $.ajax({
+          type: 'POST',
+          url: '/game/exit'
+        }).done(function(data){
+            // 成功したら以下の処理を行う
+            window.location.href = "/";
+        }).fail(function(data){
+          alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+        });
+      });
     }).fail(function (data) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
@@ -281,9 +316,68 @@ $(document).ready(function () {
       url: '/game/exit'
     }).done(function(data){
         // 成功したら以下の処理を行う
-        window.location.href = "http://localhost:8080/";
+        window.location.href = "/";
     }).fail(function(data){
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
   });
 });
+
+
+//関数処理
+
+function openModal(message) {
+//モーダルの表示
+const issueOverlay = document.getElementById('issue-overlay');
+const issueModal = document.getElementById('issue-modal');
+  issueOverlay.classList.add("open");
+  issueModal.classList.add("open");
+
+//勝敗メッセージの表示
+const issueContent = document.getElementById('issue-content');
+const issueContent_p = document.getElementById('p1');
+const issueMessage = document.createElement('p');
+  issueMessage.textContent = message;
+  issueContent.insertBefore(issueMessage,issueContent_p);
+}
+
+
+function betOpenModal (){
+    $('.js-modal').addClass('open');
+    $('.js-overlay').addClass('open');
+  }
+
+function betCloseModal (){
+  $('.js-modal').removeClass('open');
+  $('.js-overlay').removeClass('open');
+}
+
+// ディーラーの手札を処理する関数
+function calculateDealerHands(dealerHands) {
+  var total = 0; // 合計値を初期化
+  var numAces = 0; // エースの数をカウント
+
+  // ディーラーの手札を処理
+  $.each(dealerHands, function (i, dealerHand) {
+    var rank = dealerHand.number;
+    console.log(rank);
+
+    // J、Q、Kの場合、値を10に設定
+    if (rank === 11 || rank === 'q' || rank === 'k') {
+      total += 10;
+    } else if (rank === 'a') { // エースの場合
+      numAces++; // エースの数をカウント
+      total += 11; // 一時的にエースを11として計算
+    } else {
+      total += parseInt(rank);
+    }
+  });
+
+  // エースの処理：合計が21を超えている場合、エースを1として計算
+  while (numAces > 0 && total > 21) {
+    total -= 10;
+    numAces--;
+  }
+
+  return total;
+}

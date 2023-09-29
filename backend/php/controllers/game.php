@@ -120,6 +120,10 @@ class GameController
                     $this->liquidateBetAmount($resultCode);
                     // プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
                 }
+
+                header('Content-Type: application/json');
+                $json = json_encode(['resultCode' => $resultCode]);
+                echo $json;
             }
             return true;
         } catch (\PDOException $e) {
