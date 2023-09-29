@@ -130,57 +130,57 @@ $(document).ready(function () {
 
 
     // 合計値が17以上になるまでカードを引く
-    var total = 0;
-    while (total <= 17) {
-      total = calculateTotal();
-      if (total <= 17) {
-        drawDealer();
-      }
-    }
+    // var total = 0;
+    // while (total <= 17) {
+    //   total = calculateTotal();
+    //   if (total <= 17) {
+    //     drawDealer();
+    //   }
+    // }
 
-    stand();
+    // stand();
 
     // 手札オープン後のディーラーの手札合計値を求める
-    function calculateTotal() {
+    // function calculateTotal() {
      
-      for (var i = 0; i < g_dealerHands.length; i++) {
-        var number = g_dealerHands[i][0].number;
-        if(number >= 11 && number <= 13) {
-          number = 10;
-        }
-        total += number;
-      }
-      console.log("合計値: " + total);
-      return total;
-    }
+    //   for (var i = 0; i < g_dealerHands.length; i++) {
+    //     var number = g_dealerHands[i][0].number;
+    //     if(number >= 11 && number <= 13) {
+    //       number = 10;
+    //     }
+    //     total += number;
+    //   }
+    //   console.log("合計値: " + total);
+    //   return total;
+    // }
 
 
-    function drawDealer() {
-      $.ajax({
-        type: 'POST',
-        url: '/game/hit',
-        dataType: 'json',
-      }).done(function (response) {
+    // function drawDealer() {
+    //   $.ajax({
+    //     type: 'POST',
+    //     url: '/game/hit',
+    //     dataType: 'json',
+    //   }).done(function (response) {
   
-        g_dealerHands = g_dealerHands.concat(response.dealerHands);
+    //     g_dealerHands = g_dealerHands.concat(response.dealerHands);
   
-        $.each(response.dealerHands, function(i, dealerHands) {
-          $.each(dealerHands, function(i, dealerHand) {
-            var imgElement = $("<img>");
-                imgElement.attr("src", dealerHand.image_path);
-                $(".img.dealer-hand-area").append(imgElement);
-          });
-        });
-        console.log(g_dealerHands);
+    //     $.each(response.dealerHands, function(i, dealerHands) {
+    //       $.each(dealerHands, function(i, dealerHand) {
+    //         var imgElement = $("<img>");
+    //             imgElement.attr("src", dealerHand.image_path);
+    //             $(".img.dealer-hand-area").append(imgElement);
+    //       });
+    //     });
+    //     console.log(g_dealerHands);
     
-      }).fail(function (response, errorThrown) {
-        alert("Ajax通信が失敗しました。エラー: " + errorThrown);
-      });
+    //   }).fail(function (response, errorThrown) {
+    //     alert("Ajax通信が失敗しました。エラー: " + errorThrown);
+    //   });
     
-    }
+    // }
 
     
-    function stand() {
+    // function stand() {
 
     var requestData = {
       playerHands : g_playerHands,
@@ -249,6 +249,7 @@ $(document).ready(function () {
     }).fail(function (response, errorThrown) {
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
     });
+
   });
 
 
