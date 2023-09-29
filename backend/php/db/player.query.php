@@ -129,27 +129,18 @@ class PlayerQuery
         $db = new DataSource;
         $db->openConnection();
 
-        $countSql = "SELECT COUNT(id) FROM t_player"; //DBの件数をカウント
-        $result = $db->select($countSql);
+        $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
 
-        $row = $result[0]['COUNT(id)'];
+        $params = [
+            ':name' => $data['name'],
+            ':bet' => $data['bet'],
+            ':credit' => $data['credit'],
+            ':start_date' => $data['startDate'],
+            ':status' => 0,
+        ];
 
-        if ($row >= 1) {
-            echo "データベースに登録できる件数を超えています。";
-        } else {
-            $sql = 'INSERT INTO t_player (name, bet, credit, start_date, status) VALUES (:name, :bet, :credit, :start_date, :status);';
-
-            $params = [
-                ':name' => $data['name'],
-                ':bet' => $data['bet'],
-                ':credit' => $data['credit'],
-                ':start_date' => $data['startDate'],
-                ':status' => 0,
-            ];
-
-            $db->insert($sql, $params);
-            $db->closeConnection();
-        }
+        $db->insert($sql, $params);
+        $db->closeConnection();
     }
 
     // 退出ボタンが押下されたらプレイヤー物理削除
