@@ -44,7 +44,10 @@ class GameController
     /**
      * スタンドメソッド
      * 処理概要
-     * 1. スタンドボタンクリック時、t_playerのstatusに1をセット
+     * 1. STANDボタンクリック時、t_playerのstatusに1をセット
+     * 2. ディーラーは17になるまでカードをドローする
+     * 3. 勝敗判定を行う
+     * 4. 勝敗判定の結果をもとに、BET分配を行う
      * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
      * @author todashinya <s.toda@jin-it.co.jp>
      */
@@ -72,10 +75,10 @@ class GameController
 
                 
                 // ディーラーは17になるまでドローする
-                error_log(print_r("17になるまでドローします\n", true), 3, $logFilePath);
-                error_log(print_r($hands['dealerHands'], true), 3, $logFilePath);
-
                 while (true) {
+                
+                    $dealerDrawCard = []; // 初期化
+
                     $tmp = $this->dealerDrawCards();
                     $dealerDrawCard[] = (array)$tmp[0]; // オブジェクト形式のカードを配列に変換する                
                     array_push($hands['dealerHands'], $dealerDrawCard);
@@ -101,10 +104,6 @@ class GameController
 
                 error_log(print_r("17以上にになったので勝負開始\n", true), 3, $logFilePath);
                 error_log(print_r($hands['dealerHands'], true), 3, $logFilePath);
-
-                // header('Content-Type: application/json');
-                // $json = json_encode($hands);
-                // echo $json;
 
                 // 勝敗判定を行う
                 $resultCode = $this->checkWinOrLose($hands);
