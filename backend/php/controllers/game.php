@@ -11,14 +11,16 @@ use model\PlayerModel;
 
 class GameController
 {
+
     private $mark = ['heart', 'spade', 'club', 'diamond'];
 
     private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-    # 後で削除が必要かも
-    private $resultHands = [];
     private $dealerHands = [];
+    
     private $playerHands = [];
+    
+    private $resultHands = [];
 
 
     public function __construct()
@@ -29,7 +31,6 @@ class GameController
     public function index()
     {
         try {
-
             $db =  new PlayerQuery();
             $result = $db->getPlayer();
             require_once SOURCE_PATH . 'views/game.php';
@@ -43,7 +44,10 @@ class GameController
     /**
      * スタンドメソッド
      * 処理概要
-     * 1. スタンドボタンクリック時、t_playerのstatusに1をセット
+     * 1. STANDボタンクリック時、t_playerのstatusに1をセット
+     * 2. ディーラーは17になるまでカードをドローする
+     * 3. 勝敗判定を行う
+     * 4. 勝敗判定の結果をもとに、BET分配を行う
      * @return bool t_playerのstatusに1をセットできれば true / できない場合は false
      * @author todashinya <s.toda@jin-it.co.jp>
      */
@@ -54,8 +58,8 @@ class GameController
         $hands = [];
 
         $logFilePath = BASE_LOG_PATH . 'console.log';
-        error_log(print_r("stand start\n", true), 3, $logFilePath);
-
+        
+        
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -69,14 +73,49 @@ class GameController
                     $db->setStandStatus($sessionData->id);
                 }
 
+                
+                // ディーラーは17になるまでドローする
+                while (true) {
+                
+                    $dealerDrawCard = []; // 初期化
+
+                    $tmp = $this->dealerDrawCards();
+                    $dealerDrawCard[] = (array)$tmp[0]; // オブジェクト形式のカードを配列に変換する                
+                    array_push($hands['dealerHands'], $dealerDrawCard);
+                    
+                    // カードの合計値を計算
+                    $total = 0;
+                    foreach ($hands['dealerHands'] as $hand) {
+                        foreach ($hand as $card) {
+                            if ($card['number'] >= 11 && $card['number'] <= 13) {
+                                $card['number'] = 10;
+                            }
+                            $total += $card['number'];
+                        }
+                    }
+
+                    // 合計値が17未満の場合、カードを引き続ける
+                    if ($total < 17) {
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+
+                error_log(print_r("17以上にになったので勝負開始\n", true), 3, $logFilePath);
+                error_log(print_r($hands['dealerHands'], true), 3, $logFilePath);
+
+                // 勝敗判定を行う
                 $resultCode = $this->checkWinOrLose($hands);
 
+                // 勝敗判定の結果をもとに、BET分配を行う
                 if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
                 }
             }
 
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -118,7 +157,6 @@ class GameController
 
                 if (isset($resultCode)) {
                     $this->liquidateBetAmount($resultCode);
-                    // プレイヤーのBET / 2 をCREDITに追加し BETを0でUPDATE
                 }
 
                 header('Content-Type: application/json');
@@ -126,6 +164,7 @@ class GameController
                 echo $json;
             }
             return true;
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -232,7 +271,8 @@ class GameController
         //初期化
         $responseResult = [
             'resultCode' => '',
-            'message' => ''
+            'message' => '',
+            'resultHands' => ''
         ];
 
         $db = new PlayerQuery();
@@ -252,13 +292,15 @@ class GameController
 
                 $responseResult = [
                     'resultCode' => $resultCode,
-                    'message' => $message
+                    'message' => $message,
+                    'resultHands' => $hands
                 ];
 
                 header('Content-Type: application/json');
                 $json = json_encode($responseResult);
                 echo $json;
 
+                # TODO リファクタリングの対象
                 return $resultCode;
             }
 
@@ -292,13 +334,15 @@ class GameController
 
         $responseResult = [
             'resultCode' => $resultCode,
-            'message' => $message
+            'message' => $message,
+            'resultHands' => $hands
         ];
 
         header('Content-Type: application/json');
         $json = json_encode($responseResult);
         echo $json;
 
+        # TODO リファクタリングの対象
         return $resultCode;
     }
 
@@ -359,7 +403,6 @@ class GameController
                     'mark' => $this->mark[$i],
                     'number' => $this->number[$j]
                 ];
-
                 $cards[] = $card;
             }
         }
@@ -378,15 +421,10 @@ class GameController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
-            $dealerHands = [$cards[$randKey]];
             $playerHands = [$cards[$randKey]];
+            $dealerHands = [$cards[$randKey]];
         }
 
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['stand'] === 'stand') {
-        //     $randKey = array_rand($cards, 1);
-        //     $dealerHands = [$cards[$randKey]];
-        //     $playerHands = [$cards[$randKey]];
-        // }
 
         //2. カードマスタから1. のimage_pathを取得
         try {
@@ -412,6 +450,50 @@ class GameController
         $json = json_encode($afterDealHands);
         echo $json;
     }
+
+
+
+    private function dealerDrawCards()
+    {
+        $hands = [];
+        $cards = [];
+
+        //1. ランダムでmarkとnaumberを生成
+        for ($i = 0; $i < count($this->mark); $i++) {
+            for ($j = 0; $j < count($this->number); $j++) {
+                $card = [
+                    'mark' => $this->mark[$i],
+                    'number' => $this->number[$j]
+                ];
+                $cards[] = $card;
+            }
+        }
+
+        $randKey = array_rand($cards, 1);
+        $dealerHands = [$cards[$randKey]];
+
+
+        //2. カードマスタから1. のimage_pathを取得
+        try {
+            $db = new CardQuery();
+            // ディーラーの手札
+            foreach ($dealerHands as $hand) {
+                $this->dealerHands = $db->getCard($hand['mark'], $hand['number']);
+            }
+       
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        $afterDealHands = [
+            'dealerHands' => $this->dealerHands,
+            'playerHands' => $this->playerHands,
+        ];
+
+        return $this->dealerHands;
+    }
+
+
 
 
     /** 
