@@ -48,8 +48,4 @@ if ($requestPath === '/') {
     require_once SOURCE_PATH . 'controllers/game.php';
     $game = new \controller\GameController();
     $game->exit();
-    // } elseif ($requestPath === '/game/message') {
-    //     require_once SOURCE_PATH . 'controllers/game.php';
-    //     $game = new \controller\GameController();
-    //     $game->checkWinOrLose($hand);
 }
