@@ -426,17 +426,32 @@ class GameController
         }
 
 
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r("ディーラーの手札\n", true), 3, $logFilePath);
+        error_log(print_r($dealerHands, true), 3, $logFilePath);
+        error_log(print_r("プレイヤーの手札\n", true), 3, $logFilePath);
+        error_log(print_r($playerHands, true), 3, $logFilePath);
+
+        $sessionData = $_SESSION['player'][0];
+        error_log(print_r($sessionData->id, true), 3, $logFilePath);
+
+
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
             // ディーラーの手札
             foreach ($dealerHands as $hand) {
+                $card = $db->getCardId($hand['mark'], $hand['number']);
+                $db->setUsedCards(99, $card['id']);
                 $this->dealerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
             // プレイヤーの手札
             foreach ($playerHands as $hand) {
+                $card = $db->getCardId($hand['mark'], $hand['number']);
+                $db->setUsedCards($sessionData->id, $card['id']);
                 $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
             }
+
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
@@ -472,12 +487,13 @@ class GameController
         $randKey = array_rand($cards, 1);
         $dealerHands = [$cards[$randKey]];
 
-
         //2. カードマスタから1. のimage_pathを取得
         try {
             $db = new CardQuery();
             // ディーラーの手札
             foreach ($dealerHands as $hand) {
+                $card = $db->getCardId($hand['mark'], $hand['number']);
+                $db->setUsedCards(99, $card['id']);
                 $this->dealerHands = $db->getCard($hand['mark'], $hand['number']);
             }
        
