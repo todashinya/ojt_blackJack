@@ -74,4 +74,33 @@ class CardQuery
 
         return $result;
     }
+
+
+
+    public function getCardsList()
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = <<<SQL
+            select 
+                p.id,
+                c.id, 
+                c.mark,
+                c.number,
+                c.image_path
+            from mst_card c  
+            left join t_hand h 
+            on c.id = h.card_id 
+            left join t_player p
+            on p.id = h.player_id
+            where h.card_id IS NULL
+        SQL;
+
+        $result = $db->select($sql, [], '', '');
+
+        $db->closeConnection();
+
+        return $result;
+    }
 }

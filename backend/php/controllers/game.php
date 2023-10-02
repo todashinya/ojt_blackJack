@@ -391,29 +391,27 @@ class GameController
      */
     public function dealCard()
     {
+        // 初期化
         $hands = [];
         $cards = [];
         $sessionData = [];
         $dbData = [];
 
-        //1. ランダムでmarkとnaumberを生成
-        for ($i = 0; $i < count($this->mark); $i++) {
-            for ($j = 0; $j < count($this->number); $j++) {
-                $card = [
-                    'mark' => $this->mark[$i],
-                    'number' => $this->number[$j]
-                ];
-                $cards[] = $card;
-            }
-        }
+        // マスタデータからカード情報を取得
+        $db = new CardQuery();
+        $cards = $db->getCardsList();
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r($cards, true), 3, $logFilePath);
+
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $randKey = array_rand($cards, 4);
-            $dealerHands = [
+            $this->dealerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
-            $playerHands = [
+            $this->playerHands = [
                 $cards[$randKey[2]],
                 $cards[$randKey[3]],
             ];
@@ -421,39 +419,23 @@ class GameController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
-            $playerHands = [$cards[$randKey]];
-            $dealerHands = [$cards[$randKey]];
+            $this->playerHands = [$cards[$randKey]];
+            // $this->dealerHands = [$cards[$randKey]];
         }
-
-
-        $logFilePath = BASE_LOG_PATH . 'console.log';
-        error_log(print_r("ディーラーの手札\n", true), 3, $logFilePath);
-        error_log(print_r($dealerHands, true), 3, $logFilePath);
-        error_log(print_r("プレイヤーの手札\n", true), 3, $logFilePath);
-        error_log(print_r($playerHands, true), 3, $logFilePath);
 
         $sessionData = $_SESSION['player'][0];
         error_log(print_r($sessionData->id, true), 3, $logFilePath);
+        error_log(print_r("ディーラーの手札\n", true), 3, $logFilePath);
+        error_log(print_r($this->dealerHands, true), 3, $logFilePath);
+        error_log(print_r("プレイヤーの手札\n", true), 3, $logFilePath);
+        error_log(print_r($this->playerHands, true), 3, $logFilePath);
 
-
-        //2. カードマスタから1. のimage_pathを取得
-        try {
-            $db = new CardQuery();
-            // ディーラーの手札
-            foreach ($dealerHands as $hand) {
-                $card = $db->getCardId($hand['mark'], $hand['number']);
-                $db->setUsedCards(99, $card['id']);
-                $this->dealerHands[] = $db->getCard($hand['mark'], $hand['number']);
-            }
-            // プレイヤーの手札
-            foreach ($playerHands as $hand) {
-                $card = $db->getCardId($hand['mark'], $hand['number']);
-                $db->setUsedCards($sessionData->id, $card['id']);
-                $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
-            }
-
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
+        // 取得済みのカードは表示しないようにする
+        foreach ($this->dealerHands as $hand) {
+            $db->setUsedCards(99, $hand['id']);
+        }
+        foreach ($this->playerHands as $hand) {
+            $db->setUsedCards($sessionData->id, $hand['id']);
         }
 
         $afterDealHands = [
@@ -470,6 +452,7 @@ class GameController
 
     private function dealerDrawCards()
     {
+        // 初期化
         $hands = [];
         $cards = [];
 

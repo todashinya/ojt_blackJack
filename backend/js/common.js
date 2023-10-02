@@ -45,22 +45,23 @@ $(document).ready(function () {
     type: 'GET',
     url: '/game/dealcard',
     dataType: 'json'
-
   }).done(function (response) {
 
     g_playerHands = response.playerHands;
     g_dealerHands = response.dealerHands;
 
-    $.each(response.playerHands, function(i, playerHands) {
-      $.each(playerHands, function(i, playerHand) {
+    console.log(response);
+
+    $.each([response.playerHands], function(i, playerHands) {
+      $.each(playerHands, function(j, playerHand) {
         var imgElement = $("<img>");
         imgElement.attr("src", playerHand.image_path);
         $(".img.hand-area").append(imgElement);
       });
     });
 
-    $.each(response.dealerHands, function(i, dealerHands) {
-      $.each(dealerHands, function(i, dealerHand) {
+    $.each([response.dealerHands], function(i, dealerHands) {
+      $.each(dealerHands, function(j, dealerHand) {
         var imgElement = $("<img>");
             imgElement.attr("src", dealerHand.image_path);
             $(".img.dealer-hand-area").append(imgElement);
@@ -99,7 +100,7 @@ $(document).ready(function () {
 
       g_playerHands = g_playerHands.concat(response.playerHands);
 
-      $.each(response.playerHands, function(i, playerHands) {
+      $.each([response.playerHands], function(i, playerHands) {
         $.each(playerHands, function(i, playerHand) {
           var imgElement = $("<img>");
           imgElement.attr("src", playerHand.image_path);
