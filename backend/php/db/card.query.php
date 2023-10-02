@@ -56,27 +56,6 @@ class CardQuery
      * @param [type] $number
      * @return array $result
      */
-    public function getCard($mark, $number)
-    {
-
-        $db = new DataSource;
-        $db->openConnection();
-
-        $sql = <<<SQL
-            select * from mst_card
-                where mark = :mark
-                and number = :number;
-        SQL;
-
-        $result = $db->select($sql, [':mark' => $mark, ':number' => $number], 'cls', 'model\CardModel');
-
-        $db->closeConnection();
-
-        return $result;
-    }
-
-
-
     public function getCardsList()
     {
         $db = new DataSource;

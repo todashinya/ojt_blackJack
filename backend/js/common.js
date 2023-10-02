@@ -143,8 +143,10 @@ $(document).ready(function () {
 
       // ディーラーは17までドローした結果を表示
       g_dealerHands = response.resultHands.dealerHands;
+
+      console.log(g_dealerHands);
       
-      $.each(g_dealerHands, function(j, dealerHands) {
+      $.each([g_dealerHands], function(i, dealerHands) {
         $.each(dealerHands, function(j, dealerHand) {
           var imgElement = $("<img>");
           imgElement.attr("src", dealerHand.image_path);
