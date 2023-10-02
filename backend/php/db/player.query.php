@@ -143,6 +143,24 @@ class PlayerQuery
         $db->closeConnection();
     }
 
+    public function updatePlayer($data)
+    {
+        $db = new DataSource;
+        $db->openConnection();
+
+        $sql = 'UPDATE t_player SET bet = :bet, credit = :credit, start_date = :start_date WHERE name = :name;';
+
+        $params = [
+            ':name' => $data['name'],
+            ':bet' => $data['bet'],
+            ':credit' => $data['credit'],
+            ':start_date' => $data['startDate'],
+        ];
+
+        $db->update($sql, $params, 'cls', 'model\PlayerModel');
+        $db->closeConnection();
+    }
+
     // 退出ボタンが押下されたらプレイヤー物理削除
     public function deletePlayer($playerName)
     {
