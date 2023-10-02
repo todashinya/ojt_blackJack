@@ -191,19 +191,20 @@ $(document).ready(function () {
         // BET額選択後、新たに無名プレイヤーが追加されてしまうので現プレイヤーでBET額表示
         // クレジット額の継承
       yesBtn.addEventListener('click' , function(){
+        
         $.ajax({
           url: '/',
           type: 'GET',
           dataType: 'html',
           success: function(data) {
-            // 現ページに取得したhtmlデータを追加
+            // 現ページのbody要素に取得したhtmlデータを追加
             $('body').append(data);
           
             // モーダルを表示する処理をここに追加
             betOpenModal();
           },
           error: function() {
-            console.error('外部HTMLの読み込みに失敗しました。');
+            console.error('HTMLの読み込みに失敗しました。');
           }
         });
       });
@@ -299,7 +300,7 @@ $(document).ready(function () {
       data: requestData
     }).done(function(data){
       // 成功したら以下の処理を行う
-      window.location.href = "http://localhost:8080/game";
+      window.location.href = "/game";
 
     }).fail(function(data){
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
