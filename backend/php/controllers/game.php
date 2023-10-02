@@ -12,10 +12,6 @@ use model\PlayerModel;
 class GameController
 {
 
-    private $mark = ['heart', 'spade', 'club', 'diamond'];
-
-    private $number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-
     private $dealerHands = [];
     
     private $playerHands = [];
@@ -58,7 +54,7 @@ class GameController
         $hands = [];
 
         $logFilePath = BASE_LOG_PATH . 'console.log';
-        
+        error_log(print_r("stand start\n", true), 3, $logFilePath);
         
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -80,18 +76,16 @@ class GameController
                     $dealerDrawCard = []; // 初期化
 
                     $tmp = $this->dealerDrawCards();
-                    $dealerDrawCard[] = (array)$tmp[0]; // オブジェクト形式のカードを配列に変換する                
+                    $dealerDrawCard = (array)$tmp[0]; // オブジェクト形式のカードを配列に変換する                
                     array_push($hands['dealerHands'], $dealerDrawCard);
-                    
+
                     // カードの合計値を計算
                     $total = 0;
-                    foreach ($hands['dealerHands'] as $hand) {
-                        foreach ($hand as $card) {
-                            if ($card['number'] >= 11 && $card['number'] <= 13) {
-                                $card['number'] = 10;
-                            }
-                            $total += $card['number'];
+                    foreach ($hands['dealerHands'] as $card) {
+                        if ($card['number'] >= 11 && $card['number'] <= 13) {
+                            $card['number'] = 10;
                         }
+                        $total += $card['number'];
                     }
 
                     // 合計値が17未満の場合、カードを引き続ける
@@ -197,23 +191,21 @@ class GameController
             $db = new PlayerQuery();
 
 
-            foreach ($playerHands as $handArray) {
-                foreach ($handArray as $hand) {
-                    //J・Q・Kの絵札はすべて10としてカウント
-                    if ($hand['number'] >= 11 && $hand['number'] <= 13) {
-                        $hand['number'] = 10;
-                    }
-                    $playerHandsTotal += $hand['number'];
+            foreach ($playerHands as $hand) {
+                //J・Q・Kの絵札はすべて10としてカウント
+                if ($hand['number'] >= 11 && $hand['number'] <= 13) {
+                    $hand['number'] = 10;
+                }
+                $playerHandsTotal += $hand['number'];
 
-                    error_log(print_r($playerHandsTotal . "\n", true), 3, $logFilePath);
+                error_log(print_r($playerHandsTotal . "\n", true), 3, $logFilePath);
 
-                    if ($playerHandsTotal === 21) {
-                        $db->setBlackjackStatus($sessionData->id);
-                        error_log(print_r("ブラックジャックです\n", true), 3, $logFilePath);
-                    } else if ($playerHandsTotal > 21) {
-                        $db->setBurstStatus($sessionData->id);
-                        error_log(print_r("バーストです\n", true), 3, $logFilePath);
-                    }
+                if ($playerHandsTotal === 21) {
+                    $db->setBlackjackStatus($sessionData->id);
+                    error_log(print_r("ブラックジャックです\n", true), 3, $logFilePath);
+                } else if ($playerHandsTotal > 21) {
+                    $db->setBurstStatus($sessionData->id);
+                    error_log(print_r("バーストです\n", true), 3, $logFilePath);
                 }
             }
         }
@@ -224,14 +216,12 @@ class GameController
             $dealerHandsTotal = 0;
             $dealerHands = $hands['dealerHands'];
 
-            foreach ($dealerHands as $handArray) {
-                foreach ($handArray as $hand) {
-                    //J・Q・Kの絵札はすべて10としてカウント
-                    if ($hand['number'] >= 11 && $hand['number'] <= 13) {
-                        $hand['number'] = 10;
-                    }
-                    $dealerHandsTotal += $hand['number'];
+            foreach ($dealerHands as $hand) {
+                //J・Q・Kの絵札はすべて10としてカウント
+                if ($hand['number'] >= 11 && $hand['number'] <= 13) {
+                    $hand['number'] = 10;
                 }
+                $dealerHandsTotal += $hand['number'];
             }
         }
 
@@ -371,7 +361,6 @@ class GameController
             error_log(print_r("liquidateBetAmount start\n", true), 3, $logFilePath);
             error_log(print_r($id, true), 3, $logFilePath);
             error_log(print_r($resultCode, true), 3, $logFilePath);
-            // error_log($result, 3, $logFilePath);
 
             return true;
         } catch (\PDOException $e) {
@@ -391,29 +380,24 @@ class GameController
      */
     public function dealCard()
     {
+        // 初期化
         $hands = [];
         $cards = [];
         $sessionData = [];
         $dbData = [];
 
-        //1. ランダムでmarkとnaumberを生成
-        for ($i = 0; $i < count($this->mark); $i++) {
-            for ($j = 0; $j < count($this->number); $j++) {
-                $card = [
-                    'mark' => $this->mark[$i],
-                    'number' => $this->number[$j]
-                ];
-                $cards[] = $card;
-            }
-        }
+        // マスタデータからカード情報を取得
+        $db = new CardQuery();
+        $cards = $db->getCardsList();
 
+        // マスタデータからカード情報を取得
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $randKey = array_rand($cards, 4);
-            $dealerHands = [
+            $this->dealerHands = [
                 $cards[$randKey[0]],
                 $cards[$randKey[1]],
             ];
-            $playerHands = [
+            $this->playerHands = [
                 $cards[$randKey[2]],
                 $cards[$randKey[3]],
             ];
@@ -421,24 +405,17 @@ class GameController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['hit'] === 'hit') {
             $randKey = array_rand($cards, 1);
-            $playerHands = [$cards[$randKey]];
-            $dealerHands = [$cards[$randKey]];
+            $this->playerHands = [$cards[$randKey]];
         }
 
 
-        //2. カードマスタから1. のimage_pathを取得
-        try {
-            $db = new CardQuery();
-            // ディーラーの手札
-            foreach ($dealerHands as $hand) {
-                $this->dealerHands[] = $db->getCard($hand['mark'], $hand['number']);
-            }
-            // プレイヤーの手札
-            foreach ($playerHands as $hand) {
-                $this->playerHands[] = $db->getCard($hand['mark'], $hand['number']);
-            }
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
+        // 取得済みのカードは表示しないようにする
+        $sessionData = $_SESSION['player'][0];
+        foreach ($this->dealerHands as $hand) {
+            $db->setUsedCards(99, $hand['id']);
+        }
+        foreach ($this->playerHands as $hand) {
+            $db->setUsedCards($sessionData->id, $hand['id']);
         }
 
         $afterDealHands = [
@@ -455,34 +432,24 @@ class GameController
 
     private function dealerDrawCards()
     {
+        // 初期化
         $hands = [];
         $cards = [];
 
-        //1. ランダムでmarkとnaumberを生成
-        for ($i = 0; $i < count($this->mark); $i++) {
-            for ($j = 0; $j < count($this->number); $j++) {
-                $card = [
-                    'mark' => $this->mark[$i],
-                    'number' => $this->number[$j]
-                ];
-                $cards[] = $card;
-            }
-        }
+        // マスタデータからカード情報を取得
+        $db = new CardQuery();
+        $cards = $db->getCardsList();
 
         $randKey = array_rand($cards, 1);
-        $dealerHands = [$cards[$randKey]];
+        $this->dealerHands = [$cards[$randKey]];
+
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        $sessionData = $_SESSION['player'][0];
 
 
-        //2. カードマスタから1. のimage_pathを取得
-        try {
-            $db = new CardQuery();
-            // ディーラーの手札
-            foreach ($dealerHands as $hand) {
-                $this->dealerHands = $db->getCard($hand['mark'], $hand['number']);
-            }
-       
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
+        // 取得済みのカードは表示しないようにする
+        foreach ($this->dealerHands as $hand) {
+            $db->setUsedCards(99, $hand['id']);
         }
 
         $afterDealHands = [
