@@ -35,7 +35,6 @@ class PlayerQuery
         $db = new DataSource;
         $db->openConnection();
 
-        // DBから最新4つのデータを抽出
         $sql = 'SELECT id,name,bet,credit FROM t_player ORDER BY id DESC LIMIT 4;';
 
         $result = $db->select($sql, [], 'cls', 'model\PlayerModel');
@@ -121,8 +120,9 @@ class PlayerQuery
         return $result;
     }
 
-
-    // ↓POSTされた内容をDBに登録↓
+    /**
+     * POSTされた内容をDBに登録するメソッド
+     */
     public function addPlayer($data)
     {
 
@@ -143,7 +143,40 @@ class PlayerQuery
         $db->closeConnection();
     }
 
-    // 退出ボタンが押下されたらプレイヤー物理削除
+    /**
+     * ゲーム2回目のプレイヤー情報を
+     * 既存セッションデータの名前から既存情報に更新するメソッド
+     */
+    public function updatePlayer($data)
+    {
+        $logFilePath = BASE_LOG_PATH . 'console.log';
+        error_log(print_r($data, true), 3, $logFilePath);
+        $db = new DataSource;
+        $db->openConnection();
+        try {
+            $sql = 'UPDATE t_player SET bet = :bet, credit = :credit, status = :status WHERE name = :session_name;';
+
+            $params = [
+                ':session_name' => $data['session_name'],
+                ':bet' => $data['bet'],
+                ':credit' => $data['credit'],
+                ':status' => 0,
+            ];
+            $db->update($sql, $params, 'cls', 'model\PlayerModel');
+            $db->commit();
+            $db->closeConnection();
+
+
+            return true;
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            $db->rollback();
+        }
+    }
+
+    /**
+     * 退出ボタンが押下されたらプレイヤー物理削除するメソッド
+     */
     public function deletePlayer($playerName)
     {
         $db = new DataSource;
@@ -152,6 +185,9 @@ class PlayerQuery
         $sql = 'DELETE FROM t_player WHERE name = :name LIMIT 1';
 
         $db->delete($sql, [':name' => $playerName]);
+
+        // セッションデータも削除
+        unset($_SESSION['player']);
 
         // データベース接続を閉じる
         $db->closeConnection();

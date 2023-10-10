@@ -12,6 +12,9 @@ $(document).ready(function () {
     // 隠しフィールドにnewBetとnewCreditの値を設定
     $('#new-bet').val(newBet);
     $('#new-credit').val(newCredit);
+
+    // console.log('newBet:', newBet);
+    // console.log('newCredit:', newCredit);
   });
 
   $("#start-btn").on("click", function () {
@@ -20,7 +23,7 @@ $(document).ready(function () {
     $("#player-name").val(playerName);    
   });
 
-  // BET/credit モーダルウィンドウ
+  // BET/credit選択モーダルウィンドウ
   $('.js-open').on('click', function () {
     betOpenModal ();
     return false;
@@ -28,6 +31,7 @@ $(document).ready(function () {
   $('.js-close').on('click', function () {
     betCloseModal ()
   });
+
   // 勝敗後モーダルウィンドウ
   $('.js-issue-close').on('click', function () {
     $('.js-issue-modal').removeClass('open');
@@ -115,8 +119,6 @@ $(document).ready(function () {
 
   });
 
-
-
   // STANDボタンがクリックされたとき
   // g_playerHandsとg_dealerHandsをPOSTする
   $(".stand").on("click", function () {
@@ -156,41 +158,38 @@ $(document).ready(function () {
       
 
       // resultCodeに応じてmodalを表示
-      // if (response.resultCode === 1) {
-      //   openModal(response.message);
-      // } else if (response.resultCode === 2 ){
-      //   openModal(response.message);
-      // } else if (response.resultCode === 3) {
-      //   openModal(response.message);
-      // } else {
-      //   openModal("エラーです");
-      // }
-
+      if (response.resultCode === 1) {
+        openModal(response.message);
+      } else if (response.resultCode === 2 ){
+        openModal(response.message);
+      } else if (response.resultCode === 3) {
+        openModal(response.message);
+      } else {
+        openModal("エラーです");
+      }
 
       const yesBtn = document.getElementById('yes-btn');
       const noBtn = document.getElementById('no-btn');
 
-      // BET額選択後、新たに無名プレイヤーが追加されてしまうので現プレイヤーでBET額表示
-      // クレジット額の継承
+      // YESボタンがクリックされたらBET/Credit選択画面に移動
       yesBtn.addEventListener('click' , function(){
         $.ajax({
-          url: '/',
-          type: 'GET',
+          url: '/', 
+          type: 'GET', 
           dataType: 'html',
           success: function(data) {
-            // 現ページに取得したhtmlデータを追加
+            // 現ページbody要素に取得したhtmlデータを追加
             $('body').append(data);
-          
             // モーダルを表示する処理をここに追加
             betOpenModal();
           },
           error: function() {
-            console.error('外部HTMLの読み込みに失敗しました。');
+            console.error('HTMLの読み込みに失敗しました。');
           }
         });
       });
 
-      //NOボタンをクリックしたら
+      //NOボタンをクリックしたらゲーム終了
       noBtn.addEventListener('click' , function(){
         $.ajax({
           type: 'POST',
@@ -209,8 +208,6 @@ $(document).ready(function () {
 
   });
 
-
-
   // SURRENDERボタンがクリックされたとき
   // g_playerHandsの配列の数とnumberの合計値をPOSTする
   $(".surrender").on("click", function () {
@@ -220,7 +217,7 @@ $(document).ready(function () {
     }).done(function (response) {
       // 成功したら以下の処理を行う
       // checkWinOrLoseメソッドから結果メッセージを取得する
-      console.log(response);
+      // console.log(response);
       var resultCode = response.resultCode;
       var message = response.message;
       // resultCodeに応じてmodalを表示する
@@ -228,11 +225,27 @@ $(document).ready(function () {
       if (resultCode === 4) {
         openModal(message);
       } 
-      yesBtn.addEventListener('click' , function(){
-        betOpenModal ();
-        return false;
-      });
 
+      const yesBtn = document.getElementById('yes-btn');
+      const noBtn = document.getElementById('no-btn');
+      // YESボタンがクリックされたらBET/Credit選択画面に移動
+      yesBtn.addEventListener('click' , function(){
+        $.ajax({
+          url: '/', 
+          type: 'GET', 
+          dataType: 'html',
+          success: function(data) {
+            // 現ページbody要素に取得したhtmlデータを追加
+            $('body').append(data);
+            // モーダルを表示する処理をここに追加
+            betOpenModal();
+          },
+          error: function() {
+            console.error('HTMLの読み込みに失敗しました。');
+          }
+        });
+      });
+      //NOボタンをクリックしたらゲーム終了
       noBtn.addEventListener('click' , function(){
         $.ajax({
           type: 'POST',
@@ -249,32 +262,31 @@ $(document).ready(function () {
     });
   });
 
-
   // STARTボタンがクリックされたときの処理
   $(".start").on("click", function() {
 
-    // 現在の日付と時刻を取得
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
-    const hours = currentDate.getHours().toString().padStart(2, '0');
-    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
-    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
-
-    // 形式に合わせて日付を組み立て
-    const formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-
-    const playerName = $("#textbox").val();
-    const bet = $('#new-bet').val();
-    const credit = $('#new-credit').val();
-
-    const requestData = {
-      name: playerName,
-      bet: bet,
-      credit: credit,
-      startDate: formattedDate
-    };
+      // 現在の日付と時刻を取得
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = currentDate.getDate().toString().padStart(2, '0');
+      const hours = currentDate.getHours().toString().padStart(2, '0');
+      const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+      const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+  
+      // // 形式に合わせて日付を組み立て
+      const formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+  
+      const playerName = $("#textbox").val();
+      const bet = $('#new-bet').val();
+      const credit = $('#new-credit').val();
+  
+      const requestData = {
+        name: playerName,
+        bet: bet,
+        credit: credit,
+        startDate: formattedDate
+      };
 
     console.log(requestData);
 
@@ -284,7 +296,7 @@ $(document).ready(function () {
       data: requestData
     }).done(function(data){
       // 成功したら以下の処理を行う
-      window.location.href = "http://localhost:8080/game";
+      window.location.href = "/game";
 
     }).fail(function(data){
       alert("Ajax通信が失敗しました。エラー: " + errorThrown);
@@ -309,7 +321,9 @@ $(document).ready(function () {
 });
 
 
+////////////////////////////////////////////////
 //関数処理
+////////////////////////////////////////////////
 
 function openModal(message) {
 //モーダルの表示

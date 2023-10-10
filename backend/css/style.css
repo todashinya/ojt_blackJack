@@ -24,7 +24,7 @@ time, mark, audio, video {
 
 body {
   line-height: 1;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 article, aside, dialog, figure, footer, header,
@@ -149,7 +149,7 @@ input, select {
     border: none;
     padding: 20px;
     font-size: 28px;
-    color: #D8D8D8;
+    color: #000;
   }
   #home input[type=text]:focus {
     outline: 0;
@@ -339,11 +339,13 @@ input, select {
   }
   #game .inner {
     width: 84%;
+    height: 89vh;
     margin: 0 auto;
   }
   #game .bg {
     background-color: #006200;
     width: 100%;
+    height: 90vh;
   }
   #game .leaving {
     padding-top: 20px;
@@ -362,7 +364,9 @@ input, select {
     transition: 1s;
     position: relative;
     background: transparent;
-    appearance: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
   }
   #game .leaving .button::after {
     position: absolute;
@@ -393,7 +397,7 @@ input, select {
     position: relative;
   }
   #game .player {
-    padding-top: 340px;
+    padding-top: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -413,7 +417,7 @@ input, select {
     display: flex;
     position: absolute;
     top: -30px;
-    left: 40%;
+    left: 50%;
     transform: translate(-50%, -50%);
   }
   #game .player li .img:nth-child(2) {
@@ -432,18 +436,18 @@ input, select {
     max-width: 150px;
   }
   #game .player li .bet,
-  #game .player li .credit {
+#game .player li .credit {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   #game .player li .bet p,
-  #game .player li .credit p {
+#game .player li .credit p {
     font-size: 22px;
     line-height: 1.4545454545;
   }
   #game .player li .bet p:nth-child(2),
-  #game .player li .credit p:nth-child(2) {
+#game .player li .credit p:nth-child(2) {
     margin-left: 20px;
   }
   #game .player li .credit {
@@ -467,10 +471,10 @@ input, select {
     margin-left: 4px;
   }
   #game .btn {
-    margin: 50px 113px 0 0;
+    margin: 0 0 100px 0;
     text-align: right;
     display: flex;
-    justify-content: end;
+    justify-content: center;
   }
   #game .btn button {
     background-color: transparent;
@@ -478,7 +482,9 @@ input, select {
     cursor: pointer;
     outline: none;
     padding: 0;
-    appearance: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
     transition: 1s;
   }
   #game .btn button:nth-child(n+2) {
@@ -491,23 +497,24 @@ input, select {
   #game .btn .hit, #game .btn .stand, #game .btn .surrender {
     background: linear-gradient(#fdf446 0%, #c88827 100%);
     color: #FFFFFF;
-    font-size: 16px;
+    font-size: 18px;
     padding: 30px 16px;
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
   }
   #game .btn .hit img, #game .btn .stand img, #game .btn .surrender img {
     width: 30px;
     height: 26px;
   }
-  #game .btn .p {
+  #game .btn p {
     margin-top: 10px;
+    font-size: 18px;
   }
   .under {
     background: linear-gradient(#6c2703 0%, #0e0500 100%);
     width: 100%;
-    height: 62px;
+    height: 10vh;
   }
   #issue-overlay {
     position: fixed;
@@ -547,7 +554,7 @@ input, select {
     width: 100%;
   }
   #issue-modal .issue-yes button,
-  #issue-modal .issue-no button {
+#issue-modal .issue-no button {
     font-family: "Kaisei Tokumin", serif;
     position: relative;
     border: 1px solid #fff;
@@ -563,10 +570,10 @@ input, select {
     transition: 1s;
   }
   #issue-modal .issue-yes button:hover,
-  #issue-modal .issue-no button:hover {
+#issue-modal .issue-no button:hover {
     background: #fff;
     color: #000;
     filter: brightness(110%);
     transition: 1s;
   }
-}/*# sourceMappingURL=style.css.map */
+}

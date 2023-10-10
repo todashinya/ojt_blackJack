@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>home.css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>game.css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>style.css">
+
 </head>
 
 <body>
