@@ -27,7 +27,7 @@ time, mark, audio, video {
 
 body {
 	line-height:1;
-  overflow-x: hidden;
+    overflow: hidden;
 }
 
 article, aside, dialog, figure, footer, header,
@@ -149,7 +149,7 @@ input, select {
         border: none;
         padding: 20px;
         font-size: 28px;
-        color: #D8D8D8;
+        color: #000;
         &:focus {
             outline: 0;
         }
@@ -348,11 +348,13 @@ label img {
     height: 100vh;
     .inner {
         width: 84%;
+        height: 89vh;
         margin: 0 auto;
     }
     .bg {
         background-color: #006200;
         width: 100%;
+        height: 90vh;
     }
     .leaving {
         padding-top: 20px;
@@ -408,7 +410,7 @@ label img {
         }
     }
     .player {
-        padding-top: 340px;
+        padding-top: 500px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -426,7 +428,7 @@ label img {
                 display: flex;
                 position: absolute;
                 top: -30px;
-                left: 40%;
+                left: 50%;
                 transform: translate(-50%,-50%);
                 &:nth-child(2) {
                     left: 55%;
@@ -480,10 +482,10 @@ label img {
         }
     }
     .btn {
-        margin: 50px 113px 0 0;
+        margin: 0 0 100px 0;
         text-align: right;
         display: flex;
-        justify-content: end;
+        justify-content: center;
         button {
             background-color: transparent;
             border: none;
@@ -503,18 +505,19 @@ label img {
         .hit , .stand , .surrender{
             background: linear-gradient(#fdf446 0%, #c88827 100%);
             color: #FFFFFF;
-            font-size: 16px;
+            font-size: 18px;
             padding: 30px 16px;
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             img {
                 width: 30px;
                 height: 26px;
             }
         }
-        .p {
+        p {
             margin-top: 10px;
+            font-size: 18px;
         }
 
     }
@@ -522,7 +525,7 @@ label img {
 .under {
     background: linear-gradient(#6c2703 0%, #0e0500 100%);
     width: 100%;
-    height: 62px;
+    height: 10vh;
 }
 
 // 勝敗後のモーダルスタイル
