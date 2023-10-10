@@ -58,9 +58,9 @@ require_once SOURCE_PATH . 'partials/header.php';
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="bet js-bet">＄<span>0</span></div>
+                    <div class="bet js-bet">＄<span><?php echo $dataArray[0]['bet']; ?></span></div>
                     <input type="hidden" name="bet" id="new-bet">
-                    <div class="credit js-credit">＄<span>200</span></div>
+                    <div class="credit js-credit">＄<span><?php echo $dataArray[0]['credit']; ?></span></div>
                     <input type="hidden" name="credit" id="new-credit">
                 </div>
                 <div id="start-btn" class="btn">
